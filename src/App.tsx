@@ -447,8 +447,13 @@ const Contact = () => {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+
     const sendEmail = async () => {
-        await fetch("https://api.shouts.gg/vantage-contact/contact", {
+        setLoading(true);
+        setSuccess(false);
+        var res = await fetch("https://api.shouts.gg/vantage-contact/contact", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -460,10 +465,16 @@ const Contact = () => {
                 message: message,
             }),
         });
+
+        if (res.status === 200) {
+            setSuccess(true);
+        }
+
+        setLoading(false);
     };
 
     return (
-        <div className="w-full flex flex-col lg:flex-row gap-10 lg:gap-20">
+        <div className="w-full flex flex-col lg:flex-row gap-10 lg:gap-20 min-h-[250px]">
             <div className="gap-10 flex flex-col w-full lg:w-1/2">
                 <h2 className="font-sora text-4xl font-medium text-black">
                     Contact Us
@@ -479,7 +490,13 @@ const Contact = () => {
                 </div>
             </div>
             <div className="w-full lg:w-1/2">
-                <form action={sendEmail} method="POST">
+                <form
+                    onSubmit={async (e) => {
+                        e.preventDefault();
+                        await sendEmail();
+                    }}
+                    method="POST"
+                >
                     <div className="flex justify-end flex-col">
                         <div className="form-group">
                             <div className="form-row">
@@ -532,12 +549,23 @@ const Contact = () => {
                                 </div>
                             </div>
                         </div>
-                        <button
-                            type="submit"
-                            className="w-full lg:w-auto ml-auto bg-black rounded-full text-white px-5 py-3 font-sora text-sm hover:bg-[#00A878] cursor-pointer transition"
-                        >
-                            Submit
-                        </button>
+                        <div className="flex flex-col md:flex-row items-center gap-5">
+                            {success && (
+                                <p className="text-gray-700 font-inter text-lg leading-relaxed">
+                                    Thank you for your message, we will get back
+                                    to you soon.
+                                </p>
+                            )}
+                            <button
+                                disabled={loading}
+                                type="submit"
+                                className={`${
+                                    loading ? "opacity-50" : ""
+                                } w-full lg:w-auto ml-auto bg-black rounded-full text-white px-5 py-3 font-sora text-sm hover:bg-[#00A878] cursor-pointer transition`}
+                            >
+                                Submit
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
