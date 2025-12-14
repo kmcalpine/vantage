@@ -1665,15 +1665,16 @@ const ServiceItem = ({ service, ref, id }: any) => {
     const [showBenefits, setShowBenefits] = useState(true);
 
     useEffect(() => {
+        let isDesktop = window.innerWidth >= 768;
+
         const handleResize = () => {
-            if (window.innerWidth < 768) {
-                setShowBenefits(false);
-            } else {
-                setShowBenefits(true);
+            const nowDesktop = window.innerWidth >= 768;
+            if (nowDesktop !== isDesktop) {
+                setShowBenefits(nowDesktop);
+                isDesktop = nowDesktop;
             }
         };
 
-        handleResize();
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
