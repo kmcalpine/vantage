@@ -443,17 +443,21 @@ const About = ({ contactRef }: any) => {
 };
 
 const Contact = () => {
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
     const sendEmail = async () => {
-        await fetch("http://localhost:5031/contact", {
+        await fetch("https://api.shouts.gg/vantage-contact/contact", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                firstName: "Kurtis",
-                lastName: "McAlpine",
-                email: "kurtismcalpine@gmail.com",
-                message: "test email",
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                message: message,
             }),
         });
     };
@@ -483,6 +487,10 @@ const Contact = () => {
                                     <input
                                         type="text"
                                         name="name"
+                                        value={firstName}
+                                        onChange={(e) =>
+                                            setFirstName(e.target.value)
+                                        }
                                         className="bg-gray-200 form-control rounded-md h-10 text-black border border-gray-300 px-3"
                                         placeholder="First Name"
                                         required
@@ -490,6 +498,10 @@ const Contact = () => {
                                     <input
                                         type="text"
                                         name="name"
+                                        value={lastName}
+                                        onChange={(e) =>
+                                            setLastName(e.target.value)
+                                        }
                                         className="bg-gray-200 form-control rounded-md h-10 text-black border border-gray-300 px-3"
                                         placeholder="Last Name"
                                         required
@@ -499,12 +511,20 @@ const Contact = () => {
                                     <input
                                         type="email"
                                         name="email"
+                                        value={email}
+                                        onChange={(e) =>
+                                            setEmail(e.target.value)
+                                        }
                                         className="bg-gray-200 form-control rounded-md h-10 text-black border border-gray-300 px-3 w-full mb-4"
                                         placeholder="Email Address"
                                         required
                                     />
                                     <textarea
                                         name="message"
+                                        value={message}
+                                        onChange={(e) =>
+                                            setMessage(e.target.value)
+                                        }
                                         className="bg-gray-200 form-control rounded-md py-3 h-32 text-black border border-gray-300 px-3 w-full mb-4"
                                         placeholder="Your Message"
                                         required
