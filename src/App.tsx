@@ -243,30 +243,60 @@ const Header = ({ scrolled, sectionRefs }: any) => {
         >
             <img src={logo} className="h-[25px] z-100" />
             <div className="hidden lg:flex items-center gap-10">
-                <ul className="flex gap-10 font-inter text-lg font-medium">
+                <ul className="flex gap-10 font-inter text-md flex items-center">
                     <NavItem
-                        onClick={() =>
+                        onClick={() => {
                             window.scrollTo({
                                 top: 0,
                                 behavior: "smooth",
-                            })
-                        }
+                            });
+                            setShowMenu(false);
+                        }}
                     >
-                        Home
+                        <span className="font-sora text-md font-bold">
+                            Home
+                        </span>
                     </NavItem>
-                    <NavItem onClick={() => scrollTo(sectionRefs.about)}>
-                        About Us
+                    <NavItem
+                        onClick={() => {
+                            scrollTo(sectionRefs.about);
+                            setShowMenu(false);
+                        }}
+                    >
+                        <span className="font-sora text-md font-bold">
+                            About Us
+                        </span>
                     </NavItem>
-                    <NavItem onClick={() => scrollTo(sectionRefs.services)}>
-                        Services
+                    <NavItem
+                        onClick={() => {
+                            scrollTo(sectionRefs.services);
+                            setShowMenu(false);
+                        }}
+                    >
+                        <span className="font-sora text-md font-bold">
+                            Services
+                        </span>
                     </NavItem>
+
+                    <NavItem
+                        onClick={() => {
+                            scrollTo(sectionRefs.packages);
+                            setShowMenu(false);
+                        }}
+                    >
+                        <span className="font-sora text-md font-bold">
+                            Packages
+                        </span>
+                    </NavItem>
+                    <button
+                        onClick={() => scrollTo(sectionRefs.contact)}
+                        className="bg-black rounded-full text-white px-5 py-3 hover:bg-[#00A878] cursor-pointer transition"
+                    >
+                        <span className="font-sora text-md font-bold">
+                            Enquire Now
+                        </span>
+                    </button>
                 </ul>
-                <button
-                    onClick={() => scrollTo(sectionRefs.contact)}
-                    className="bg-black rounded-full text-white px-5 py-3 font-sora text-sm hover:bg-[#00A878] cursor-pointer transition"
-                >
-                    Enquire Now
-                </button>
             </div>
             <div className="lg:hidden flex items-center">
                 <button
@@ -290,7 +320,7 @@ const Header = ({ scrolled, sectionRefs }: any) => {
                         className="absolute  z-50 top-0 left-0 right-0 bg-white flex flex-col gap-10"
                     >
                         <div className="flex items-center cursor-pointer p-5">
-                            <ul className="flex flex-col gap-10 font-inter text-lg font-medium">
+                            <ul className="flex flex-col gap-10 font-sora text-md font-medium">
                                 <NavItem
                                     onClick={() => {
                                         window.scrollTo({
@@ -300,7 +330,7 @@ const Header = ({ scrolled, sectionRefs }: any) => {
                                         setShowMenu(false);
                                     }}
                                 >
-                                    <span className="font-inter text-lg font-bold">
+                                    <span className="font-sora  font-bold">
                                         Home
                                     </span>
                                 </NavItem>
@@ -310,7 +340,7 @@ const Header = ({ scrolled, sectionRefs }: any) => {
                                         setShowMenu(false);
                                     }}
                                 >
-                                    <span className="font-inter text-lg font-bold">
+                                    <span className="font-sora  font-bold">
                                         About Us
                                     </span>
                                 </NavItem>
@@ -320,7 +350,7 @@ const Header = ({ scrolled, sectionRefs }: any) => {
                                         setShowMenu(false);
                                     }}
                                 >
-                                    <span className="font-inter text-lg font-bold">
+                                    <span className="font-sora font-bold">
                                         Services
                                     </span>
                                 </NavItem>
@@ -330,7 +360,7 @@ const Header = ({ scrolled, sectionRefs }: any) => {
                                         setShowMenu(false);
                                     }}
                                 >
-                                    <span className="font-inter text-lg font-bold">
+                                    <span className="font-sora font-bold">
                                         Packages
                                     </span>
                                 </NavItem>
@@ -340,7 +370,7 @@ const Header = ({ scrolled, sectionRefs }: any) => {
                                         setShowMenu(false);
                                     }}
                                 >
-                                    <span className="font-inter text-lg font-bold">
+                                    <span className="font-inter font-bold">
                                         Contact Us
                                     </span>
                                 </NavItem>
