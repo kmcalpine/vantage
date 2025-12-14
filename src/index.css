@@ -1,0 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Sora:wght@400;700&display=swap");
+@import "tailwindcss";
+
+@theme {
+    --font-sora: "Sora", sans-serif;
+}
+
+ion-icon {
+    color: #00a878;
+}
