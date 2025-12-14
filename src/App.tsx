@@ -8,11 +8,13 @@ import { CircleCheck, Menu } from "lucide-react";
 
 function App() {
     const servicesRef = useRef<HTMLDivElement>(null);
+    const packagesRef = useRef<HTMLDivElement>(null);
     const aboutRef = useRef<HTMLDivElement>(null);
     const contactRef = useRef<HTMLDivElement>(null);
 
     const sectionRefs = {
         services: servicesRef,
+        packages: packagesRef,
         about: aboutRef,
         contact: contactRef,
     };
@@ -45,7 +47,7 @@ function App() {
                     <Services />
                 </section>
             </div>
-            <section>
+            <section ref={packagesRef}>
                 <Packages />
             </section>
             <section ref={contactRef}>
@@ -163,28 +165,49 @@ const Footer = ({ sectionRefs }: any) => {
     const scrollTo = useScrollTo();
     return (
         <div className="bg-black text-white px-5 md:px-10 2xl:px-60 py-10">
-            <div className="flex-1 flex-col">
-                <img src={logoWhite} className="h-[25px]" />
+            <div className="flex flex-col items-center">
+                <img src={logoWhite} className="h-[15px]" />
                 <div className="flex items-center gap-10 mt-5">
                     <ul className="flex gap-7 font-inter text-lg font-medium">
                         <NavItem
-                            onClick={() =>
+                            onClick={() => {
                                 window.scrollTo({
                                     top: 0,
                                     behavior: "smooth",
-                                })
-                            }
+                                });
+                            }}
                         >
-                            Home
+                            <span className="font-inter text-sm">Home</span>
                         </NavItem>
-                        <NavItem onClick={() => scrollTo(sectionRefs.about)}>
-                            About Us
+                        <NavItem
+                            onClick={() => {
+                                scrollTo(sectionRefs.about);
+                            }}
+                        >
+                            <span className="font-inter text-sm">About Us</span>
                         </NavItem>
-                        <NavItem onClick={() => scrollTo(sectionRefs.services)}>
-                            Services
+                        <NavItem
+                            onClick={() => {
+                                scrollTo(sectionRefs.services);
+                            }}
+                        >
+                            <span className="font-inter text-sm">Services</span>
                         </NavItem>
-                        <NavItem onClick={() => scrollTo(sectionRefs.contact)}>
-                            Contact Us
+                        <NavItem
+                            onClick={() => {
+                                scrollTo(sectionRefs.packages);
+                            }}
+                        >
+                            <span className="font-inter text-sm">Packages</span>
+                        </NavItem>
+                        <NavItem
+                            onClick={() => {
+                                scrollTo(sectionRefs.contact);
+                            }}
+                        >
+                            <span className="font-inter text-sm">
+                                Contact Us
+                            </span>
                         </NavItem>
                     </ul>
                 </div>
@@ -215,7 +238,7 @@ const Header = ({ scrolled, sectionRefs }: any) => {
             className={`flex w-full items-center justify-between  bg-white z-50 transition-shadow duration-300  ${
                 scrolled
                     ? "shadow-lg fixed top-0 left-0 right-0 h-[80px] px-5 md:px-10 2xl:px-60"
-                    : "h-[120px]"
+                    : "h-[80px] md:h-[120px]"
             }`}
         >
             <img src={logo} className="h-[25px] z-100" />
@@ -257,7 +280,9 @@ const Header = ({ scrolled, sectionRefs }: any) => {
                 <div
                     onClick={() => setShowMenu(false)}
                     className={`absolute h-screen z-50 top-0 left-0 right-0 bottom-0 bg-black/50 ${
-                        scrolled ? "mt-[80px]" : "mt-[120px]"
+                        scrolled
+                            ? "mt-[80px] md:mt-[120px]"
+                            : "mt-[80px] md:mt-[120px]"
                     }`}
                 >
                     <div
@@ -275,7 +300,9 @@ const Header = ({ scrolled, sectionRefs }: any) => {
                                         setShowMenu(false);
                                     }}
                                 >
-                                    Home
+                                    <span className="font-inter text-lg font-bold">
+                                        Home
+                                    </span>
                                 </NavItem>
                                 <NavItem
                                     onClick={() => {
@@ -283,7 +310,9 @@ const Header = ({ scrolled, sectionRefs }: any) => {
                                         setShowMenu(false);
                                     }}
                                 >
-                                    About Us
+                                    <span className="font-inter text-lg font-bold">
+                                        About Us
+                                    </span>
                                 </NavItem>
                                 <NavItem
                                     onClick={() => {
@@ -291,7 +320,19 @@ const Header = ({ scrolled, sectionRefs }: any) => {
                                         setShowMenu(false);
                                     }}
                                 >
-                                    Services
+                                    <span className="font-inter text-lg font-bold">
+                                        Services
+                                    </span>
+                                </NavItem>
+                                <NavItem
+                                    onClick={() => {
+                                        scrollTo(sectionRefs.packages);
+                                        setShowMenu(false);
+                                    }}
+                                >
+                                    <span className="font-inter text-lg font-bold">
+                                        Packages
+                                    </span>
                                 </NavItem>
                                 <NavItem
                                     onClick={() => {
@@ -299,7 +340,9 @@ const Header = ({ scrolled, sectionRefs }: any) => {
                                         setShowMenu(false);
                                     }}
                                 >
-                                    Contact Us
+                                    <span className="font-inter text-lg font-bold">
+                                        Contact Us
+                                    </span>
                                 </NavItem>
                             </ul>
                         </div>
@@ -314,17 +357,20 @@ const Hero = ({ scrolled }: { scrolled: boolean }) => {
     return (
         <div
             className={`relative overflow-hidden rounded-3xl ${
-                scrolled ? "mt-[120px]" : ""
+                scrolled ? "mt-[80px] md:mt-[120px]" : ""
             }`}
         >
-            <img src={headerImage} className="w-full object-cover h-[700px] " />
+            <img
+                src={headerImage}
+                className="w-full object-cover h-[500px] md:h-[700px]"
+            />
             <div className="absolute inset-0 bg-gradient-to-b to-black/70 via-black/25 from-black/0"></div>
-            <div className="absolute bottom-0 text-white p-10 md:p-20">
+            <div className="absolute bottom-0 text-white p-5 md:p-20">
                 <div className="gap-2 flex flex-col border-b-5 border-white pb-5">
-                    <h1 className="font-sora text-5xl font-medium">
+                    <h1 className="font-sora text-3xl md:text-5xl font-medium">
                         Be Compliant. The Wise Way.
                     </h1>
-                    <span className="text-xl font-inter">
+                    <span className="text-lg md:text-xl font-inter">
                         We take care of your compliance whilst you focus on
                         other priorities
                     </span>
