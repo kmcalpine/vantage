@@ -1662,7 +1662,9 @@ const Services = () => {
 };
 
 const ServiceItem = ({ service, ref, id }: any) => {
-    const [showBenefits, setShowBenefits] = useState(true);
+    const [showBenefits, setShowBenefits] = useState(
+        () => window.innerWidth >= 768
+    );
 
     useEffect(() => {
         let isDesktop = window.innerWidth >= 768;
