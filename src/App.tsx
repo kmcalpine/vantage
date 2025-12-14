@@ -41,7 +41,7 @@ function App() {
                 <Hero scrolled={scrolled} />
 
                 <section ref={aboutRef} className="py-20 flex gap-30">
-                    <About />
+                    <About contactRef={contactRef} />
                 </section>
                 <section ref={servicesRef}>
                     <Services />
@@ -51,7 +51,7 @@ function App() {
                 <Packages />
             </section>
             <section ref={contactRef}>
-                <div className="bg-gray-200 text-white px-5 md:px-10 2xl:px-60 py-20">
+                <div className="bg-white text-white px-5 md:px-10 2xl:px-60 py-20">
                     <Contact />
                 </div>
             </section>
@@ -118,7 +118,7 @@ const Packages = () => {
     const renderPackage = (_package: any) => {
         return (
             <div className="col-span-1 bg-white rounded-2xl h-full overflow-hidden shadow-md border-1 border-gray-300 flex flex-col">
-                <div className="p-10 bg-gray-200">
+                <div className="p-10 bg-gray-50 border-b-1 border-gray-300">
                     <h3 className="font-sora text-xl font-bold text-black text-center">
                         {_package.title}
                     </h3>
@@ -150,7 +150,7 @@ const Packages = () => {
         );
     };
     return (
-        <div className="w-full bg-gray-100 px-5 2xl:px-60 py-20 md:gap-10 flex flex-col">
+        <div className="w-full bg-gray-200 px-5 2xl:px-60 py-20 md:gap-10 flex flex-col">
             <h2 className="font-sora text-4xl font-medium text-black text-center">
                 Service Packages
             </h2>
@@ -165,7 +165,7 @@ const Footer = ({ sectionRefs }: any) => {
     const scrollTo = useScrollTo();
     return (
         <div className="bg-black text-white px-5 md:px-10 2xl:px-60 py-10">
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center md:items-start">
                 <img src={logoWhite} className="h-[15px]" />
                 <div className="flex items-center gap-10 mt-5">
                     <ul className="flex gap-7 font-inter text-xs font-medium">
@@ -408,7 +408,8 @@ const Hero = ({ scrolled }: { scrolled: boolean }) => {
     );
 };
 
-const About = () => {
+const About = ({ contactRef }: any) => {
+    const scrollTo = useScrollTo();
     return (
         <>
             <div className="w-full lg:w-1/2 flex flex-col justify-center">
@@ -425,7 +426,10 @@ const About = () => {
                         solutions designed to support busy sites and fast-moving
                         projects, without unnecessary complexity.
                     </p>
-                    <button className="mt-10 bg-black rounded-full text-white px-5 py-3 font-sora text-sm hover:bg-[#00A878] cursor-pointer transition">
+                    <button
+                        onClick={() => scrollTo(contactRef)}
+                        className="mt-10 bg-black rounded-full text-white px-5 py-3 font-sora text-sm hover:bg-[#00A878] cursor-pointer transition"
+                    >
                         Enquire Now
                     </button>
                 </div>
@@ -479,14 +483,14 @@ const Contact = () => {
                                     <input
                                         type="text"
                                         name="name"
-                                        className="bg-white form-control rounded-md h-10 text-black border border-gray-300 px-3"
+                                        className="bg-gray-200 form-control rounded-md h-10 text-black border border-gray-300 px-3"
                                         placeholder="First Name"
                                         required
                                     />
                                     <input
                                         type="text"
                                         name="name"
-                                        className="bg-white form-control rounded-md h-10 text-black border border-gray-300 px-3"
+                                        className="bg-gray-200 form-control rounded-md h-10 text-black border border-gray-300 px-3"
                                         placeholder="Last Name"
                                         required
                                     />
@@ -495,13 +499,13 @@ const Contact = () => {
                                     <input
                                         type="email"
                                         name="email"
-                                        className="bg-white form-control rounded-md h-10 text-black border border-gray-300 px-3 w-full mb-4"
+                                        className="bg-gray-200 form-control rounded-md h-10 text-black border border-gray-300 px-3 w-full mb-4"
                                         placeholder="Email Address"
                                         required
                                     />
                                     <textarea
                                         name="message"
-                                        className="bg-white form-control rounded-md py-3 h-32 text-black border border-gray-300 px-3 w-full mb-4"
+                                        className="bg-gray-200 form-control rounded-md py-3 h-32 text-black border border-gray-300 px-3 w-full mb-4"
                                         placeholder="Your Message"
                                         required
                                     ></textarea>
