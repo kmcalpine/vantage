@@ -168,7 +168,7 @@ const Footer = ({ sectionRefs }: any) => {
             <div className="flex flex-col items-center">
                 <img src={logoWhite} className="h-[15px]" />
                 <div className="flex items-center gap-10 mt-5">
-                    <ul className="flex gap-7 font-inter text-lg font-medium">
+                    <ul className="flex gap-7 font-inter text-xs font-medium">
                         <NavItem
                             onClick={() => {
                                 window.scrollTo({
@@ -177,37 +177,35 @@ const Footer = ({ sectionRefs }: any) => {
                                 });
                             }}
                         >
-                            <span className="font-inter text-sm">Home</span>
+                            <span className="font-inter">Home</span>
                         </NavItem>
                         <NavItem
                             onClick={() => {
                                 scrollTo(sectionRefs.about);
                             }}
                         >
-                            <span className="font-inter text-sm">About Us</span>
+                            <span className="font-inter">About</span>
                         </NavItem>
                         <NavItem
                             onClick={() => {
                                 scrollTo(sectionRefs.services);
                             }}
                         >
-                            <span className="font-inter text-sm">Services</span>
+                            <span className="font-inter">Services</span>
                         </NavItem>
                         <NavItem
                             onClick={() => {
                                 scrollTo(sectionRefs.packages);
                             }}
                         >
-                            <span className="font-inter text-sm">Packages</span>
+                            <span className="font-inter">Packages</span>
                         </NavItem>
                         <NavItem
                             onClick={() => {
                                 scrollTo(sectionRefs.contact);
                             }}
                         >
-                            <span className="font-inter text-sm">
-                                Contact Us
-                            </span>
+                            <span className="font-inter">Contact</span>
                         </NavItem>
                     </ul>
                 </div>
