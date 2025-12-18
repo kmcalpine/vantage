@@ -4,7 +4,15 @@ import aboutImage from "./assets/about.jpg";
 import logo from "./assets/logo.png";
 import logoWhite from "./assets/logo-white.png";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CircleCheck, Menu } from "lucide-react";
+import {
+    CircleCheck,
+    Eye,
+    Layers,
+    Menu,
+    ShieldCheck,
+    UserCheck,
+    Zap,
+} from "lucide-react";
 
 function App() {
     const servicesRef = useRef<HTMLDivElement>(null);
@@ -39,16 +47,25 @@ function App() {
             <div className="px-5 md:px-10 2xl:px-60">
                 <Header scrolled={scrolled} sectionRefs={sectionRefs} />
                 <Hero scrolled={scrolled} />
-
+                <section>
+                    <Benefits />
+                </section>
                 <section ref={aboutRef} className="py-20 flex gap-30">
                     <About contactRef={contactRef} />
                 </section>
                 <section ref={servicesRef}>
                     <Services />
                 </section>
+                <section>
+                    <PriceTable />
+                </section>
             </div>
             <section ref={packagesRef}>
                 <Packages />
+            </section>
+
+            <section>
+                <Accreditations />
             </section>
             <section ref={contactRef}>
                 <div className="bg-white text-white px-5 md:px-10 2xl:px-60 py-20">
@@ -62,55 +79,286 @@ function App() {
     );
 }
 
+const benefitsData = [
+    {
+        title: "Senior expertise without payroll cost",
+        description:
+            "Access experienced consultants for less than the cost of employing a full-time HSE Manager.",
+        icon: UserCheck, // represents expert users / consultants
+    },
+    {
+        title: "Scalable support",
+        description:
+            "Increase or reduce support as projects, risk levels, and workloads change.",
+        icon: Layers, // represents stacking / scalable layers
+    },
+    {
+        title: "Independent & objective oversight",
+        description:
+            "Clear, honest reporting that highlights real risk, not filtered internal opinions.",
+        icon: Eye, // represents oversight / watching closely
+    },
+    {
+        title: "Stronger client confidence",
+        description:
+            "Demonstrates professional H&S management to Principal Contractors and Tier 1 clients.",
+        icon: ShieldCheck, // represents security, trust, confidence
+    },
+    {
+        title: "Immediate incident & enforcement support",
+        description:
+            "Rapid response when it matters most, accidents, RIDDORs, or HSE visits.",
+        icon: Zap, // represents fast, immediate action
+    },
+];
+
+const Benefits = () => {
+    return (
+        <div className="py-20 flex gap-10 flex-col">
+            <div className="flex flex-col gap-2">
+                <h2 className="font-sora text-4xl font-medium text-black">
+                    WHY OUTSOURCE YOUR HEALTH & SAFETY?
+                </h2>
+                <span className="font-inter text-md text-gray-600">
+                    Outsourcing your H&S function gives you experience, depth,
+                    and flexibility without the overheads and limitations of
+                    in-house roles.
+                </span>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-start">
+                {benefitsData.map((benefit, index) => (
+                    <div
+                        key={index}
+                        className="flex gap-5 items-start flex-col bg-gray-100 p-5 rounded-3xl"
+                    >
+                        <benefit.icon className="text-[#00A878]" size={50} />
+                        <div>
+                            <h3 className="font-sora text-lg font-bold text-black">
+                                {benefit.title}
+                            </h3>
+                            <p className="font-inter text-md text-gray-700">
+                                {benefit.description}
+                            </p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+const Accreditations = () => {
+    return <></>;
+};
+
+const individualPricings = [
+    {
+        title: "Site Inspections & Audits",
+        items: {
+            half_day_inspection: {
+                title: "Half-day Inspection",
+                price: "£400 – £600",
+                notes: "Dependent on location",
+            },
+            full_day_audit: {
+                title: "Full-day Audit",
+                price: "£650 – £850",
+                notes: "Dependent on location",
+            },
+            additional_site_same_day: {
+                title: "Additional Site (Same Day)",
+                price: "From £150",
+            },
+        },
+    },
+    {
+        title: "RAMS",
+        items: {
+            rams_review: {
+                title: "RAMS Review",
+                price: "£100 – £150",
+            },
+            bespoke_rams_creation: {
+                title: "Bespoke RAMS Creation",
+                price: "£300 – £450",
+            },
+            high_risk_or_complex_rams: {
+                title: "High-risk / Complex RAMS",
+                price: "£500 – £700",
+            },
+        },
+    },
+    {
+        title: "CDM 2015 Support",
+        items: {
+            construction_phase_plan_cpp: {
+                title: "Construction Phase Plan (CPP)",
+                price: "£750 – £1,500",
+            },
+            cdm_advisory_support_per_day: {
+                title: "CDM Advisory Support (Per Day)",
+                price: "£750 – £1,000 per day",
+            },
+            f10_notification: {
+                title: "F10 Notification",
+                price: "£150",
+            },
+        },
+    },
+    {
+        title: "Accidents & Enforcement",
+        items: {
+            accident_investigation: {
+                title: "Accident Investigation",
+                price: "£500 – £750",
+            },
+            riddor_investigation: {
+                title: "RIDDOR Investigation",
+                price: "£750 – £1,250",
+            },
+            hse_enforcement_support_per_day: {
+                title: "HSE Enforcement Support (Per Day)",
+                price: "£950 – £1,250 per day",
+            },
+        },
+    },
+    {
+        title: "Policies, Systems & Accreditation",
+        items: {
+            hs_policy_review_or_creation: {
+                title: "H&S Policy Review / Creation",
+                price: "£450 – £750",
+            },
+            individual_policy_review_or_creation: {
+                title: "Individual Policy Review / Creation",
+                price: "£200",
+            },
+            ssip_applications: {
+                title: "SSIP Applications",
+                price: "£350 – £600",
+            },
+        },
+    },
+    {
+        title: "COSHH",
+        items: {
+            coshh_reviews_per_item: {
+                title: "COSHH Reviews (Per Item)",
+                price: "£75 per item",
+            },
+            coshh_assessment_creation_per_item: {
+                title: "COSHH Assessment Creation (Per Item)",
+                price: "£150 per item",
+            },
+        },
+    },
+];
+
+const PriceTable = () => {
+    return (
+        <div className="flex gap-10 flex-col mt-10">
+            <div className="flex flex-col gap-2">
+                <h2 className="font-sora text-4xl font-medium text-black">
+                    INDIVIDUAL SERVICES & PRICING
+                </h2>
+                <span className="font-inter text-md text-gray-600">
+                    (Available as standalone support or alongside packages)
+                </span>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-20">
+                {individualPricings.map((pricing, index) => (
+                    <div className="shadow-md border-1 border-gray-300 table-auto flex-1 bg-gray-100 pb-2 w-full rounded-3xl overflow-hidden">
+                        <table className="w-full">
+                            <thead className="bg-white">
+                                <tr className="">
+                                    <th
+                                        colSpan={2}
+                                        className="font-sora text-left px-5 py-4"
+                                    >
+                                        {pricing.title}
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody className="text-md border-t-1 border-gray-300">
+                                {Object.entries(pricing.items).map(
+                                    ([key, value]) => (
+                                        <tr className="border-t-1 border-gray-300">
+                                            <td className="px-5 py-3 text-md font-inter text-gray-700">
+                                                {value.title}
+                                            </td>
+                                            <td className="px-5 text-right py-3 text-md font-bold font-inter text-gray-700">
+                                                {value.price}
+                                            </td>
+                                        </tr>
+                                    )
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
 const PackageData = [
     {
         id: "starter",
-        title: "Starter",
+        title: "COMPLIANCE ASSURANCE",
         content: {
-            description: "Perfect for small contractors and new businesses",
+            description:
+                "For contractors needing reliable, professional H&S cover",
             items: [
-                "Competent Person (email & phone support)",
-                "1 policy (H&S)",
-                "1 RAMS per month",
-                "Annual compliance review",
-                "Access to standard templates",
+                "Appointed Competent Person",
+                "Senior consultant advice (phone & email)",
+                "Annual H&S policy & legal register review",
+                "Up to 6 RAMS reviews per month",
+                "1 formal site inspection per quarter",
+                "Inspection reports with prioritised actions",
+                "Incident advice & corrective actions",
+                "SSIP maintenance (CHAS, SMAS, Constructionline)",
             ],
         },
-        price: "£99 /month",
     },
     {
         id: "core",
-        title: "Core Package",
+        title: "OPERATIONAL RISK MANAGEMENT",
         content: {
-            description:
-                "For growing businesses needing regular safety support",
+            description: "For contractors delivering higher risk works",
             items: [
-                "Includes everything in Starter",
-                "2 RAMS per month",
-                "1 Toolbox Talk pack per month",
-                "Accreditation support (CHAS/SMAS/SafeContractor)",
-                "COSHH register setup (up to 10 substances)",
-                "Document updates throughout the year",
+                "Competent Person + Operational H&S Partner",
+                "Priority consultant access",
+                "2 structured site inspections per month",
+                "Management level reports & trend analysis",
+                "Up to 8 RAMS reviews per month",
+                "CPP creation or review (up to 2 per year)",
+                "Accident & RIDDOR investigation support",
+                "Client audit & pre-start meeting attendance",
+                "Monthly management compliance summary",
+                "Full SSIP management & renewals",
             ],
         },
-        price: "£199 /month",
     },
     {
         id: "complete",
-        title: "Complete Package",
+        title: "STRATEGIC H&S PARTNERSHIP",
         content: {
             description: "Full outsourced safety support for busy contractors",
             items: [
-                "Includes everything in Core",
-                "Monthly site inspection & full report",
-                "Unlimited RAMS",
-                "Full policy suite (H&S, Environmental, Quality)",
-                "PQQ assistance (2 per year)",
-                "CDM documentation support (CPP/PCI)",
-                "Priority response + same-day support",
+                "Named Senior / Principal H&S Consultant",
+                "Full Competent Person & strategic advisory role",
+                "Weekly or fortnightly site inspections",
+                "Unlimited RAMS review",
+                "All CPPs included",
+                "Full accident investigation & HSE liaison",
+                "Director & senior leadership briefings",
+                "Annual H&S strategy & improvement roadmap",
+                "KPI dashboards & performance reporting",
+                "Toolbox talks (up to 8 per year)",
+                "Client facing meetings & audit attendance",
+                "Same day incident response support",
             ],
         },
-        price: "£399 /month",
     },
 ];
 
@@ -140,19 +388,19 @@ const Packages = () => {
                             </li>
                         ))}
                     </ul>
-                    <div className="mt-auto">
+                    {/*                     <div className="mt-auto">
                         <span className="font-sora text-2xl font-medium text-black px-10 py-5 block text-center">
                             {_package.price}
                         </span>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         );
     };
     return (
-        <div className="w-full bg-gray-200 px-5 2xl:px-60 py-20 md:gap-10 flex flex-col">
-            <h2 className="font-sora text-4xl font-medium text-black text-center">
-                Service Packages
+        <div className="w-full bg-gray-100 px-5 2xl:px-60 pt-20 pb-10 flex flex-col">
+            <h2 className="font-sora text-4xl font-medium text-black pb-5">
+                OUR CONSULTANCY PACKAGES
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 py-10 h-full">
                 {PackageData.map((item) => renderPackage(item))}
@@ -395,13 +643,10 @@ const Hero = ({ scrolled }: { scrolled: boolean }) => {
             <div className="absolute inset-0 bg-gradient-to-b to-black/70 via-black/25 from-black/0"></div>
             <div className="absolute bottom-0 text-white p-5 md:p-20">
                 <div className="gap-2 flex flex-col border-b-5 border-white pb-5">
-                    <h1 className="font-sora text-3xl md:text-5xl font-medium">
-                        Be Compliant. The Wise Way.
+                    <h1 className="font-sora text-3xl md:text-4xl font-medium max-w-3xl">
+                        Our focus is simple: reduce risk, protect your business,
+                        and maintain client confidence.
                     </h1>
-                    <span className="text-lg md:text-xl font-inter">
-                        We take care of your compliance whilst you focus on
-                        other priorities
-                    </span>
                 </div>
             </div>
         </div>
@@ -414,7 +659,7 @@ const About = ({ contactRef }: any) => {
         <>
             <div className="w-full lg:w-1/2 flex flex-col justify-center">
                 <div>
-                    <h2 className="font-sora text-4xl font-medium">About Us</h2>
+                    <h2 className="font-sora text-4xl font-medium">ABOUT US</h2>
                     <p className="mt-5 text-gray-700 max-w-3xl font-inter text-lg leading-relaxed">
                         At Vantage safety services, we provide clear, practical
                         and reliable health & safety support to construction,
@@ -477,7 +722,7 @@ const Contact = () => {
         <div className="w-full flex flex-col lg:flex-row gap-10 lg:gap-20 min-h-[250px]">
             <div className="gap-10 flex flex-col w-full lg:w-1/2">
                 <h2 className="font-sora text-4xl font-medium text-black">
-                    Contact Us
+                    CONTACT US
                 </h2>
                 <div className="flex flex-row gap-20">
                     <p className="text-gray-700 font-inter text-lg leading-relaxed flex-1">
@@ -1676,7 +1921,7 @@ const Services = () => {
                 <div className="md:col-span-1">
                     <div className="md:sticky md:top-[140px] flex flex-col">
                         <h2 className="font-sora text-4xl font-medium text-black h-[80px]">
-                            Our Services
+                            OUR SERVICES
                         </h2>
                         <div className="hidden md:flex flex-col gap-4">
                             {_services.map((s) => (
