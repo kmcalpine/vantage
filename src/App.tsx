@@ -266,7 +266,7 @@ const PriceTable = () => {
                 </span>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-20">
-                {individualPricings.map((pricing, index) => (
+                {individualPricings.map((pricing) => (
                     <div className="shadow-md border-1 border-gray-300 table-auto flex-1 bg-gray-100 pb-2 w-full rounded-3xl overflow-hidden">
                         <table className="w-full">
                             <thead className="bg-white">
@@ -282,7 +282,10 @@ const PriceTable = () => {
                             <tbody className="text-md border-t-1 border-gray-300">
                                 {Object.entries(pricing.items).map(
                                     ([key, value]) => (
-                                        <tr className="border-t-1 border-gray-300">
+                                        <tr
+                                            key={key}
+                                            className="border-t-1 border-gray-300"
+                                        >
                                             <td className="px-5 py-3 text-md font-inter text-gray-700">
                                                 {value.title}
                                             </td>
