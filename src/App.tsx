@@ -644,12 +644,12 @@ const Hero = ({ scrolled }: { scrolled: boolean }) => {
         >
             <img
                 src={headerImage}
-                className="w-full object-cover h-[500px] md:h-[700px]"
+                className="w-full object-cover h-[calc(100vh-80px)] md:h-[calc(100vh-120px)]"
             />
-            <div className="absolute inset-0 bg-gradient-to-b to-black/70 via-black/40 from-black/10"></div>
-            <div className="absolute bottom-0 text-white md:px-60 md:py-20 px-10 py-10">
+            <div className="absolute inset-0 bg-gradient-to-b to-black/60 via-black/50 from-black/30"></div>
+            <div className="absolute bottom-0 text-white md:px-60 md:py-30 px-10 py-10">
                 <div className="gap-2 flex flex-col border-b-5 border-white pb-5">
-                    <h1 className="font-sora text-3xl md:text-4xl font-medium max-w-3xl">
+                    <h1 className="font-sora text-3xl md:text-5xl font-medium max-w-4xl leading-snug">
                         Our focus is simple: reduce risk, protect your business,
                         and maintain client confidence.
                     </h1>
