@@ -46,7 +46,10 @@ function App() {
         <>
             <div className="px-5 md:px-10 2xl:px-60">
                 <Header scrolled={scrolled} sectionRefs={sectionRefs} />
-                <Hero scrolled={scrolled} />
+            </div>
+
+            <Hero scrolled={scrolled} />
+            <div className="px-5 md:px-10 2xl:px-60">
                 <section>
                     <Benefits />
                 </section>
@@ -635,7 +638,7 @@ const Header = ({ scrolled, sectionRefs }: any) => {
 const Hero = ({ scrolled }: { scrolled: boolean }) => {
     return (
         <div
-            className={`relative overflow-hidden rounded-3xl ${
+            className={`relative overflow-hidden ${
                 scrolled ? "mt-[80px] md:mt-[120px]" : ""
             }`}
         >
@@ -643,8 +646,8 @@ const Hero = ({ scrolled }: { scrolled: boolean }) => {
                 src={headerImage}
                 className="w-full object-cover h-[500px] md:h-[700px]"
             />
-            <div className="absolute inset-0 bg-gradient-to-b to-black/70 via-black/25 from-black/0"></div>
-            <div className="absolute bottom-0 text-white p-5 md:p-20">
+            <div className="absolute inset-0 bg-gradient-to-b to-black/70 via-black/40 from-black/10"></div>
+            <div className="absolute bottom-0 text-white md:px-60 md:py-20 px-10 py-10">
                 <div className="gap-2 flex flex-col border-b-5 border-white pb-5">
                     <h1 className="font-sora text-3xl md:text-4xl font-medium max-w-3xl">
                         Our focus is simple: reduce risk, protect your business,
