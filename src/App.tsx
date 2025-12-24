@@ -431,37 +431,41 @@ const Footer = ({ sectionRefs }: any) => {
                                 });
                             }}
                         >
-                            <span className="font-inter">Home</span>
+                            <span className="font-inter">HOME</span>
                         </NavItem>
                         <NavItem
                             onClick={() => {
                                 scrollTo(sectionRefs.about);
                             }}
                         >
-                            <span className="font-inter">About</span>
+                            <span className="font-inter">ABOUT</span>
                         </NavItem>
                         <NavItem
                             onClick={() => {
                                 scrollTo(sectionRefs.services);
                             }}
                         >
-                            <span className="font-inter">Services</span>
+                            <span className="font-inter">SERVICES</span>
                         </NavItem>
                         <NavItem
                             onClick={() => {
                                 scrollTo(sectionRefs.packages);
                             }}
                         >
-                            <span className="font-inter">Packages</span>
+                            <span className="font-inter">PACKAGES</span>
                         </NavItem>
                         <NavItem
                             onClick={() => {
                                 scrollTo(sectionRefs.contact);
                             }}
                         >
-                            <span className="font-inter">Contact</span>
+                            <span className="font-inter">CONTACT</span>
                         </NavItem>
                     </ul>
+                </div>
+                <div className="mt-5 text-sm gap-1 flex flex-col items-center md:items-start">
+                    <p className="font-inter">VANTAGE SAFETY SERVICES LTD</p>
+                    <p className="font-inter">Company number: 16923133</p>
                 </div>
             </div>
         </div>
