@@ -262,10 +262,11 @@ const PriceTable = () => {
         <div className="flex gap-10 flex-col mt-10">
             <div className="flex flex-col gap-2">
                 <h2 className="font-sora text-4xl font-medium text-black">
-                    INDIVIDUAL SERVICES & PRICING
+                    INDIVIDUAL SERVICES
                 </h2>
                 <span className="font-inter text-md text-gray-600">
-                    (Available as standalone support or alongside packages)
+                    Available as standalone support or alongside packages
+                    (contact us for more information on pricing)
                 </span>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-20">
@@ -276,9 +277,9 @@ const PriceTable = () => {
                                 <tr className="">
                                     <th
                                         colSpan={2}
-                                        className="font-sora text-left px-5 py-4"
+                                        className="font-sora text-left px-5 py-4 flex flex-col"
                                     >
-                                        {pricing.title}
+                                        <span> {pricing.title}</span>
                                     </th>
                                 </tr>
                             </thead>
@@ -292,9 +293,9 @@ const PriceTable = () => {
                                             <td className="px-5 py-3 text-md font-inter text-gray-700">
                                                 {value.title}
                                             </td>
-                                            <td className="px-5 text-right py-3 text-md font-bold font-inter text-gray-700">
+                                            {/*        <td className="px-5 text-right py-3 text-md font-bold font-inter text-gray-700">
                                                 {value.price}
-                                            </td>
+                                            </td> */}
                                         </tr>
                                     )
                                 )}
