@@ -711,7 +711,9 @@ const Services = () => {
                     <div
                         key={s.id}
                         id={s.id}
-                        ref={(el: any) => (sectionRefs.current[s.id] = el)}
+                        ref={(el) => {
+                            sectionRefs.current[s.id] = el;
+                        }}
                         className="scroll-mt-32"
                     >
                         <div className="flex items-center gap-4 mb-6">
