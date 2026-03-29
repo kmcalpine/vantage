@@ -170,10 +170,10 @@ const SelectionPage = () => {
                 <div className="absolute inset-0 bg-black/60" />
                 <div className="tint-overlay" />
 
-                <div className="relative h-full flex flex-col items-start justify-center px-10 md:px-20 lg:pl-32 max-w-4xl">
+                <div className="z-100 relative h-full flex flex-col items-start justify-center px-10 md:px-20 lg:pl-32 max-w-4xl">
                     <div className="">
                         <span className="block text-[#22C55E] font-bold tracking-[0.3em] text-xs mb-3 uppercase">
-                            Division One
+                            Safety Solutions
                         </span>
                         <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
                             VANTAGE <br />
@@ -210,10 +210,10 @@ const SelectionPage = () => {
                 <div className="absolute inset-0 bg-black/60" />
                 <div className="tint-overlay" />
 
-                <div className="relative h-full flex flex-col items-end justify-center px-10 md:px-20 lg:pr-32 text-right w-full ml-auto max-w-4xl">
+                <div className="z-100 relative h-full flex flex-col items-end justify-center px-10 md:px-20 lg:pr-32 text-right w-full ml-auto max-w-4xl">
                     <div className="flex flex-col items-end">
                         <span className="block text-[#FF8C00] font-bold tracking-[0.3em] text-xs mb-3 uppercase">
-                            Division Two
+                            Workplace Solutions
                         </span>
                         <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
                             VANTAGE <br />
