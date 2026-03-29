@@ -2,13 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import headerImage from "./assets/header.jpg";
 import logoBlack from "./assets/logo-black.png";
-import {
-    Eye,
-    Layers,
-    ShieldCheck,
-    UserCheck,
-    Zap,
-} from "lucide-react";
+import { Eye, Layers, ShieldCheck, UserCheck, Zap } from "lucide-react";
 import Hero from "./components/Hero";
 
 const useScrollTo = () => {
@@ -717,7 +711,7 @@ const Services = () => {
                     <div
                         key={s.id}
                         id={s.id}
-                        ref={(el) => (sectionRefs.current[s.id] = el)}
+                        ref={(el: any) => (sectionRefs.current[s.id] = el)}
                         className="scroll-mt-32"
                     >
                         <div className="flex items-center gap-4 mb-6">
