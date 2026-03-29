@@ -69,6 +69,26 @@ const SelectionPage = () => {
                   z-index: 10;
                 }
 
+                /* Hover Tints */
+                .tint-overlay {
+                  position: absolute;
+                  inset: 0;
+                  opacity: 0;
+                  transition: opacity 0.5s ease;
+                  pointer-events: none;
+                  z-index: 5;
+                }
+
+                .selection-container:not(.is-selecting):has(.left-side:hover) .right-side .tint-overlay {
+                  background-color: rgba(255, 140, 0, 0.25);
+                  opacity: 1;
+                }
+
+                .selection-container:not(.is-selecting):has(.right-side:hover) .left-side .tint-overlay {
+                  background-color: rgba(34, 197, 94, 0.25);
+                  opacity: 1;
+                }
+
                 /* Selection Expansion Logic */
                 .is-selecting .left-side.selected {
                   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
@@ -143,8 +163,12 @@ const SelectionPage = () => {
                     selected === "safety" ? "selected" : ""
                 }`}
             >
-                <img className="bg-image" src={safetyHero} alt="Safety Hero" />
+                <div
+                    className="bg-image"
+                    style={{ backgroundImage: `url(${safetyHero})` }}
+                />
                 <div className="absolute inset-0 bg-black/60" />
+                <div className="tint-overlay" />
 
                 <div className="relative h-full flex flex-col items-start justify-center px-10 md:px-20 lg:pl-32 max-w-4xl">
                     <div className="">
@@ -184,6 +208,7 @@ const SelectionPage = () => {
                     }}
                 />
                 <div className="absolute inset-0 bg-black/60" />
+                <div className="tint-overlay" />
 
                 <div className="relative h-full flex flex-col items-end justify-center px-10 md:px-20 lg:pr-32 text-right w-full ml-auto max-w-4xl">
                     <div className="flex flex-col items-end">
