@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 
 interface HeroProps {
     backgroundImage: string;
-    tagIcon: any;
+    tagIcon: React.ElementType;
     tagLabel: string;
     title: React.ReactNode;
     description: string;

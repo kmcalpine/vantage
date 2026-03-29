@@ -1,23 +1,18 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import headerImage from "./assets/header.jpg";
-import aboutImage from "./assets/about.jpg";
-import logoWhite from "./assets/logo-white.png";
 import logoBlack from "./assets/logo-black.png";
 import {
-    CircleCheck,
     Eye,
     Layers,
     ShieldCheck,
     UserCheck,
     Zap,
-    ArrowRight,
-    ChevronRight,
 } from "lucide-react";
 import Hero from "./components/Hero";
 
 const useScrollTo = () => {
-    return useCallback((ref: React.RefObject<HTMLElement>) => {
+    return useCallback((ref: React.RefObject<HTMLElement | null>) => {
         if (ref?.current) {
             const elementTop =
                 ref.current.getBoundingClientRect().top + window.scrollY;
@@ -35,14 +30,6 @@ function Safety() {
     const aboutRef = useRef<HTMLDivElement>(null);
     const pricingRef = useRef<HTMLDivElement>(null);
     const contactRef = useRef<HTMLDivElement>(null);
-
-    const sectionRefs = {
-        services: servicesRef,
-        packages: packagesRef,
-        about: aboutRef,
-        pricing: pricingRef,
-        contact: contactRef,
-    };
 
     const scrollTo = useScrollTo();
     const navigate = useNavigate();
@@ -218,85 +205,11 @@ function Safety() {
                     </div>
                 </div>
 
-                <Footer sectionRefs={sectionRefs} />
+                <Footer />
             </section>
         </div>
     );
 }
-
-const benefitsData = [
-    {
-        title: "Senior expertise without payroll cost",
-        description:
-            "Access experienced consultants for less than the cost of employing a full-time HSE Manager.",
-        icon: UserCheck,
-    },
-    {
-        title: "Scalable support",
-        description:
-            "Increase or reduce support as projects, risk levels, and workloads change.",
-        icon: Layers,
-    },
-    {
-        title: "Independent & objective oversight",
-        description:
-            "Clear, honest reporting that highlights real risk, not filtered internal opinions.",
-        icon: Eye,
-    },
-    {
-        title: "Stronger client confidence",
-        description:
-            "Demonstrates professional H&S management to Principal Contractors and Tier 1 clients.",
-        icon: ShieldCheck,
-    },
-    {
-        title: "Immediate incident & enforcement support",
-        description:
-            "Rapid response when it matters most, accidents, RIDDORs, or HSE visits.",
-        icon: Zap,
-    },
-];
-
-const Benefits = () => {
-    return (
-        <div className="py-24 flex gap-16 flex-col">
-            <div className="max-w-3xl">
-                <h2 className="font-sora text-3xl md:text-4xl font-bold text-black mb-6">
-                    WHY OUTSOURCE YOUR{" "}
-                    <span className="text-[#22C55E]">HEALTH & SAFETY?</span>
-                </h2>
-                <p className="font-inter text-lg text-gray-600 leading-relaxed">
-                    Outsourcing your H&S function gives you experience, depth,
-                    and flexibility without the overheads and limitations of
-                    in-house roles.
-                </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-                {benefitsData.map((benefit, index) => (
-                    <div
-                        key={index}
-                        className="flex gap-6 items-start flex-col bg-gray-50 p-8 rounded-[32px] border border-gray-100 hover:shadow-lg transition duration-300 h-full"
-                    >
-                        <div className="p-4 bg-white rounded-2xl shadow-sm">
-                            <benefit.icon
-                                className="text-[#22C55E]"
-                                size={32}
-                            />
-                        </div>
-                        <div>
-                            <h3 className="font-sora text-xl font-bold text-black mb-3">
-                                {benefit.title}
-                            </h3>
-                            <p className="font-inter text-md text-gray-600 leading-relaxed">
-                                {benefit.description}
-                            </p>
-                        </div>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
-};
 
 const individualPricings = [
     {
@@ -374,13 +287,6 @@ const individualPricings = [
 ];
 
 const PriceTable = () => {
-    const scrollToSection = (id: string) => {
-        const el = document.getElementById(id);
-        if (!el) return;
-        const y = el.getBoundingClientRect().top + window.scrollY - 160;
-        window.scrollTo({ top: y, behavior: "smooth" });
-    };
-
     return (
         <div className="flex flex-col gap-16 md:gap-24">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
@@ -496,128 +402,6 @@ const PackageData = [
         },
     },
 ];
-
-const Packages = () => {
-    const renderPackage = (_package: {
-        id: string;
-        title: string;
-        content: { description: string; items: string[] };
-        key: number;
-    }) => {
-        return (
-            <div
-                key={_package.key}
-                className="col-span-1 bg-white rounded-[32px] h-full overflow-hidden shadow-sm border border-gray-100 flex flex-col hover:shadow-xl transition duration-500"
-            >
-                <div className="p-10 bg-gray-50 border-b border-gray-100">
-                    <h3 className="font-sora text-xl font-bold text-black text-center">
-                        {_package.title}
-                    </h3>
-                    <p className="mt-5 text-gray-600 font-inter text-md leading-relaxed text-center">
-                        {_package.content.description}
-                    </p>
-                </div>
-                <div className="p-8 flex h-full flex-col">
-                    <ul className="flex flex-col divide-y divide-stone-100">
-                        {_package.content.items.map(
-                            (item: string, i: number) => (
-                                <li
-                                    key={i}
-                                    className="flex gap-4 items-start py-4 first:pt-0 last:pb-0"
-                                >
-                                    <div className="mt-1 shrink-0">
-                                        <CircleCheck
-                                            className="text-[#22C55E]"
-                                            size={18}
-                                        />
-                                    </div>
-                                    <p className="font-inter text-sm text-gray-700 leading-relaxed">
-                                        {item}
-                                    </p>
-                                </li>
-                            ),
-                        )}
-                    </ul>
-                </div>
-            </div>
-        );
-    };
-    return (
-        <div className="flex flex-col">
-            <div className="text-center mb-16">
-                <h2 className="font-sora text-4xl font-bold text-black mb-4 uppercase">
-                    OUR{" "}
-                    <span className="text-[#22C55E]">CONSULTANCY PACKAGES</span>
-                </h2>
-                <p className="text-gray-600 font-inter">
-                    Comprehensive safety management solutions tailored to your
-                    business needs.
-                </p>
-            </div>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 h-full">
-                {PackageData.map((item, index) =>
-                    renderPackage({ ...item, key: index }),
-                )}
-            </div>
-        </div>
-    );
-};
-
-const About = ({
-    contactRef,
-}: {
-    contactRef: React.RefObject<HTMLElement>;
-}) => {
-    const scrollTo = useCallback((ref: React.RefObject<HTMLElement>) => {
-        if (ref?.current) {
-            const elementTop =
-                ref.current.getBoundingClientRect().top + window.scrollY;
-            window.scrollTo({
-                top: elementTop - 120,
-                behavior: "smooth",
-            });
-        }
-    }, []);
-
-    return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="flex flex-col justify-center">
-                <h2 className="font-sora text-3xl md:text-4xl font-bold text-black mb-8 uppercase">
-                    ABOUT <span className="text-[#22C55E]">US</span>
-                </h2>
-                <p className="text-gray-700 font-inter text-lg leading-relaxed mb-8">
-                    At Vantage safety services, we provide clear, practical and
-                    reliable health & safety support to construction,
-                    groundworks, and surfacing businesses across the UK. Our
-                    consultancy helps contractors stay compliant, work safely,
-                    and meet the high standards expected by clients, principal
-                    contractors, and accreditation bodies.
-                </p>
-                <p className="text-lg text-gray-700 font-inter leading-relaxed italic border-l-4 border-[#22C55E] pl-6 mb-8">
-                    "We specialise in delivering straightforward, usable
-                    solutions designed to support busy sites and fast-moving
-                    projects, without unnecessary complexity."
-                </p>
-                <div>
-                    <button
-                        onClick={() => scrollTo(contactRef)}
-                        className="bg-black text-white px-10 py-4 font-bold text-lg hover:bg-[#22C55E] transition duration-300 cursor-pointer"
-                    >
-                        ENQUIRE NOW
-                    </button>
-                </div>
-            </div>
-            <div className="relative">
-                <img
-                    src={aboutImage}
-                    className="w-full object-cover h-[500px] shadow-2xl"
-                    alt="About Vantage Safety"
-                />
-                <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-[#22C55E]/10 blur-3xl -z-10" />
-            </div>
-        </div>
-    );
-};
 
 const Contact = () => {
     const [firstName, setFirstName] = useState("");
@@ -979,16 +763,7 @@ const Services = () => {
     );
 };
 
-const Footer = ({
-    sectionRefs,
-}: {
-    sectionRefs: {
-        about: React.RefObject<HTMLElement>;
-        services: React.RefObject<HTMLElement>;
-        packages: React.RefObject<HTMLElement>;
-        contact: React.RefObject<HTMLElement>;
-    };
-}) => {
+const Footer = () => {
     const navigate = useNavigate();
 
     return (

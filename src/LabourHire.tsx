@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useEffect, useCallback, useRef } from "react";
 import logoBlack from "./assets/logo-black.png";
 import {
     ShieldCheck,
@@ -23,7 +23,7 @@ const LabourHire = () => {
     const contactRef = useRef<HTMLDivElement>(null);
 
     const useScrollTo = () => {
-        return useCallback((ref: React.RefObject<HTMLElement>) => {
+        return useCallback((ref: React.RefObject<HTMLElement | null>) => {
             if (ref?.current) {
                 const elementTop =
                     ref.current.getBoundingClientRect().top + window.scrollY;
@@ -509,4 +509,3 @@ const LabourHire = () => {
 };
 
 export default LabourHire;
-LabourHire;
