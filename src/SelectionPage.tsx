@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import logoIcon from "./assets/logo-icon.png";
+import safetyHero from "./assets/header.jpg";
 
 const SelectionPage = () => {
     const navigate = useNavigate();
@@ -142,10 +143,7 @@ const SelectionPage = () => {
                     selected === "safety" ? "selected" : ""
                 }`}
             >
-                <div
-                    className="bg-image"
-                    style={{ backgroundImage: `url(src/assets/header.jpg)` }}
-                />
+                <img className="bg-image" src={safetyHero} alt="Safety Hero" />
                 <div className="absolute inset-0 bg-black/60" />
 
                 <div className="relative h-full flex flex-col items-start justify-center px-10 md:px-20 lg:pl-32 max-w-4xl">
