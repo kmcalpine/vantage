@@ -1,90 +1,226 @@
-import "./index.css";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import headerImage from "./assets/header.jpg";
 import aboutImage from "./assets/about.jpg";
-import logo from "./assets/logo.png";
 import logoWhite from "./assets/logo-white.png";
-import { useCallback, useEffect, useRef, useState } from "react";
+import logoBlack from "./assets/logo-black.png";
 import {
     CircleCheck,
     Eye,
     Layers,
-    Menu,
     ShieldCheck,
     UserCheck,
     Zap,
+    ArrowRight,
+    ChevronRight,
 } from "lucide-react";
+import Hero from "./components/Hero";
+
+const useScrollTo = () => {
+    return useCallback((ref: React.RefObject<HTMLElement>) => {
+        if (ref?.current) {
+            const elementTop =
+                ref.current.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({
+                top: elementTop - 120, // subtract header height
+                behavior: "smooth",
+            });
+        }
+    }, []);
+};
 
 function Safety() {
     const servicesRef = useRef<HTMLDivElement>(null);
     const packagesRef = useRef<HTMLDivElement>(null);
     const aboutRef = useRef<HTMLDivElement>(null);
+    const pricingRef = useRef<HTMLDivElement>(null);
     const contactRef = useRef<HTMLDivElement>(null);
 
     const sectionRefs = {
         services: servicesRef,
         packages: packagesRef,
         about: aboutRef,
+        pricing: pricingRef,
         contact: contactRef,
     };
 
-    const navItems = [
-        {
-            label: "Home",
-            action: () => window.scrollTo({ top: 0, behavior: "smooth" }),
-        },
-        { label: "About Us", action: () => scrollTo(aboutRef) },
-        { label: "Services", action: () => scrollTo(servicesRef) },
-        { label: "Packages", action: () => scrollTo(packagesRef) },
-    ];
-
-    const [scrolled, setScrolled] = useState(false);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            if (window.scrollY > 120) {
-                setScrolled(true);
-            } else {
-                setScrolled(false);
-            }
-        };
-
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+    const scrollTo = useScrollTo();
+    const navigate = useNavigate();
 
     return (
-        <>
-            <Hero />
-            <div className="px-5 md:px-10 2xl:px-60">
-                <section>
-                    <Benefits />
-                </section>
-                <section ref={aboutRef} className="py-20 flex gap-30">
-                    <About contactRef={contactRef} />
-                </section>
-                <section ref={servicesRef}>
-                    <Services />
-                </section>
-                <section>
-                    <PriceTable />
-                </section>
-            </div>
-            <section ref={packagesRef}>
-                <Packages />
-            </section>
+        <div className="font-sora bg-white text-black">
+            <Hero
+                backgroundImage={headerImage}
+                tagIcon={ShieldCheck}
+                tagLabel="VANTAGE SAFETY SERVICES"
+                title={
+                    <>
+                        PROTECTING PEOPLE.
+                        <br />
+                        <span className="text-[#22C55E]">MANAGING RISK.</span>
+                    </>
+                }
+                description="Professional health & safety consultancy and CDM advisory solutions designed to keep your projects compliant and your workforce safe."
+                primaryButtonText="ENQUIRE NOW"
+                primaryButtonAction={() => scrollTo(contactRef)}
+                secondaryButtonText="LABOUR SERVICES"
+                secondaryButtonAction={() => navigate("/labour-hire")}
+                themeColor="#22C55E"
+            />
 
-            <section>
-                <Accreditations />
-            </section>
-            <section ref={contactRef}>
-                <div className="bg-white text-white px-5 md:px-10 2xl:px-60 py-20">
-                    <Contact />
+            {/* Introduction & Specialism */}
+            <section
+                id="about"
+                ref={aboutRef}
+                className="py-16 md:py-32 px-5 bg-white"
+            >
+                <div className="max-w-7xl mx-auto">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-24 items-center">
+                        <div>
+                            <div className="w-20 h-1.5 bg-[#22C55E] mb-6 md:mb-10"></div>
+                            <h2 className="text-4xl md:text-5xl font-bold mb-6 md:mb-10 tracking-tight leading-tight text-black">
+                                EXPERT GUIDANCE. <br />
+                                <span className="text-[#22C55E]">
+                                    TOTAL COMPLIANCE.
+                                </span>
+                            </h2>
+                            <p className="text-xl text-gray-800 font-inter leading-relaxed mb-6 md:mb-8">
+                                At Vantage Safety Services, we provide clear,
+                                practical, and reliable health & safety support
+                                to construction, groundworks, and surfacing
+                                businesses across the UK.
+                            </p>
+                            <p className="text-lg text-gray-600 font-inter leading-relaxed italic border-l-4 border-[#22C55E] pl-8 py-2">
+                                "We specialise in delivering straightforward,
+                                usable solutions designed to support busy sites
+                                and fast-moving projects, without unnecessary
+                                complexity."
+                            </p>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-stone-200 border border-stone-200">
+                            {[
+                                {
+                                    title: "Senior Expertise",
+                                    icon: UserCheck,
+                                },
+                                {
+                                    title: "Independent Oversight",
+                                    icon: Eye,
+                                },
+                                {
+                                    title: "Scalable Support",
+                                    icon: Layers,
+                                },
+                                {
+                                    title: "Rapid Response",
+                                    icon: Zap,
+                                },
+                            ].map((item, i) => (
+                                <div
+                                    key={i}
+                                    className="p-8 md:p-10 bg-white flex flex-col items-center text-center hover:bg-stone-50 transition-colors group"
+                                >
+                                    <item.icon
+                                        size={32}
+                                        className="text-[#22C55E] mb-4 md:mb-6"
+                                    />
+                                    <span className="font-bold text-xs uppercase tracking-[0.2em] text-black leading-relaxed">
+                                        {item.title}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </section>
-            <section>
-                <Footer sectionRefs={sectionRefs} themeColor="#22C55E" />
+
+            {/* Consultancy Packages */}
+            <section
+                id="packages"
+                ref={packagesRef}
+                className="py-16 md:py-32 px-5 bg-gray-50 border-y border-stone-200"
+            >
+                <div className="max-w-7xl mx-auto">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-20 gap-8">
+                        <div className="max-w-2xl">
+                            <h2 className="text-4xl font-bold mb-4 md:mb-6 tracking-tight text-black">
+                                CONSULTANCY PACKAGES
+                            </h2>
+                            <p className="text-gray-600 font-inter text-lg">
+                                Comprehensive safety management solutions
+                                tailored to your business needs and risk
+                                profiles.
+                            </p>
+                        </div>
+                        <div className="text-[#22C55E] font-bold text-sm tracking-widest border-b-2 border-[#22C55E] pb-2 uppercase">
+                            Strategic Safety Partner
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-stone-200 border border-stone-200">
+                        {PackageData.map((pkg, i) => (
+                            <div
+                                key={i}
+                                className="bg-white p-8 md:p-10 flex flex-col group transition-colors"
+                            >
+                                <h3 className="text-lg font-bold mb-4 md:mb-6 text-black uppercase tracking-tight">
+                                    {pkg.title}
+                                </h3>
+                                <p className="text-gray-600 font-inter text-sm mb-6 md:mb-10 flex-grow leading-relaxed">
+                                    {pkg.content.description}
+                                </p>
+                                <ul className="space-y-4 pt-6 md:pt-8 border-t border-stone-200">
+                                    {pkg.content.items.map((item, j) => (
+                                        <li
+                                            key={j}
+                                            className="flex items-start gap-3 text-[11px] font-bold uppercase tracking-widest text-black"
+                                        >
+                                            <div className="w-1.5 h-1.5 bg-[#22C55E] mt-0.5 shrink-0"></div>
+                                            {item}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </section>
-        </>
+
+            {/* Detailed Services */}
+            <div className="max-w-7xl mx-auto px-5">
+                <section
+                    id="services"
+                    ref={servicesRef}
+                    className="py-16 md:py-32"
+                >
+                    <Services />
+                </section>
+            </div>
+
+            <section
+                id="pricing"
+                ref={pricingRef}
+                className="py-16 md:py-32 px-5 bg-gray-50 border-y border-stone-200"
+            >
+                <div className="max-w-7xl mx-auto px-5">
+                    <PriceTable />
+                </div>
+            </section>
+
+            <section
+                id="contact"
+                ref={contactRef}
+                className="min-h-screen flex flex-col bg-white"
+            >
+                <div className="flex-grow flex items-center py-8 md:py-20 px-5">
+                    <div className="max-w-7xl mx-auto w-full">
+                        <Contact />
+                    </div>
+                </div>
+
+                <Footer sectionRefs={sectionRefs} />
+            </section>
+        </div>
     );
 }
 
@@ -93,59 +229,65 @@ const benefitsData = [
         title: "Senior expertise without payroll cost",
         description:
             "Access experienced consultants for less than the cost of employing a full-time HSE Manager.",
-        icon: UserCheck, // represents expert users / consultants
+        icon: UserCheck,
     },
     {
         title: "Scalable support",
         description:
             "Increase or reduce support as projects, risk levels, and workloads change.",
-        icon: Layers, // represents stacking / scalable layers
+        icon: Layers,
     },
     {
         title: "Independent & objective oversight",
         description:
             "Clear, honest reporting that highlights real risk, not filtered internal opinions.",
-        icon: Eye, // represents oversight / watching closely
+        icon: Eye,
     },
     {
         title: "Stronger client confidence",
         description:
             "Demonstrates professional H&S management to Principal Contractors and Tier 1 clients.",
-        icon: ShieldCheck, // represents security, trust, confidence
+        icon: ShieldCheck,
     },
     {
         title: "Immediate incident & enforcement support",
         description:
             "Rapid response when it matters most, accidents, RIDDORs, or HSE visits.",
-        icon: Zap, // represents fast, immediate action
+        icon: Zap,
     },
 ];
 
 const Benefits = () => {
     return (
-        <div className="py-20 flex gap-10 flex-col">
-            <div className="flex flex-col gap-2">
-                <h2 className="font-sora text-4xl font-medium text-black">
-                    WHY OUTSOURCE YOUR HEALTH & SAFETY?
+        <div className="py-24 flex gap-16 flex-col">
+            <div className="max-w-3xl">
+                <h2 className="font-sora text-3xl md:text-4xl font-bold text-black mb-6">
+                    WHY OUTSOURCE YOUR{" "}
+                    <span className="text-[#22C55E]">HEALTH & SAFETY?</span>
                 </h2>
-                <span className="font-inter text-md text-gray-600">
+                <p className="font-inter text-lg text-gray-600 leading-relaxed">
                     Outsourcing your H&S function gives you experience, depth,
                     and flexibility without the overheads and limitations of
                     in-house roles.
-                </span>
+                </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-start">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
                 {benefitsData.map((benefit, index) => (
                     <div
                         key={index}
-                        className="flex gap-5 items-start flex-col bg-gray-100 p-5 rounded-3xl"
+                        className="flex gap-6 items-start flex-col bg-gray-50 p-8 rounded-[32px] border border-gray-100 hover:shadow-lg transition duration-300 h-full"
                     >
-                        <benefit.icon className="text-[#22C55E]" size={50} />
+                        <div className="p-4 bg-white rounded-2xl shadow-sm">
+                            <benefit.icon
+                                className="text-[#22C55E]"
+                                size={32}
+                            />
+                        </div>
                         <div>
-                            <h3 className="font-sora text-lg font-bold text-black">
+                            <h3 className="font-sora text-xl font-bold text-black mb-3">
                                 {benefit.title}
                             </h3>
-                            <p className="font-inter text-md text-gray-700">
+                            <p className="font-inter text-md text-gray-600 leading-relaxed">
                                 {benefit.description}
                             </p>
                         </div>
@@ -156,157 +298,137 @@ const Benefits = () => {
     );
 };
 
-const Accreditations = () => {
-    return <></>;
-};
-
 const individualPricings = [
     {
         title: "Site Inspections & Audits",
-        items: {
-            half_day_inspection: {
+        items: [
+            {
                 title: "Half-day Inspection",
-                price: "£400 – £600",
-                notes: "Dependent on location",
+                notes: "Ideal for smaller sites or specific audits",
             },
-            full_day_audit: {
+            {
                 title: "Full-day Audit",
-                price: "£650 – £850",
-                notes: "Dependent on location",
+                notes: "Comprehensive site-wide compliance review",
             },
-            additional_site_same_day: {
+            {
                 title: "Additional Site (Same Day)",
-                price: "From £150",
+                notes: "Efficient multi-site coverage",
             },
-        },
+        ],
     },
     {
-        title: "RAMS",
-        items: {
-            rams_review: {
+        title: "RAMS & CDM",
+        items: [
+            {
                 title: "RAMS Review",
-                price: "£100 – £150",
+                notes: "Third-party independent verification",
             },
-            bespoke_rams_creation: {
+            {
                 title: "Bespoke RAMS Creation",
-                price: "£300 – £450",
+                notes: "Task-specific safe systems of work",
             },
-            high_risk_or_complex_rams: {
-                title: "High-risk / Complex RAMS",
-                price: "£500 – £700",
-            },
-        },
-    },
-    {
-        title: "CDM 2015 Support",
-        items: {
-            construction_phase_plan_cpp: {
+            {
                 title: "Construction Phase Plan (CPP)",
-                price: "£750 – £1,500",
+                notes: "Full project-start documentation",
             },
-            cdm_advisory_support_per_day: {
-                title: "CDM Advisory Support (Per Day)",
-                price: "£750 – £1,000 per day",
+            {
+                title: "CDM Advisory Support",
+                notes: "Appointed advisor for duty holders",
             },
-            f10_notification: {
-                title: "F10 Notification",
-                price: "£150",
-            },
-        },
+        ],
     },
     {
         title: "Accidents & Enforcement",
-        items: {
-            accident_investigation: {
+        items: [
+            {
                 title: "Accident Investigation",
-                price: "£500 – £750",
+                notes: "Root cause analysis & reporting",
             },
-            riddor_investigation: {
+            {
                 title: "RIDDOR Investigation",
-                price: "£750 – £1,250",
+                notes: "Official regulatory reporting support",
             },
-            hse_enforcement_support_per_day: {
-                title: "HSE Enforcement Support (Per Day)",
-                price: "£950 – £1,250 per day",
+            {
+                title: "HSE Enforcement Support",
+                notes: "Immediate advice for HSE visits",
             },
-        },
+        ],
     },
     {
-        title: "Policies, Systems & Accreditation",
-        items: {
-            hs_policy_review_or_creation: {
+        title: "Policies & Systems",
+        items: [
+            {
                 title: "H&S Policy Review / Creation",
-                price: "£450 – £750",
+                notes: "Annual compliance updates",
             },
-            individual_policy_review_or_creation: {
-                title: "Individual Policy Review / Creation",
-                price: "£200",
-            },
-            ssip_applications: {
+            {
                 title: "SSIP Applications",
-                price: "£350 – £600",
+                notes: "CHAS, SMAS & Constructionline support",
             },
-        },
-    },
-    {
-        title: "COSHH",
-        items: {
-            coshh_reviews_per_item: {
-                title: "COSHH Reviews (Per Item)",
-                price: "£75 per item",
+            {
+                title: "COSHH Assessments",
+                notes: "Hazardous substance management",
             },
-            coshh_assessment_creation_per_item: {
-                title: "COSHH Assessment Creation (Per Item)",
-                price: "£150 per item",
-            },
-        },
+        ],
     },
 ];
 
 const PriceTable = () => {
+    const scrollToSection = (id: string) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const y = el.getBoundingClientRect().top + window.scrollY - 160;
+        window.scrollTo({ top: y, behavior: "smooth" });
+    };
+
     return (
-        <div className="flex gap-10 flex-col mt-10">
-            <div className="flex flex-col gap-2">
-                <h2 className="font-sora text-4xl font-medium text-black">
-                    INDIVIDUAL SERVICES
-                </h2>
-                <span className="font-inter text-md text-gray-600">
-                    Available as standalone support or alongside packages
-                    (contact us for more information on pricing)
-                </span>
+        <div className="flex flex-col gap-16 md:gap-24">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
+                <div className="max-w-3xl">
+                    <div className="w-16 h-1 bg-[#22C55E] mb-8"></div>
+                    <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight text-black uppercase">
+                        INDIVIDUAL{" "}
+                        <span className="text-[#22C55E]">SERVICES</span>
+                    </h2>
+                    <p className="text-gray-600 font-inter text-xl leading-relaxed">
+                        Specialist ad-hoc support for contractors and
+                        developers. Professional guidance provided on a
+                        project-by-project basis nationwide.
+                    </p>
+                </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-20">
-                {individualPricings.map((pricing) => (
-                    <div className="shadow-md border-1 border-gray-300 table-auto flex-1 bg-gray-100 pb-2 w-full rounded-3xl overflow-hidden">
-                        <table className="w-full">
-                            <thead className="bg-white">
-                                <tr className="">
-                                    <th
-                                        colSpan={2}
-                                        className="font-sora text-left px-5 py-4 flex flex-col"
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                {individualPricings.map((category, i) => (
+                    <div
+                        key={i}
+                        className="flex flex-col border border-stone-200 bg-white p-8"
+                    >
+                        <div className="flex flex-col gap-6">
+                            <h3 className="text-xs font-bold uppercase tracking-[0.4em] text-[#22C55E] border-b border-[#22C55E]/20 pb-4">
+                                {category.title}
+                            </h3>
+
+                            <div className="flex flex-col divide-y divide-stone-200/60">
+                                {category.items.map((item, idx) => (
+                                    <div
+                                        key={idx}
+                                        className="group relative py-6 transition-all duration-300 -mx-4 px-4"
                                     >
-                                        <span> {pricing.title}</span>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody className="text-md border-t-1 border-gray-300">
-                                {Object.entries(pricing.items).map(
-                                    ([key, value]) => (
-                                        <tr
-                                            key={key}
-                                            className="border-t-1 border-gray-300"
-                                        >
-                                            <td className="px-5 py-3 text-md font-inter text-gray-700">
-                                                {value.title}
-                                            </td>
-                                            {/*        <td className="px-5 text-right py-3 text-md font-bold font-inter text-gray-700">
-                                                {value.price}
-                                            </td> */}
-                                        </tr>
-                                    ),
-                                )}
-                            </tbody>
-                        </table>
+                                        <div className="flex items-start justify-between gap-4">
+                                            <div className="flex-1">
+                                                <h4 className="text-sm font-bold uppercase tracking-widest text-black mb-2 leading-tight group-hover:text-[#22C55E] transition-colors">
+                                                    {item.title}
+                                                </h4>
+                                                <p className="text-sm text-gray-500 font-inter leading-relaxed max-w-md">
+                                                    {item.notes}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 ))}
             </div>
@@ -376,330 +498,124 @@ const PackageData = [
 ];
 
 const Packages = () => {
-    const renderPackage = (_package: any) => {
+    const renderPackage = (_package: {
+        id: string;
+        title: string;
+        content: { description: string; items: string[] };
+        key: number;
+    }) => {
         return (
-            <div className="col-span-1 bg-white rounded-2xl h-full overflow-hidden shadow-md border-1 border-gray-300 flex flex-col">
-                <div className="p-10 bg-gray-50 border-b-1 border-gray-300">
+            <div
+                key={_package.key}
+                className="col-span-1 bg-white rounded-[32px] h-full overflow-hidden shadow-sm border border-gray-100 flex flex-col hover:shadow-xl transition duration-500"
+            >
+                <div className="p-10 bg-gray-50 border-b border-gray-100">
                     <h3 className="font-sora text-xl font-bold text-black text-center">
                         {_package.title}
                     </h3>
-                    <p className="mt-5 text-gray-700 font-inter text-lg leading-relaxed text-center">
+                    <p className="mt-5 text-gray-600 font-inter text-md leading-relaxed text-center">
                         {_package.content.description}
                     </p>
                 </div>
-                <div className="py-5 flex h-full flex-col gap-10">
-                    <ul>
-                        {_package.content.items.map((item: string) => (
-                            <li className="px-8 py-2 flex gap-2 items-center">
-                                <div className="w-[25px] h-[25px] flex items-center">
-                                    <CircleCheck color="#22C55E" size={23} />
-                                </div>
-
-                                <p className="font-inter text-md text-gray-700">
-                                    {item}
-                                </p>
-                            </li>
-                        ))}
+                <div className="p-8 flex h-full flex-col">
+                    <ul className="flex flex-col divide-y divide-stone-100">
+                        {_package.content.items.map(
+                            (item: string, i: number) => (
+                                <li
+                                    key={i}
+                                    className="flex gap-4 items-start py-4 first:pt-0 last:pb-0"
+                                >
+                                    <div className="mt-1 shrink-0">
+                                        <CircleCheck
+                                            className="text-[#22C55E]"
+                                            size={18}
+                                        />
+                                    </div>
+                                    <p className="font-inter text-sm text-gray-700 leading-relaxed">
+                                        {item}
+                                    </p>
+                                </li>
+                            ),
+                        )}
                     </ul>
-                    {/*                     <div className="mt-auto">
-                        <span className="font-sora text-2xl font-medium text-black px-10 py-5 block text-center">
-                            {_package.price}
-                        </span>
-                    </div> */}
                 </div>
             </div>
         );
     };
     return (
-        <div className="w-full bg-gray-100 px-5 2xl:px-60 pt-20 pb-10 flex flex-col">
-            <h2 className="font-sora text-4xl font-medium text-black pb-5">
-                OUR CONSULTANCY PACKAGES
-            </h2>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 py-10 h-full">
-                {PackageData.map((item) => renderPackage(item))}
+        <div className="flex flex-col">
+            <div className="text-center mb-16">
+                <h2 className="font-sora text-4xl font-bold text-black mb-4 uppercase">
+                    OUR{" "}
+                    <span className="text-[#22C55E]">CONSULTANCY PACKAGES</span>
+                </h2>
+                <p className="text-gray-600 font-inter">
+                    Comprehensive safety management solutions tailored to your
+                    business needs.
+                </p>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 h-full">
+                {PackageData.map((item, index) =>
+                    renderPackage({ ...item, key: index }),
+                )}
             </div>
         </div>
     );
 };
 
-const Footer = ({ sectionRefs }: any) => {
-    const scrollTo = useScrollTo();
-    return (
-        <div className="bg-black text-white px-5 md:px-10 2xl:px-60 py-10">
-            <div className="flex flex-col items-center md:items-start">
-                <img src={logoWhite} className="h-[15px]" />
-                <div className="flex items-center gap-10 mt-5">
-                    <ul className="flex gap-7 font-inter text-xs font-medium">
-                        <NavItem
-                            onClick={() => {
-                                window.scrollTo({
-                                    top: 0,
-                                    behavior: "smooth",
-                                });
-                            }}
-                        >
-                            <span className="font-inter">HOME</span>
-                        </NavItem>
-                        <NavItem
-                            onClick={() => {
-                                scrollTo(sectionRefs.about);
-                            }}
-                        >
-                            <span className="font-inter">ABOUT</span>
-                        </NavItem>
-                        <NavItem
-                            onClick={() => {
-                                scrollTo(sectionRefs.services);
-                            }}
-                        >
-                            <span className="font-inter">SERVICES</span>
-                        </NavItem>
-                        <NavItem
-                            onClick={() => {
-                                scrollTo(sectionRefs.packages);
-                            }}
-                        >
-                            <span className="font-inter">PACKAGES</span>
-                        </NavItem>
-                        <NavItem
-                            onClick={() => {
-                                scrollTo(sectionRefs.contact);
-                            }}
-                        >
-                            <span className="font-inter">CONTACT</span>
-                        </NavItem>
-                    </ul>
-                </div>
-                <div className="mt-5 text-sm gap-1 flex flex-col items-center md:items-start">
-                    <p className="font-inter">VANTAGE SAFETY SERVICES LTD</p>
-                    <p className="font-inter">Company number: 16923133</p>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-const Header = ({ scrolled, sectionRefs }: any) => {
-    const scrollTo = useScrollTo();
-    const [showMenu, setShowMenu] = useState(false);
-
-    useEffect(() => {
-        const handleResize = () => {
-            if (window.innerWidth > 768) {
-                //setShowMenu(false);
-                setShowMenu(false);
-            } else {
-            }
-        };
-
-        handleResize();
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
+const About = ({
+    contactRef,
+}: {
+    contactRef: React.RefObject<HTMLElement>;
+}) => {
+    const scrollTo = useCallback((ref: React.RefObject<HTMLElement>) => {
+        if (ref?.current) {
+            const elementTop =
+                ref.current.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({
+                top: elementTop - 120,
+                behavior: "smooth",
+            });
+        }
     }, []);
-    return (
-        <div
-            className={`flex w-full items-center justify-between  bg-white z-50 transition-shadow duration-300  ${
-                scrolled
-                    ? "shadow-lg fixed top-0 left-0 right-0 h-[80px] px-5 md:px-10 2xl:px-60"
-                    : "h-[80px] md:h-[120px]"
-            }`}
-        >
-            <img src={logo} className="h-[25px] z-100" />
-            <div className="hidden lg:flex items-center gap-10">
-                <ul className="flex gap-10 font-inter text-md flex items-center">
-                    <NavItem
-                        onClick={() => {
-                            window.scrollTo({
-                                top: 0,
-                                behavior: "smooth",
-                            });
-                            setShowMenu(false);
-                        }}
-                    >
-                        <span className="font-sora text-md font-bold">
-                            Home
-                        </span>
-                    </NavItem>
-                    <NavItem
-                        onClick={() => {
-                            scrollTo(sectionRefs.about);
-                            setShowMenu(false);
-                        }}
-                    >
-                        <span className="font-sora text-md font-bold">
-                            About Us
-                        </span>
-                    </NavItem>
-                    <NavItem
-                        onClick={() => {
-                            scrollTo(sectionRefs.services);
-                            setShowMenu(false);
-                        }}
-                    >
-                        <span className="font-sora text-md font-bold">
-                            Services
-                        </span>
-                    </NavItem>
 
-                    <NavItem
-                        onClick={() => {
-                            scrollTo(sectionRefs.packages);
-                            setShowMenu(false);
-                        }}
-                    >
-                        <span className="font-sora text-md font-bold">
-                            Packages
-                        </span>
-                    </NavItem>
-                    <button
-                        onClick={() => scrollTo(sectionRefs.contact)}
-                        className="bg-black rounded-full text-white px-5 py-3 hover:bg-[#22C55E] cursor-pointer transition"
-                    >
-                        <span className="font-sora text-md font-bold">
-                            Enquire Now
-                        </span>
-                    </button>
-                </ul>
-            </div>
-            <div className="lg:hidden flex items-center">
-                <button
-                    className="w-[25px] h-[25px] flex items-center cursor-pointer"
-                    onClick={() => setShowMenu((prev) => !prev)}
-                >
-                    <Menu />
-                </button>
-            </div>
-            {showMenu && (
-                <div
-                    onClick={() => setShowMenu(false)}
-                    className={`absolute h-screen z-50 top-0 left-0 right-0 bottom-0 bg-black/50 ${
-                        scrolled
-                            ? "mt-[80px] md:mt-[120px]"
-                            : "mt-[80px] md:mt-[120px]"
-                    }`}
-                >
-                    <div
-                        onClick={(e) => e.stopPropagation()}
-                        className="absolute  z-50 top-0 left-0 right-0 bg-white flex flex-col gap-10"
-                    >
-                        <div className="flex items-center cursor-pointer p-5">
-                            <ul className="flex flex-col gap-10 font-sora text-md font-medium">
-                                <NavItem
-                                    onClick={() => {
-                                        window.scrollTo({
-                                            top: 0,
-                                            behavior: "smooth",
-                                        });
-                                        setShowMenu(false);
-                                    }}
-                                >
-                                    <span className="font-sora  font-bold">
-                                        Home
-                                    </span>
-                                </NavItem>
-                                <NavItem
-                                    onClick={() => {
-                                        scrollTo(sectionRefs.about);
-                                        setShowMenu(false);
-                                    }}
-                                >
-                                    <span className="font-sora  font-bold">
-                                        About Us
-                                    </span>
-                                </NavItem>
-                                <NavItem
-                                    onClick={() => {
-                                        scrollTo(sectionRefs.services);
-                                        setShowMenu(false);
-                                    }}
-                                >
-                                    <span className="font-sora font-bold">
-                                        Services
-                                    </span>
-                                </NavItem>
-                                <NavItem
-                                    onClick={() => {
-                                        scrollTo(sectionRefs.packages);
-                                        setShowMenu(false);
-                                    }}
-                                >
-                                    <span className="font-sora font-bold">
-                                        Packages
-                                    </span>
-                                </NavItem>
-                                <NavItem
-                                    onClick={() => {
-                                        scrollTo(sectionRefs.contact);
-                                        setShowMenu(false);
-                                    }}
-                                >
-                                    <span className="font-inter font-bold">
-                                        Contact Us
-                                    </span>
-                                </NavItem>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            )}
-        </div>
-    );
-};
-
-const Hero = () => {
     return (
-        <div className="relative h-screen overflow-hidden">
-            <div
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-1000"
-                style={{ 
-                    backgroundImage: `url(${headerImage})`,
-                    transform: "scale(1.08)"
-                }}
-            />
-            <div className="absolute inset-0 bg-black/50" />
-            <div className="absolute bottom-0 text-white md:px-60 md:py-30 px-10 py-10">
-                <div className="gap-2 flex flex-col border-b-5 border-white pb-5">
-                    <h1 className="font-sora text-3xl md:text-5xl font-medium max-w-4xl leading-snug">
-                        Our focus is simple: reduce risk, protect your business,
-                        and maintain client confidence.
-                    </h1>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-const About = ({ contactRef }: any) => {
-    const scrollTo = useScrollTo();
-    return (
-        <>
-            <div className="w-full lg:w-1/2 flex flex-col justify-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="flex flex-col justify-center">
+                <h2 className="font-sora text-3xl md:text-4xl font-bold text-black mb-8 uppercase">
+                    ABOUT <span className="text-[#22C55E]">US</span>
+                </h2>
+                <p className="text-gray-700 font-inter text-lg leading-relaxed mb-8">
+                    At Vantage safety services, we provide clear, practical and
+                    reliable health & safety support to construction,
+                    groundworks, and surfacing businesses across the UK. Our
+                    consultancy helps contractors stay compliant, work safely,
+                    and meet the high standards expected by clients, principal
+                    contractors, and accreditation bodies.
+                </p>
+                <p className="text-lg text-gray-700 font-inter leading-relaxed italic border-l-4 border-[#22C55E] pl-6 mb-8">
+                    "We specialise in delivering straightforward, usable
+                    solutions designed to support busy sites and fast-moving
+                    projects, without unnecessary complexity."
+                </p>
                 <div>
-                    <h2 className="font-sora text-4xl font-medium">ABOUT US</h2>
-                    <p className="mt-5 text-gray-700 max-w-3xl font-inter text-lg leading-relaxed">
-                        At Vantage safety services, we provide clear, practical
-                        and reliable health & safety support to construction,
-                        groundworks, and surfacing businesses across the UK. Our
-                        consultancy helps contractors stay compliant, work
-                        safely, and meet the high standards expected by clients,
-                        principal contractors, and accreditation bodies. We
-                        specialise in delivering straightforward, usable
-                        solutions designed to support busy sites and fast-moving
-                        projects, without unnecessary complexity.
-                    </p>
                     <button
                         onClick={() => scrollTo(contactRef)}
-                        className="mt-10 bg-black rounded-full text-white px-5 py-3 font-sora text-sm hover:bg-[#22C55E] cursor-pointer transition"
+                        className="bg-black text-white px-10 py-4 font-bold text-lg hover:bg-[#22C55E] transition duration-300 cursor-pointer"
                     >
-                        Enquire Now
+                        ENQUIRE NOW
                     </button>
                 </div>
             </div>
-            <img
-                src={aboutImage}
-                className="w-1/2 object-cover h-[500px] rounded-3xl shadow-md hidden lg:block"
-            />
-        </>
+            <div className="relative">
+                <img
+                    src={aboutImage}
+                    className="w-full object-cover h-[500px] shadow-2xl"
+                    alt="About Vantage Safety"
+                />
+                <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-[#22C55E]/10 blur-3xl -z-10" />
+            </div>
+        </div>
     );
 };
 
@@ -711,124 +627,131 @@ const Contact = () => {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
 
-    const sendEmail = async () => {
+    const sendEmail = async (e: React.FormEvent) => {
+        e.preventDefault();
         setLoading(true);
         setSuccess(false);
-        var res = await fetch("http://localhost:8085/contact", {
-            //var res = await fetch("https://api.shouts.gg/vantage-contact/contact", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                message: message,
-            }),
-        });
-
-        if (res.status === 200) {
-            setSuccess(true);
+        try {
+            const res = await fetch("http://localhost:8085/contact", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    firstName,
+                    lastName,
+                    email,
+                    message,
+                }),
+            });
+            if (res.status === 200) {
+                setSuccess(true);
+                setFirstName("");
+                setLastName("");
+                setEmail("");
+                setMessage("");
+            }
+        } catch (error) {
+            console.error("Error sending email:", error);
         }
-
         setLoading(false);
     };
 
     return (
-        <div className="w-full flex flex-col lg:flex-row gap-10 lg:gap-20 min-h-[250px]">
-            <div className="gap-10 flex flex-col w-full lg:w-1/2">
-                <h2 className="font-sora text-4xl font-medium text-black">
-                    CONTACT US
+        <div className="bg-black text-white flex flex-col lg:flex-row border border-gray-800">
+            <div className="lg:w-1/2 p-8 md:p-20 border-b lg:border-b-0 lg:border-r border-gray-800">
+                <h2 className="text-3xl md:text-4xl font-bold mb-6 md:mb-8 tracking-tight uppercase">
+                    REQUEST <span className="text-[#22C55E]">SUPPORT</span>
                 </h2>
-                <div className="flex flex-row gap-20">
-                    <p className="text-gray-700 font-inter text-lg leading-relaxed flex-1">
-                        If you have any questions, need support, or just want to
-                        get in touch, we’re here to help. Simply fill out the
-                        contact form and a member of our team will get back to
-                        you as soon as possible. We look forward to hearing from
-                        you!
-                    </p>
+                <p className="text-gray-400 font-inter text-lg mb-8 md:mb-12 leading-relaxed">
+                    If you have any questions, need support, or just want to get
+                    in touch, we’re here to help. Simply fill out the contact
+                    form and a member of our team will get back to you as soon
+                    as possible.
+                </p>
+                <div className="space-y-6 md:space-y-8">
+                    <div className="flex items-center gap-6">
+                        <div className="w-12 h-12 border border-gray-800 flex items-center justify-center">
+                            <Zap size={20} className="text-[#22C55E]" />
+                        </div>
+                        <span className="font-bold text-sm uppercase tracking-widest">
+                            Fast Response Time
+                        </span>
+                    </div>
+                    <div className="flex items-center gap-6">
+                        <div className="w-12 h-12 border border-gray-800 flex items-center justify-center">
+                            <ShieldCheck size={20} className="text-[#22C55E]" />
+                        </div>
+                        <span className="font-bold text-sm uppercase tracking-widest">
+                            Expert Professional Advice
+                        </span>
+                    </div>
                 </div>
             </div>
-            <div className="w-full lg:w-1/2">
-                <form
-                    onSubmit={async (e) => {
-                        e.preventDefault();
-                        await sendEmail();
-                    }}
-                    method="POST"
-                >
-                    <div className="flex justify-end flex-col">
-                        <div className="form-group">
-                            <div className="form-row">
-                                <div className="row mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        value={firstName}
-                                        onChange={(e) =>
-                                            setFirstName(e.target.value)
-                                        }
-                                        className="bg-gray-200 form-control rounded-md h-10 text-black border border-gray-300 px-3"
-                                        placeholder="First Name"
-                                        required
-                                    />
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        value={lastName}
-                                        onChange={(e) =>
-                                            setLastName(e.target.value)
-                                        }
-                                        className="bg-gray-200 form-control rounded-md h-10 text-black border border-gray-300 px-3"
-                                        placeholder="Last Name"
-                                        required
-                                    />
-                                </div>
-                                <div className="col">
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        value={email}
-                                        onChange={(e) =>
-                                            setEmail(e.target.value)
-                                        }
-                                        className="bg-gray-200 form-control rounded-md h-10 text-black border border-gray-300 px-3 w-full mb-4"
-                                        placeholder="Email Address"
-                                        required
-                                    />
-                                    <textarea
-                                        name="message"
-                                        value={message}
-                                        onChange={(e) =>
-                                            setMessage(e.target.value)
-                                        }
-                                        className="bg-gray-200 form-control rounded-md py-3 h-32 text-black border border-gray-300 px-3 w-full mb-4"
-                                        placeholder="Your Message"
-                                        required
-                                    ></textarea>
-                                </div>
-                            </div>
+            <div className="lg:w-1/2 bg-[#0a0a0a] p-8 md:p-20 text-black">
+                <form onSubmit={sendEmail} className="space-y-6 md:space-y-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                                First Name
+                            </label>
+                            <input
+                                type="text"
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
+                                required
+                                className="w-full bg-transparent border-b border-gray-800 px-0 py-3 text-white font-inter focus:outline-none focus:border-[#22C55E] transition-colors"
+                            />
                         </div>
-                        <div className="flex flex-col md:flex-row items-center gap-5">
-                            {success && (
-                                <p className="text-gray-700 font-inter text-lg leading-relaxed">
-                                    Thank you for your message, we will get back
-                                    to you soon.
-                                </p>
-                            )}
-                            <button
-                                disabled={loading}
-                                type="submit"
-                                className={`${
-                                    loading ? "opacity-50" : ""
-                                } w-full lg:w-auto ml-auto bg-black rounded-full text-white px-5 py-3 font-sora text-sm hover:bg-[#22C55E] cursor-pointer transition`}
-                            >
-                                Submit
-                            </button>
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                                Last Name
+                            </label>
+                            <input
+                                type="text"
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
+                                required
+                                className="w-full bg-transparent border-b border-gray-800 px-0 py-3 text-white font-inter focus:outline-none focus:border-[#22C55E] transition-colors"
+                            />
                         </div>
                     </div>
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                            Email Address
+                        </label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            className="w-full bg-transparent border-b border-gray-800 px-0 py-3 text-white font-inter focus:outline-none focus:border-[#22C55E] transition-colors"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                            Message
+                        </label>
+                        <textarea
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            required
+                            className="w-full bg-transparent border-b border-gray-800 px-0 py-3 text-white font-inter h-32 focus:outline-none focus:border-[#22C55E] transition-colors resize-none"
+                        ></textarea>
+                    </div>
+
+                    {success && (
+                        <p className="text-[#22C55E] font-bold text-center">
+                            Thank you! We'll get back to you soon.
+                        </p>
+                    )}
+
+                    <button
+                        disabled={loading}
+                        className={`w-full bg-[#22C55E] text-black font-bold py-5 md:py-6 hover:bg-white transition-colors duration-300 uppercase tracking-widest text-sm ${loading ? "opacity-50" : ""}`}
+                    >
+                        {loading ? "SENDING..." : "SEND ENQUIRY"}
+                    </button>
                 </form>
             </div>
         </div>
@@ -839,1063 +762,102 @@ const _services = [
     {
         id: "accreditations",
         title: "Accreditations",
-        item: (
-            <div>
-                <h3 className="font-sora text-3xl font-semibold mb-4">
-                    Accreditations
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                    Our Accreditation Support service helps your business
-                    achieve recognised standards such as CHAS, SMAS,
-                    SafeContractor, Constructionline, and similar schemes. We
-                    guide you through the full process, ensuring your documents,
-                    evidence, and systems meet assessor expectations.
-                </p>
-            </div>
-        ),
-        benefits: (
-            <>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Accreditation Selection & Initial Review
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We assess your current health & safety setup and identify
-                    the accreditation level most suitable for your business.
-                    Includes:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Gap analysis against scheme requirements</li>
-                        <li>Clear action plan to reach compliance</li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Documentation & Evidence Preparation
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We prepare or update all essential documents required for
-                    your submission, such as:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Health & Safety Policy</li>
-                        <li>RAMS & SSOW</li>
-                        <li>Training matrix and competence records</li>
-                        <li>
-                            Insurance and company document We ensure everything
-                            aligns with current standards and meets
-                            accreditation criteria
-                        </li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Full Application & Assessor Liaison
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We handle the submission process from start to finish:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Portal completion and evidence upload</li>
-                        <li>Communication with scheme assessors</li>
-                        <li>
-                            Managing any requests for additional information Our
-                            goal is to secure approval as smoothly and
-                            efficiently as possible
-                        </li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Non-Compliance & Corrective Actions
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    If an assessor flags issues, we quickly resolve them by
-                    updating documents, adding missing evidence, and
-                    resubmitting until approval is achieved.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Ongoing Support & Annual Renewals
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    To keep you compliant year round, we offer:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Renewal management</li>
-                        <li>Periodic document updates</li>
-                        <li>Support with PQQs and client compliance checks</li>
-                    </ul>
-                </p>
-            </>
-        ),
+        icon: ShieldCheck,
+        legislation: "SSIP / PAS91",
+        description:
+            "Our Accreditation Support service helps your business achieve recognised standards such as CHAS, SMAS, SafeContractor, and Constructionline.",
+        sections: [
+            {
+                title: "Selection & Review",
+                content:
+                    "We assess your current health & safety setup and identify the accreditation level most suitable for your business, including a full gap analysis.",
+            },
+            {
+                title: "Evidence Preparation",
+                content:
+                    "Preparation of all essential documents: H&S Policy, RAMS, training matrices, and competence records aligned with current standards.",
+            },
+            {
+                title: "Assessor Liaison",
+                content:
+                    "We handle the full submission process and communicate directly with scheme assessors to manage requests for additional information.",
+            },
+        ],
     },
     {
         id: "rams",
         title: "Risk & Method Statements",
-        item: (
-            <div>
-                <h3 className="font-sora text-3xl font-semibold mb-4">
-                    Risk & Method Statements (Review/completion)
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                    We provide professionally written, clear and compliant Risk
-                    Assessments and Method Statements (RAMS) tailored to the
-                    specific tasks your team carries out. Our service ensures
-                    your documentation is practical, site-ready, and aligned
-                    with current legislation and industry best practice.
-                </p>
-            </div>
-        ),
-        benefits: (
-            <>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Bespoke RAMS Compilation
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We create detailed, task-specific RAMS covering:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Identified hazards and associated risks</li>
-                        <li>Control measures and safe systems of work</li>
-                        <li>Plant, equipment, and PPE requirements</li>
-                        <li>
-                            Site-specific considerations such as ground
-                            conditions, utilities, and sequencing.
-                        </li>
-                        <li>
-                            All RAMS are tailored to your actual activities and
-                            methodology—not generic templates.
-                        </li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Existing RAMS Review & Improvement
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    If you already have RAMS in place, we review them for:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Compliance with legislation (HASWA, MHSWR, CDM)</li>
-                        <li>
-                            Accuracy and relevance to current work practices
-                        </li>
-                        <li>
-                            Clarity, layout, and usability on-site We then
-                            refine or update them to meet client and principal
-                            contractor expectations.
-                        </li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    High-Risk Activity Assessments
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We provide specialist RAMS for higher-risk work, including:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Excavations & groundworks</li>
-                        <li>Confined spaces</li>
-                        <li>Hot works</li>
-                        <li>Lifting operations</li>
-                        <li>Work at height & scaffolding</li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Client & Principal Contractor Approval Support
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We ensure your RAMS meet the standards required for approval
-                    by:
-                    <ul className="list-disc list-inside mt-2 mb-4">
-                        <li>Principal contractors</li>
-                        <li>Local authorities</li>
-                        <li>Developers and main clients</li>
-                    </ul>
-                    We handle amendments and revisions until acceptance is
-                    achieved.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Ongoing Updates & Version Control
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    As site conditions or methods change, we offer:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Quick updates to existing RAMS</li>
-                        <li>New task-specific assessments</li>
-                        <li>
-                            Version control to keep documentation current and
-                            audit-ready
-                        </li>
-                    </ul>
-                </p>
-            </>
-        ),
+        icon: Zap,
+        legislation: "MHSWR 1999",
+        description:
+            "Professionally written, task-specific RAMS tailored to your actual methodology—not generic templates.",
+        sections: [
+            {
+                title: "Bespoke Compilation",
+                content:
+                    "Detailed assessments covering hazards, control measures, plant requirements, and site-specific sequencing.",
+            },
+            {
+                title: "Review & Refinement",
+                content:
+                    "Independent review of existing RAMS for compliance with HASWA, MHSWR, and CDM expectations.",
+            },
+            {
+                title: "High-Risk Specialist",
+                content:
+                    "Expert documentation for excavations, confined spaces, hot works, lifting operations, and work at height.",
+            },
+        ],
     },
     {
         id: "policies",
-        title: "Policies",
-        item: (
-            <div>
-                <h3 className="font-sora text-3xl font-semibold mb-4">
-                    Policies
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                    We create clear, compliant and practical Health & Safety,
-                    Environmental, and Quality policies tailored to your
-                    business. Whether you need brand-new policies or updates to
-                    existing ones, we ensure they meet legal requirements, align
-                    with accreditation standards, and reflect how your company
-                    actually operates.
-                </p>
-            </div>
-        ),
-        benefits: (
-            <>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Bespoke Policy Creation
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We develop professional policies specific to your
-                    organisation, including:
-                    <ul className="list-disc list-inside mt-2 mb-4">
-                        <li>Health & Safety Policy</li>
-                        <li>Environmental Policy</li>
-                        <li>Quality Policy</li>
-                        <li>
-                            Drug & Alcohol, PPE, Driving, Lone Working, and
-                            other operational policies
-                        </li>
-                    </ul>
-                    Each policy is customised to your activities, workforce, and
-                    risk profile.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Policy Review & Updates
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    If you already have policies in place, we:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Review them for legal compliance and accuracy</li>
-                        <li>Update outdated content, roles, or procedures</li>
-                        <li>
-                            Ensure they meet accreditation requirements (CHAS,
-                            SMAS, Constructionline, ISO standards)
-                        </li>
-                        <li>
-                            Improve clarity and layout for easy communication
-                            across your team
-                        </li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Integrated Management Content
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    Where needed, we can align your policies with ISO frameworks
-                    (9001, 14001, 45001) to support future certification or
-                    demonstrate a structured management approach.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Company Branding & Presentation
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We provide professionally formatted policies that include:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Your company logo & branding</li>
-                        <li>Version control and dates</li>
-                        <li>
-                            Clear structure suitable for tenders and client
-                            submission
-                        </li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Ongoing Maintenance
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    As regulations or company processes change, we offer:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Annual policy updates</li>
-                        <li>
-                            Quick revisions for audits, client requests, or
-                            accreditation renewals
-                        </li>
-                        <li>
-                            Support keeping documentation consistent across all
-                            systems
-                        </li>
-                    </ul>
-                </p>
-            </>
-        ),
-    },
-    {
-        id: "toolbox-talks",
-        title: "Toolbox Talks",
-        item: (
-            <div>
-                <h3 className="font-sora text-3xl font-semibold mb-4">
-                    Toolbox Talks
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                    We provide engaging, practical Toolbox Talks designed to
-                    keep your workforce informed, compliant, and safety focused.
-                    Our talks are tailored to your trade, tasks, and site
-                    conditions, helping reinforce a strong safety culture across
-                    your business.
-                </p>
-            </div>
-        ),
-        benefits: (
-            <>
-                {" "}
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Bespoke Toolbox Talk Creation
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We develop clear, job-specific TBTs covering a wide range of
-                    topics, such as:
-                    <ul className="list-disc list-inside mt-2 mb-4">
-                        <li>Excavations & groundworks safety</li>
-                        <li>Work at height</li>
-                        <li>Manual handling</li>
-                        <li>Plant & machinery operation</li>
-                        <li>PPE, housekeeping & site hazards</li>
-                        <li>Environmental and behavioural safety</li>
-                    </ul>
-                    Each talk is easy to understand and relevant to the daily
-                    challenges your teams face.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    On-Site or Remote Delivery
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We can deliver TBTs directly to your workforce:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Delivered on-site before work begins</li>
-                        <li>Remote/online sessions for multiple teams</li>
-                        <li>
-                            Tailored content to address current site risks or
-                            recent incidents
-                        </li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Toolbox Talk Packs for Supervisors
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    For businesses wanting internal delivery, we provide
-                    ready-to-use TBT packs that include:
-                    <ul className="list-disc list-inside mt-2 mb-4">
-                        <li>Scripted briefings</li>
-                        <li>Topic background and key messages</li>
-                        <li>Attendance sheets</li>
-                        <li>Visual aids where required</li>
-                    </ul>
-                    This ensures consistent safety messaging across all sites.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Compliance & Record Keeping
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We support you in maintaining clear evidence of safety
-                    communication by providing:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Signed attendance records</li>
-                        <li>Version-controlled TBT documents</li>
-                        <li>
-                            Digital copies for audits, client checks, and
-                            accreditation renewals
-                        </li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Monthly or Quarterly TBT Programmes
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We offer planned schedules of toolbox talks to ensure
-                    ongoing compliance and regular engagement with your
-                    workforce.
-                </p>
-            </>
-        ),
-    },
-    {
-        id: "coshh",
-        title: "COSHH Assessments",
-        item: (
-            <div>
-                <h3 className="font-sora text-3xl font-semibold mb-4">
-                    COSHH Assessments
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                    We provide clear, compliant COSHH Assessments to help you
-                    manage hazardous substances safely on site. Our assessments
-                    ensure your workforce understands the risks, required
-                    control measures, and how to work safely around chemicals,
-                    fuels, adhesives, and other hazardous materials.
-                </p>
-            </div>
-        ),
-        benefits: (
-            <>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Ready-to-Use H&S Templates
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We supply a full range of editable templates, including:
-                    <ul className="list-disc list-inside mt-2 mb-4">
-                        <li>Risk Assessments & Method Statements (RAMS)</li>
-                        <li>Site Inductions</li>
-                        <li>Toolbox Talks</li>
-                        <li>Daily/Weekly Inspection Sheets</li>
-                        <li>COSHH Assessments</li>
-                        <li>
-                            Permits (Hot Works, Excavations, Work at Height,
-                            etc.)
-                        </li>
-                        <li>Accident/Incident Forms</li>
-                    </ul>
-                    Each template is structured to meet legal and industry
-                    expectations.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Custom-Branded Templates
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    All templates can be personalised with:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Your company logo and branding</li>
-                        <li>Specific project details</li>
-                        <li>
-                            Custom fields relevant to your operations. This
-                            ensures you present a professional image to clients
-                            and principal contractors.
-                        </li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Sector-Specific Packs
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We provide template packs tailored to specialised work, such
-                    as:
-                    <ul className="list-disc list-inside mt-2 mb-4">
-                        <li>Groundworks & civil engineering</li>
-                        <li>Plant & lifting operations</li>
-                        <li>Utilities and street works (NRSWA)</li>
-                        <li>General construction trades</li>
-                    </ul>
-                    These packs help teams produce documentation aligned with
-                    the risks of their specific tasks.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Compliance-Focused Design
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    Our templates are created in line with:
-                    <ul className="list-disc list-inside mt-2 mb-4">
-                        <li>HASWA & MHSWR requirements</li>
-                        <li>CDM principles</li>
-                        <li>
-                            Accreditation standards (CHAS, SMAS, SafeContractor,
-                            Constructionline)
-                        </li>
-                    </ul>
-                    This ensures your documentation supports audits, tenders,
-                    and client reviews.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Ongoing Updates
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We keep templates up to date with legislative changes and
-                    industry best practice, offering optional:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Annual template updates</li>
-                        <li>New forms or documents as your company grows</li>
-                        <li>Revised versions for accreditation renewals</li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Substance Identification & Review
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We review all substances used or stored by your business,
-                    including:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Fuels, oils, paints, resins</li>
-                        <li>Concrete additives and sealants</li>
-                        <li>Cleaning agents and solvents</li>
-                        <li>Dusts, fumes and other hazardous by products</li>
-                    </ul>
-                    This ensures nothing is overlooked in your COSHH register.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Comprehensive COSHH Assessments
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We create clear, easy-to-follow assessments that include:
-                    <ul className="list-disc list-inside mt-2 mb-4">
-                        <li>
-                            Hazard information (using up-to-date SDS details)
-                        </li>
-                        <li>Exposure risks and potential health effects</li>
-                        <li>Required control measures and PPE</li>
-                        <li>Safe handling, storage, and disposal procedures</li>
-                        <li>Emergency actions and first aid guidance</li>
-                    </ul>
-                    Each assessment is tailored to your site activities and
-                    usage.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Safety Data Sheet (SDS) Management
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We gather, update, and organise all relevant SDS documents
-                    to support your COSHH system, ensuring accuracy and
-                    compliance for audits or client checks.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    COSHH Register & Site Pack Preparation
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We compile your assessments into a structured COSHH register
-                    or site pack, making it easy for supervisors and operatives
-                    to access the right information quickly.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Ongoing Updates & Monitoring
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    As substances, suppliers, or site conditions change, we
-                    offer:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Regular updates to COSHH assessments</li>
-                        <li>Replacement documents when SDSs are updated</li>
-                        <li>
-                            Additional assessments for new products or tasks
-                        </li>
-                    </ul>
-                </p>
-            </>
-        ),
-    },
-    {
-        id: "pqq",
-        title: "Contractor PQQ",
-        item: (
-            <div>
-                <h3 className="font-sora text-3xl font-semibold mb-4">
-                    Contractor PQQ
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                    We assist your business in completing Contractor
-                    Pre-Qualification Questionnaires (PQQs) accurately and
-                    comprehensively. Our service ensures your submissions meet
-                    client requirements, highlight your strengths, and improve
-                    your chances of winning contracts.
-                </p>
-            </div>
-        ),
-        benefits: (
-            <>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Full PQQ Review & Requirements Check
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We analyse the PQQ criteria and identify exactly what
-                    documentation and evidence you need, ensuring nothing is
-                    missed. This includes:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>H&S documentation</li>
-                        <li>Training and competence records</li>
-                        <li>Policies and insurances</li>
-                        <li>Environmental, quality, and CSR requirements</li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Document Gathering & Formatting
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We collect, update, and prepare all required evidence,
-                    including:
-                    <ul className="list-disc list-inside mt-2 mb-4">
-                        <li>RAMS, policies, and procedures</li>
-                        <li>
-                            Accreditation certificates (CHAS, SMAS,
-                            Constructionline, etc.)
-                        </li>
-                        <li>
-                            Organisational charts, CVs, and training matrices
-                        </li>
-                        <li>Insurances and company certifications</li>
-                    </ul>
-                    Everything is formatted clearly for submission.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Completion of PQQ Forms & Online Portals
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We complete the PQQ on your behalf by:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Answering all technical questions</li>
-                        <li>Uploading supporting documents</li>
-                        <li>Ensuring consistency and accuracy throughout</li>
-                        <li>Highlighting your strengths and compliance</li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Gap-Filling & Improvements
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    If your business is missing required documents or evidence,
-                    we:
-                    <ul className="list-disc list-inside mt-2 mb-4">
-                        <li>Create or update policies</li>
-                        <li>Prepare new RAMS or templates</li>
-                        <li>Provide solutions to meet minimum standards</li>
-                    </ul>
-                    This ensures your submission is competitive, even if you’re
-                    still developing your systems.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Final Review & Submission Support
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    Before submitting, we conduct a full quality check to
-                    ensure:
-                    <ul className="list-disc list-inside mt-2 mb-4">
-                        <li>All sections are complete</li>
-                        <li>Evidence meets client expectations</li>
-                        <li>Information is presented professionally</li>
-                    </ul>
-                    We can also assist with resubmissions or clarifications if
-                    the client requests additional information.
-                </p>
-            </>
-        ),
-    },
-    {
-        id: "accident-investigation",
-        title: "Accident Investigation",
-        item: (
-            <div>
-                <h3 className="font-sora text-3xl font-semibold mb-4">
-                    Accident Investigation
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                    We provide independent, thorough accident and incident
-                    investigations to identify root causes, prevent recurrence,
-                    and protect your workforce. Our investigations support legal
-                    compliance, strengthen safety performance, and provide clear
-                    evidence for insurers and clients.
-                </p>
-            </div>
-        ),
-        benefits: (
-            <>
-                {" "}
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Immediate Response & Fact-Finding
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We respond quickly to gather essential information,
-                    including:
-                    <ul className="list-disc list-inside mt-2 mb-4">
-                        <li>Site conditions and physical evidence</li>
-                        <li>Witness statements</li>
-                        <li>Photographs, CCTV, and relevant documentation</li>
-                        <li>Initial timeline of events</li>
-                    </ul>
-                    This ensures accurate reporting while details are still
-                    fresh.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Root Cause Analysis
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    Using structured investigation techniques, we identify:
-                    <ul className="list-disc list-inside mt-2 mb-4">
-                        <li>Direct causes (unsafe acts/conditions)</li>
-                        <li>
-                            Underlying factors (training, planning, equipment,
-                            communication)
-                        </li>
-                        <li>Organisational or systemic issues</li>
-                    </ul>
-                    Our analysis helps you understand not only what happened,
-                    but why it happened.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Report Writing & Corrective Actions
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We produce a clear, professional investigation report that
-                    includes:
-                    <ul className="list-disc list-inside mt-2 mb-4">
-                        <li>Summary of events</li>
-                        <li>Evidence collected</li>
-                        <li>Root cause findings</li>
-                        <li>Recommended corrective and preventative actions</li>
-                        <li>
-                            Any required updates to RAMS, policies, or training
-                        </li>
-                    </ul>
-                    Reports are client-ready and suitable for insurers,
-                    principal contractors, or regulatory bodies.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Support with RIDDOR & Client Notifications
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    If the incident meets reporting thresholds, we assist with:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Completing RIDDOR submissions</li>
-                        <li>
-                            Communicating with principal contractors or clients
-                        </li>
-                        <li>
-                            Providing supporting documents for compliance checks
-                        </li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Follow-Up & Monitoring
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We help you implement and track corrective actions to ensure
-                    improvements are embedded, including updates to:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Risk assessments</li>
-                        <li>Method statements</li>
-                        <li>Toolbox talks</li>
-                        <li>Training or supervision arrangements</li>
-                    </ul>
-                </p>
-            </>
-        ),
-    },
-    {
-        id: "dse",
-        title: "DSE Assessments",
-        item: (
-            <div>
-                <h3 className="font-sora text-3xl font-semibold mb-4">
-                    DSE Assessments
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                    We carry out quick, professional DSE assessments to ensure
-                    employees using computers or laptops work safely,
-                    comfortably, and in line with DSE Regulations.
-                </p>
-            </div>
-        ),
-        benefits: (
-            <>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Workstation Assessments
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    Review of posture, seating, screen height, desk layout, and
-                    lighting
-                    <ul className="list-disc list-inside mt-2">
-                        <li>On-site or remote assessments available</li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Ergonomic Advice
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    Immediate adjustments to improve comfort
-                    <ul className="list-disc list-inside mt-2">
-                        <li>
-                            Recommendations for supportive equipment (footrests,
-                            risers, chairs, etc.)
-                        </li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Individual Reports
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    Simple, clear reports outlining issues, improvements, and
-                    follow-up actions.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Office, Home & Hybrid Workers
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    Suitable for any working environment, including remote/home
-                    setups.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Follow-Up Support
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    Reassessments if needs change or discomfort continues.
-                </p>
-            </>
-        ),
-    },
-    {
-        id: "competent-person",
-        title: "Competent Person",
-        item: (
-            <div>
-                <h3 className="font-sora text-3xl font-semibold mb-4">
-                    Competent Person
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                    We act as your appointed Competent Person, giving your
-                    business access to professional health & safety advice
-                    whenever you need it. This ensures you meet your legal
-                    duties under the Management of Health & Safety at Work
-                    Regulations and strengthens your overall safety management.
-                </p>
-            </div>
-        ),
-        benefits: (
-            <>
-                {" "}
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Appointment as Your Competent Person
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We provide formal documentation confirming us as your named
-                    Competent Person for client, accreditation, and legal
-                    requirements.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Ongoing Health & Safety Advice
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    You gain access to expert support for:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Day-to-day safety queries</li>
-                        <li>Interpretation of HSE guidance</li>
-                        <li>Client and contractor compliance requests</li>
-                        <li>Best-practice recommendations</li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Documentation & Systems Support
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We assist with key safety documentation, including:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Policies and procedures</li>
-                        <li>RAMS and COSHH assessments</li>
-                        <li>Toolbox talks and site forms</li>
-                        <li>PQQ and accreditation evidence</li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Incident & Compliance Support
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    When issues arise, we provide help with:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Accident/incident advice</li>
-                        <li>RIDDOR guidance</li>
-                        <li>Corrective actions and improvement plans</li>
-                        <li>Safety communication with clients or regulators</li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Annual Review & Ongoing Monitoring
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We ensure continued compliance by offering:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Yearly system reviews</li>
-                        <li>Updates to policies and documentation</li>
-                        <li>Recommendations for training or improvements</li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Who Benefits
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    Ideal for SMEs, subcontractors, start-ups and companies
-                    without an in-house H&S professional needing reliable,
-                    ongoing safety support.
-                </p>
-            </>
-        ),
-    },
-    {
-        id: "cdm",
-        title: "CDM Support",
-        item: (
-            <div>
-                <h3 className="font-sora text-3xl font-semibold mb-4">
-                    CDM Support
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                    We provide professional CDM Support to help duty holders
-                    meet their legal responsibilities under the CDM Regulations
-                    2015. Whether you're a client, principal contractor,
-                    contractor, or designer, we ensure your projects are
-                    planned, managed, and delivered safely and compliantly.
-                </p>
-            </div>
-        ),
-        benefits: (
-            <>
-                {" "}
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Duty Holder Guidance
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    Clear advice tailored to your role, including:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>
-                            Clients: Pre-construction information, competence
-                            checks, and project oversight
-                        </li>
-                        <li>
-                            Principal Contractors: Construction phase planning
-                            and site safety management
-                        </li>
-                        <li>
-                            Contractors: RAMS, inductions, and safe coordination
-                            of work
-                        </li>
-                        <li>
-                            Designers: Eliminating or reducing risk at source
-                        </li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    CDM Documentation
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We prepare and support key CDM documents such as:
-                    <ul className="list-disc list-inside mt-2 mb-4">
-                        <li>Pre-Construction Information (PCI)</li>
-                        <li>Construction Phase Plans (CPP)</li>
-                        <li>Site-specific RAMS and safety arrangements</li>
-                        <li>Health & Safety Files</li>
-                    </ul>
-                    All documentation is tailored to your project and compliant
-                    with HSE guidance.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Project Compliance Monitoring
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We provide ongoing support throughout the project,
-                    including:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Regular site reviews</li>
-                        <li>Advice on risk management and coordination</li>
-                        <li>
-                            Updates to CPPs and other documents as work
-                            progresses
-                        </li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Contractor Competence & Management
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We help ensure all contractors on-site meet CDM standards
-                    by:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Reviewing accreditations and competencies</li>
-                        <li>Checking RAMS, insurances, and training</li>
-                        <li>Supporting safe coordination between trades</li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Practical Safety Support
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    Where required, we can also assist with:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Site inductions</li>
-                        <li>Toolbox talks</li>
-                        <li>Incident guidance</li>
-                        <li>Safety meetings and documentation checks</li>
-                    </ul>
-                </p>
-            </>
-        ),
+        title: "Policies & Systems",
+        icon: Layers,
+        legislation: "HASWA 1974",
+        description:
+            "Clear, compliant, and practical H&S, Environmental, and Quality policies designed to reflect how your company actually operates.",
+        sections: [
+            {
+                title: "System Creation",
+                content:
+                    "Development of professional policies specific to your organisation, including Lone Working, PPE, and Driving policies.",
+            },
+            {
+                title: "ISO Alignment",
+                content:
+                    "Integrated management content aligned with ISO 9001, 14001, and 45001 frameworks.",
+            },
+            {
+                title: "Maintenance",
+                content:
+                    "Annual policy updates and revisions for audits, client requests, or accreditation renewals.",
+            },
+        ],
     },
     {
         id: "site-inspections",
         title: "Site Inspections",
-        item: (
-            <div>
-                <h3 className="font-sora text-3xl font-semibold mb-4">
-                    Site Inspections
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                    We provide independent, detailed site inspections and audits
-                    to help you identify risks, improve safety standards, and
-                    demonstrate compliance to clients and principal contractors.
-                    Our inspections offer practical, actionable feedback to
-                    support safer, more efficient site operations.
-                </p>
-            </div>
-        ),
-        benefits: (
-            <>
-                {" "}
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Comprehensive Site Inspections
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We carry out routine or one-off site visits to assess:
-                    <ul className="list-disc list-inside mt-2 mb-4">
-                        <li>Site setup, welfare, access & housekeeping</li>
-                        <li>Work at height, excavations, plant & machinery</li>
-                        <li>PPE and workforce behaviour</li>
-                        <li>RAMS implementation and control measures</li>
-                        <li>Environmental and site-specific risks</li>
-                    </ul>
-                    Each inspection is tailored to the type of work being
-                    carried out.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Detailed Audit Reports
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    Following each visit, you receive a clear, professional
-                    report featuring:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Photographic evidence</li>
-                        <li>Identified hazards and non-compliances</li>
-                        <li>Positive observations</li>
-                        <li>Recommended corrective actions and timeframes</li>
-                    </ul>
-                    Reports are suitable for internal use, client review, and
-                    accreditation evidence.
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Follow-Up Actions & Support
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We help you close out actions by providing:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Guidance on corrective measures</li>
-                        <li>Updated documents or RAMS if needed</li>
-                        <li>Follow-up inspections to verify improvements</li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Specialist & High-Risk Audits
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    Where required, we can conduct focused audits on:
-                    <ul className="list-disc list-inside mt-2">
-                        <li>Excavations and groundworks</li>
-                        <li>Lifting operations</li>
-                        <li>Temporary works</li>
-                        <li>Traffic management</li>
-                        <li>Fire safety and emergency arrangements</li>
-                    </ul>
-                </p>
-                <h5 className="font-sora text-lg font-semibold mt-8">
-                    Planned Inspection Programmes
-                </h5>
-                <p className="text-gray-600 leading-relaxed mt-2">
-                    We can create monthly, fortnightly, or quarterly inspection
-                    schedules to continuously monitor safety performance and
-                    compliance across multiple sites.
-                </p>
-            </>
-        ),
+        icon: Eye,
+        legislation: "CDM 2015",
+        description:
+            "Independent, detailed site inspections and audits to identify risks and demonstrate compliance to Principal Contractors.",
+        sections: [
+            {
+                title: "Physical Audits",
+                content:
+                    "Comprehensive assessment of site setup, welfare, plant, and workforce behaviour with photographic evidence.",
+            },
+            {
+                title: "Technical Reporting",
+                content:
+                    "Professional reports detailing identified hazards, positive observations, and prioritised corrective actions.",
+            },
+            {
+                title: "Monitoring Programmes",
+                content:
+                    "Planned monthly or quarterly inspection schedules to continuously monitor performance across multiple sites.",
+            },
+        ],
     },
 ];
 
@@ -1906,13 +868,19 @@ const Services = () => {
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        setActive(entry.target.id);
-                    }
-                });
+                const intersecting = entries.filter((e) => e.isIntersecting);
+                if (intersecting.length > 0) {
+                    // Always pick the one closest to the top margin if multiple intersect
+                    const mostVisible = intersecting.reduce((prev, curr) =>
+                        curr.boundingClientRect.top <
+                        prev.boundingClientRect.top
+                            ? curr
+                            : prev,
+                    );
+                    setActive(mostVisible.target.id);
+                }
             },
-            { rootMargin: "-30% 0px -30% 0px", threshold: 0 },
+            { rootMargin: "-20% 0px -70% 0px", threshold: 0 },
         );
 
         _services.forEach((s) => {
@@ -1926,115 +894,140 @@ const Services = () => {
     const scrollToSection = (id: string) => {
         const el = sectionRefs.current[id];
         if (!el) return;
-
-        const y = el.getBoundingClientRect().top + window.scrollY - 220; // your fixed header height
-
+        setActive(id); // Immediately update UI
+        const y = el.getBoundingClientRect().top + window.scrollY - 160;
         window.scrollTo({ top: y, behavior: "smooth" });
     };
 
     return (
-        <div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-15 py-20">
-                <div className="md:col-span-1">
-                    <div className="md:sticky md:top-[140px] flex flex-col">
-                        <h2 className="font-sora text-4xl font-medium text-black h-[80px]">
-                            OUR SERVICES
-                        </h2>
-                        <div className="hidden md:flex flex-col gap-4">
-                            {_services.map((s) => (
-                                <button
-                                    key={s.id}
-                                    className={`text-left font-sora cursor-pointer hover:text-black text-lg transition-all ${
-                                        active === s.id
-                                            ? "font-semibold text-black"
-                                            : "text-gray-500"
-                                    }`}
-                                    onClick={() => scrollToSection(s.id)}
-                                >
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-20">
+            <div className="lg:col-span-4">
+                <div className="lg:sticky lg:top-32">
+                    <div className="w-12 h-1 bg-[#22C55E] mb-6"></div>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight text-black uppercase">
+                        OUR <br />
+                        <span className="text-gray-400">SERVICES</span>
+                    </h2>
+                    <div className="flex flex-col gap-2">
+                        {_services.map((s) => (
+                            <button
+                                key={s.id}
+                                className={`text-left py-3 px-4 border-l-2 transition-all duration-300 ${
+                                    active === s.id
+                                        ? "border-[#22C55E] bg-gray-50 text-black font-bold"
+                                        : "border-transparent text-gray-400 hover:text-gray-600"
+                                }`}
+                                onClick={() => scrollToSection(s.id)}
+                            >
+                                <span className="text-xs uppercase tracking-widest">
                                     {s.title}
-                                </button>
+                                </span>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            <div className="lg:col-span-8 flex flex-col gap-24 md:gap-32">
+                {_services.map((s) => (
+                    <div
+                        key={s.id}
+                        id={s.id}
+                        ref={(el) => (sectionRefs.current[s.id] = el)}
+                        className="scroll-mt-32"
+                    >
+                        <div className="flex items-center gap-4 mb-6">
+                            <div className="px-3 py-1 bg-gray-100 text-[10px] font-bold tracking-widest text-gray-500 uppercase border border-gray-200">
+                                LEG: {s.legislation}
+                            </div>
+                            <div className="h-px flex-grow bg-stone-200"></div>
+                        </div>
+
+                        <div className="flex items-start gap-6 mb-8">
+                            <div className="w-14 h-14 bg-black text-[#22C55E] flex items-center justify-center shrink-0">
+                                <s.icon size={28} />
+                            </div>
+                            <div>
+                                <h3 className="text-2xl md:text-3xl font-bold mb-4 tracking-tight uppercase">
+                                    {s.title}
+                                </h3>
+                                <p className="text-lg text-gray-600 font-inter leading-relaxed max-w-2xl">
+                                    {s.description}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-stone-200 border border-stone-200">
+                            {s.sections.map((section, idx) => (
+                                <div
+                                    key={idx}
+                                    className="bg-white p-8 hover:bg-gray-50 transition-colors group"
+                                >
+                                    <h4 className="text-xs font-bold uppercase tracking-widest mb-4 text-[#22C55E]">
+                                        {section.title}
+                                    </h4>
+                                    <p className="text-sm text-gray-500 font-inter leading-relaxed">
+                                        {section.content}
+                                    </p>
+                                </div>
                             ))}
                         </div>
                     </div>
-                </div>
-
-                <div className="md:col-span-2 flex flex-col gap-20 md:pt-[80px]">
-                    {_services.map((s) => (
-                        <ServiceItem
-                            service={s}
-                            key={s.id}
-                            id={s.id}
-                            ref={(el: any) => (sectionRefs.current[s.id] = el)}
-                        />
-                    ))}
-                </div>
+                ))}
             </div>
         </div>
     );
 };
 
-const ServiceItem = ({ service, ref, id }: any) => {
-    const [showBenefits, setShowBenefits] = useState(
-        () => window.innerWidth >= 768,
-    );
-
-    useEffect(() => {
-        let isDesktop = window.innerWidth >= 768;
-
-        const handleResize = () => {
-            const nowDesktop = window.innerWidth >= 768;
-            if (nowDesktop !== isDesktop) {
-                setShowBenefits(nowDesktop);
-                isDesktop = nowDesktop;
-            }
-        };
-
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
+const Footer = ({
+    sectionRefs,
+}: {
+    sectionRefs: {
+        about: React.RefObject<HTMLElement>;
+        services: React.RefObject<HTMLElement>;
+        packages: React.RefObject<HTMLElement>;
+        contact: React.RefObject<HTMLElement>;
+    };
+}) => {
+    const navigate = useNavigate();
 
     return (
-        <div
-            id={id}
-            ref={ref}
-            className="bg-white border-b-1 border-gray-300 pb-8"
-        >
-            {service.item}
-
-            {showBenefits && <div>{service.benefits}</div>}
-
-            <button
-                onClick={() => setShowBenefits(!showBenefits)}
-                className="md:hidden block mt-4 text-white px-4 hover:bg-[#22C55E] p-2 bg-black rounded-full text-sm font-inter cursor-pointer transition"
-            >
-                <span className="font-inter">
-                    {showBenefits ? "Hide Benefits" : "Show Benefits"}
-                </span>
-            </button>
-        </div>
+        <footer className="py-12 px-5 border-t border-stone-100 bg-white text-black">
+            <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
+                <div className="flex flex-col items-center md:items-start gap-4">
+                    <img src={logoBlack} className="h-6" alt="Vantage Logo" />
+                    <p className="text-gray-500 font-inter text-xs">
+                        VANTAGE SAFETY SERVICES LTD
+                    </p>
+                </div>
+                <div className="flex gap-8 text-xs font-bold text-gray-400">
+                    <span
+                        className="hover:text-black cursor-pointer transition-colors"
+                        onClick={() =>
+                            window.scrollTo({
+                                top: 0,
+                                behavior: "smooth",
+                            })
+                        }
+                    >
+                        HOME
+                    </span>
+                    <span
+                        className="hover:text-black cursor-pointer transition-colors"
+                        onClick={() => navigate("/labour-hire")}
+                    >
+                        LABOUR
+                    </span>
+                    <span className="hover:text-black cursor-pointer transition-colors">
+                        PRIVACY POLICY
+                    </span>
+                </div>
+                <p className="font-inter text-[10px] text-gray-600 uppercase tracking-widest">
+                    © 2026 Part of the Vantage Group.
+                </p>
+            </div>
+        </footer>
     );
 };
-
-const useScrollTo = () => {
-    return useCallback((ref: React.RefObject<HTMLElement>) => {
-        if (ref?.current) {
-            const elementTop =
-                ref.current.getBoundingClientRect().top + window.scrollY;
-            window.scrollTo({
-                top: elementTop - 120, // subtract header height
-                behavior: "smooth",
-            });
-        }
-    }, []);
-};
-
-const NavItem = ({ children, onClick }: any) => (
-    <li
-        className="hover:text-[#22C55E] cursor-pointer transition"
-        onClick={onClick}
-    >
-        {children}
-    </li>
-);
 
 export default Safety;

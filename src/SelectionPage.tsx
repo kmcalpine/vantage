@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "./assets/logo.png";
 import { ShieldCheck, HardHat, ArrowRight } from "lucide-react";
+import logoIcon from "./assets/logo-icon.png";
 
 const SelectionPage = () => {
     const navigate = useNavigate();
@@ -20,6 +20,9 @@ const SelectionPage = () => {
                 selected ? "is-selecting" : ""
             }`}
         >
+            <div className="absolute top-4 left-4 z-20">
+                <img src={logoIcon} className="w-12 h-12"></img>
+            </div>
             <style>
                 {`
                 .selection-container {
@@ -71,8 +74,7 @@ const SelectionPage = () => {
                   z-index: 50;
                 }
                 .is-selecting .left-side:not(.selected) {
-                  clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
-                  opacity: 0;
+                  z-index: 1;
                 }
 
                 .is-selecting .right-side.selected {
@@ -80,8 +82,7 @@ const SelectionPage = () => {
                   z-index: 50;
                 }
                 .is-selecting .right-side:not(.selected) {
-                  clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
-                  opacity: 0;
+                  z-index: 1;
                 }
 
                 .is-selecting .content-reveal {
@@ -134,21 +135,6 @@ const SelectionPage = () => {
               `}
             </style>
 
-            {/* Logo Overlay */}
-            <div
-                className={`absolute top-12 left-1/2 -translate-x-1/2 z-[60] pointer-events-none transition-opacity duration-500 ${
-                    selected ? "opacity-0" : "opacity-100"
-                }`}
-            >
-                <div className="bg-white/95 backdrop-blur-md p-4 md:p-6 rounded-2xl shadow-2xl border border-white/20">
-                    <img
-                        src={logo}
-                        alt="Vantage Logo"
-                        className="h-8 md:h-12 object-contain"
-                    />
-                </div>
-            </div>
-
             {/* Left Side: Safety */}
             <div
                 onClick={() => handleSelect("safety", "/safety")}
@@ -160,13 +146,10 @@ const SelectionPage = () => {
                     className="bg-image"
                     style={{ backgroundImage: `url(src/assets/header.jpg)` }}
                 />
-                <div className="absolute inset-0 bg-black/50 transition-colors duration-700" />
+                <div className="absolute inset-0 bg-black/60" />
 
                 <div className="relative h-full flex flex-col items-start justify-center px-10 md:px-20 lg:pl-32 max-w-4xl">
-                    <div className="content-reveal">
-                        <div className="mb-6 inline-flex p-4 rounded-2xl bg-[#22C55E]/10 backdrop-blur-md border border-[#22C55E]/20">
-                            <ShieldCheck size={40} className="text-[#22C55E]" />
-                        </div>
+                    <div className="">
                         <span className="block text-[#22C55E] font-bold tracking-[0.3em] text-xs mb-3 uppercase">
                             Division One
                         </span>
@@ -178,11 +161,11 @@ const SelectionPage = () => {
                             Specialist H&S consultancy, CDM advisory, and
                             professional accreditation management.
                         </p>
-                        <button className="flex items-center gap-3 px-8 py-4 bg-[#22C55E] text-white rounded-full font-bold transition-all hover:shadow-[0_0_30px_rgba(34,197,94,0.3)]">
+                        <button className="flex items-center gap-3 px-8 py-4 bg-[#22C55E] text-white font-bold transition-all hover:shadow-[0_0_30px_rgba(34,197,94,0.3)]">
                             EXPLORE DIVISION{" "}
                             <ArrowRight
                                 size={20}
-                                className="group-hover:translate-x-1 transition-transform"
+                                className="transition-transform"
                             />
                         </button>
                     </div>
@@ -202,13 +185,10 @@ const SelectionPage = () => {
                         backgroundImage: `url(https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop)`,
                     }}
                 />
-                <div className="absolute inset-0 bg-black/50" />
+                <div className="absolute inset-0 bg-black/60" />
 
                 <div className="relative h-full flex flex-col items-end justify-center px-10 md:px-20 lg:pr-32 text-right w-full ml-auto max-w-4xl">
-                    <div className="content-reveal flex flex-col items-end">
-                        <div className="mb-6 inline-flex p-4 rounded-2xl bg-[#FF8C00]/10 backdrop-blur-md border border-[#FF8C00]/20">
-                            <HardHat size={40} className="text-[#FF8C00]" />
-                        </div>
+                    <div className="flex flex-col items-end">
                         <span className="block text-[#FF8C00] font-bold tracking-[0.3em] text-xs mb-3 uppercase">
                             Division Two
                         </span>
@@ -220,11 +200,11 @@ const SelectionPage = () => {
                             Reliable labour supply and safe workforce solutions
                             for construction and civil engineering.
                         </p>
-                        <button className="flex items-center gap-3 px-8 py-4 bg-[#FF8C00] text-black rounded-full font-bold transition-all hover:shadow-[0_0_30px_rgba(255,140,0,0.3)]">
+                        <button className="flex items-center gap-3 px-8 py-4 bg-[#FF8C00] text-black font-bold transition-all hover:shadow-[0_0_30px_rgba(255,140,0,0.3)]">
                             HIRE WORKFORCE{" "}
                             <ArrowRight
                                 size={20}
-                                className="group-hover:translate-x-1 transition-transform"
+                                className="transition-transform"
                             />
                         </button>
                     </div>

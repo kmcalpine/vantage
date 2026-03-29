@@ -68,7 +68,7 @@ const Header = ({
             <div className="flex items-center gap-4">
                 <button
                     onClick={() => navigate("/")}
-                    className="p-2 hover:bg-gray-100 rounded-full transition-colors cursor-pointer group"
+                    className="p-2 hover:bg-gray-100 transition-colors cursor-pointer group"
                     title="Back to selection"
                 >
                     <ArrowLeft
@@ -115,7 +115,7 @@ const Header = ({
                         onMouseLeave={(e) =>
                             (e.currentTarget.style.backgroundColor = "black")
                         }
-                        className="rounded-full text-white px-5 py-3 cursor-pointer transition font-sora text-md font-bold"
+                        className="text-white px-5 py-3 cursor-pointer transition font-sora text-md font-bold"
                     >
                         Enquire Now
                     </button>

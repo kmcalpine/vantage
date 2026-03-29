@@ -1,8 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import logo from "./assets/logo.png";
-import logoWhite from "./assets/logo-white.png";
+import logoBlack from "./assets/logo-black.png";
 import {
-    HardHat,
     ShieldCheck,
     Users,
     CheckCircle,
@@ -11,13 +9,11 @@ import {
     Trophy,
     Target,
     Zap,
-    ArrowRight,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import Header from "./components/Header";
+import Hero from "./components/Hero";
 
 const LabourHire = () => {
-    const [scrolled, setScrolled] = useState(false);
     const navigate = useNavigate();
 
     const aboutRef = useRef<HTMLDivElement>(null);
@@ -43,99 +39,65 @@ const LabourHire = () => {
 
     useEffect(() => {
         const handleScroll = () => {
-            if (window.scrollY > 120) {
-                setScrolled(true);
-            } else {
-                setScrolled(false);
-            }
+            // ... (keep the scroll logic if needed, but it's not being used here)
         };
 
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    const navItems = [
-        {
-            label: "Home",
-            action: () => window.scrollTo({ top: 0, behavior: "smooth" }),
-        },
-        { label: "About Us", action: () => scrollTo(aboutRef) },
-        { label: "Services", action: () => scrollTo(servicesRef) },
-        { label: "Our Difference", action: () => scrollTo(differenceRef) },
-        { label: "Sectors", action: () => scrollTo(sectorsRef) },
-    ];
-
     return (
         <div className="font-sora bg-white text-black">
-            {/* Hero Section */}
-            <section className="relative min-h-screen flex items-center overflow-hidden bg-black">
-                <div 
-                    className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-1000"
-                    style={{ transform: "scale(1.08)" }}
-                ></div>
-                <div className="absolute inset-0 bg-black/50"></div>
-
-                <div className="relative z-10 max-w-7xl mx-auto px-5 w-full">
-                    <div className="max-w-3xl">
-                        <div className="inline-flex items-center gap-2 bg-[#FF8C00] text-black px-4 py-1 rounded-full text-xs font-bold mb-6">
-                            <Users size={14} />
-                            VANTAGE WORKPLACE SOLUTIONS
-                        </div>
-                        <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight">
-                            SKILLED LABOUR.
-                            <br />
-                            <span className="text-[#FF8C00]">SAFETY LED.</span>
-                        </h1>
-                        <p className="mt-8 text-xl text-gray-300 font-inter leading-relaxed">
-                            At Vantage Workplace Solutions, we provide skilled
-                            labour and safety led workforce solutions to the
-                            construction industry.
-                        </p>
-                        <div className="mt-10 flex flex-col sm:flex-row gap-5">
-                            <button
-                                onClick={() => scrollTo(contactRef)}
-                                className="bg-[#FF8C00] text-black px-10 py-4 rounded-full font-bold text-lg hover:bg-white transition flex items-center justify-center gap-2 cursor-pointer"
-                            >
-                                HIRE WORKFORCE <ArrowRight size={20} />
-                            </button>
-                            <button
-                                onClick={() => navigate("/safety")}
-                                className="border-2 border-white text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-black transition cursor-pointer"
-                            >
-                                SAFETY SERVICES
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <Hero
+                backgroundImage="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop"
+                tagIcon={Users}
+                tagLabel="VANTAGE WORKPLACE SOLUTIONS"
+                title={
+                    <>
+                        SKILLED LABOUR.
+                        <br />
+                        <span className="text-[#FF8C00]">SAFETY LED.</span>
+                    </>
+                }
+                description="At Vantage Workplace Solutions, we provide skilled labour and safety led workforce solutions to the construction industry."
+                primaryButtonText="HIRE WORKFORCE"
+                primaryButtonAction={() => scrollTo(contactRef)}
+                secondaryButtonText="SAFETY SERVICES"
+                secondaryButtonAction={() => navigate("/safety")}
+                themeColor="#FF8C00"
+                isDarkText={true}
+            />
 
             {/* Introduction & Specialism */}
-            <section id="about" ref={aboutRef} className="py-24 px-5 bg-white">
+            <section
+                id="about"
+                ref={aboutRef}
+                className="py-16 md:py-32 px-5 bg-white"
+            >
                 <div className="max-w-7xl mx-auto">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-24 items-center">
                         <div>
-                            <h2 className="text-3xl md:text-4xl font-bold mb-8">
-                                COMPETENT PEOPLE,{" "}
+                            <div className="w-20 h-1.5 bg-[#FF8C00] mb-6 md:mb-10"></div>
+                            <h2 className="text-4xl md:text-5xl font-bold mb-6 md:mb-10 tracking-tight leading-tight text-black">
+                                COMPETENT PEOPLE. <br />
                                 <span className="text-[#FF8C00]">
                                     QUALITY DELIVERY.
                                 </span>
                             </h2>
-                            <p className="text-lg text-gray-700 font-inter leading-relaxed mb-6">
+                            <p className="text-xl text-gray-800 font-inter leading-relaxed mb-6 md:mb-8">
                                 We specialise in supplying competent groundworks
                                 operatives, resurfacing teams, machine
                                 operators, and qualified site
-                                supervisors/managers, all selected for their
-                                experience, reliability, and commitment to
-                                working safely.
+                                supervisors/managers.
                             </p>
-                            <p className="text-lg text-gray-700 font-inter leading-relaxed italic border-l-4 border-[#FF8C00] pl-6">
+                            <p className="text-lg text-gray-600 font-inter leading-relaxed italic border-l-4 border-[#FF8C00] pl-8 py-2">
                                 "We don’t just supply labour — we provide people
                                 who understand site expectations, follow safe
                                 systems of work, and deliver quality from day
                                 one."
                             </p>
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-stone-200 border border-stone-200">
                             {[
                                 {
                                     title: "Competent Individuals",
@@ -153,13 +115,13 @@ const LabourHire = () => {
                             ].map((item, i) => (
                                 <div
                                     key={i}
-                                    className="p-6 bg-gray-50 rounded-2xl border border-gray-100 flex flex-col items-center text-center"
+                                    className="p-8 md:p-10 bg-white flex flex-col items-center text-center hover:bg-stone-50 transition-colors group"
                                 >
                                     <item.icon
                                         size={32}
-                                        className="text-[#FF8C00] mb-4"
+                                        className="text-[#FF8C00] mb-4 md:mb-6"
                                     />
-                                    <span className="font-bold text-sm">
+                                    <span className="font-bold text-xs uppercase tracking-[0.2em] text-black leading-relaxed">
                                         {item.title}
                                     </span>
                                 </div>
@@ -173,22 +135,30 @@ const LabourHire = () => {
             <section
                 id="services"
                 ref={servicesRef}
-                className="py-24 px-5 bg-gray-50"
+                className="py-16 md:py-32 px-5 bg-gray-50 border-y border-stone-200"
             >
                 <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl font-bold mb-4">WHAT WE DO</h2>
-                        <p className="text-gray-600 font-inter">
-                            Skilled workforce solutions across groundworks,
-                            resurfacing, and civil engineering.
-                        </p>
+                    <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-20 gap-8">
+                        <div className="max-w-2xl">
+                            <h2 className="text-4xl font-bold mb-4 md:mb-6 tracking-tight text-black">
+                                WHAT WE DO
+                            </h2>
+                            <p className="text-gray-600 font-inter text-lg">
+                                Comprehensive skilled workforce solutions across
+                                groundworks, resurfacing, and civil engineering
+                                projects nationwide.
+                            </p>
+                        </div>
+                        <div className="text-[#FF8C00] font-bold text-sm tracking-widest border-b-2 border-[#FF8C00] pb-2 uppercase">
+                            Operational Excellence
+                        </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-stone-200 border border-stone-200">
                         {[
                             {
                                 title: "Groundworks Operatives",
-                                desc: "Drainage, foundations, plot works, kerbing, and finishing.",
+                                desc: "Drainage, foundations, plot works, kerbing, and finishing with precision.",
                                 features: [
                                     "Housing & Infrastructure",
                                     "Drainage & Foundations",
@@ -197,7 +167,7 @@ const LabourHire = () => {
                             },
                             {
                                 title: "Resurfacing Operatives",
-                                desc: "Tarmac and reinstatement works for roads and footpaths.",
+                                desc: "High-standard tarmac and reinstatement works for roads and footpaths.",
                                 features: [
                                     "Roads & Footpaths",
                                     "Patching Works",
@@ -206,7 +176,7 @@ const LabourHire = () => {
                             },
                             {
                                 title: "Machine Operators",
-                                desc: "CPCS / NPORS qualified operators for all plant types.",
+                                desc: "CPCS / NPORS qualified operators for all plant types and operations.",
                                 features: [
                                     "Excavators & Dumpers",
                                     "Rollers & Pavers",
@@ -215,7 +185,7 @@ const LabourHire = () => {
                             },
                             {
                                 title: "Management & Supervision",
-                                desc: "SSSTS and SMSTS qualified leads for project delivery.",
+                                desc: "SSSTS and SMSTS qualified leads for seamless project delivery.",
                                 features: [
                                     "Site Supervisors",
                                     "Site Managers",
@@ -225,21 +195,21 @@ const LabourHire = () => {
                         ].map((service, i) => (
                             <div
                                 key={i}
-                                className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col"
+                                className="bg-white p-8 md:p-10 flex flex-col group transition-colors"
                             >
-                                <h3 className="text-xl font-bold mb-4 text-[#FF8C00]">
+                                <h3 className="text-lg font-bold mb-4 md:mb-6 text-black uppercase tracking-tight">
                                     {service.title}
                                 </h3>
-                                <p className="text-gray-600 font-inter text-sm mb-6 flex-grow">
+                                <p className="text-gray-600 font-inter text-sm mb-6 md:mb-10 flex-grow leading-relaxed">
                                     {service.desc}
                                 </p>
-                                <ul className="space-y-3">
+                                <ul className="space-y-4 pt-6 md:pt-8 border-t border-stone-200">
                                     {service.features.map((f, j) => (
                                         <li
                                             key={j}
-                                            className="flex items-center gap-2 text-xs font-bold text-gray-800"
+                                            className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-widest text-black"
                                         >
-                                            <div className="w-1.5 h-1.5 bg-[#FF8C00] rounded-full"></div>
+                                            <div className="w-1.5 h-1.5 bg-[#FF8C00]"></div>
                                             {f}
                                         </li>
                                     ))}
@@ -249,29 +219,29 @@ const LabourHire = () => {
                     </div>
 
                     {/* Flexible Support */}
-                    <div className="mt-16 bg-black text-white p-10 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div className="mt-12 md:mt-20 bg-black text-white p-8 md:p-16 flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-12 border-l-[12px] border-[#FF8C00]">
                         <div>
-                            <h3 className="text-2xl font-bold mb-2">
+                            <h3 className="text-2xl md:text-3xl font-bold mb-4 tracking-tight">
                                 Flexible Workforce Support
                             </h3>
-                            <p className="text-gray-400 font-inter">
-                                Tailored supply to meet your project's specific
-                                demands.
+                            <p className="text-gray-400 font-inter text-lg">
+                                Scalable supply models tailored to your
+                                project's evolving demands.
                             </p>
                         </div>
-                        <div className="flex flex-wrap gap-4">
+                        <div className="grid grid-cols-2 gap-4 w-full lg:w-auto">
                             {[
                                 "Short-term Cover",
                                 "Long-term Placements",
                                 "Full Gang Supply",
                                 "Individual Specialists",
                             ].map((t, i) => (
-                                <span
+                                <div
                                     key={i}
-                                    className="bg-white/10 px-5 py-2 rounded-full text-xs font-bold border border-white/20"
+                                    className="bg-white/5 px-4 md:px-6 py-3 md:py-4 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-center"
                                 >
                                     {t}
-                                </span>
+                                </div>
                             ))}
                         </div>
                     </div>
@@ -282,57 +252,69 @@ const LabourHire = () => {
             <section
                 id="difference"
                 ref={differenceRef}
-                className="py-24 px-5 bg-white overflow-hidden"
+                className="py-16 md:py-32 px-5 bg-white"
             >
                 <div className="max-w-7xl mx-auto">
-                    <div className="flex flex-col lg:flex-row gap-16">
-                        <div className="lg:w-1/3">
-                            <h2 className="text-4xl font-bold mb-6 text-black">
-                                OUR{" "}
+                    <div className="flex flex-col lg:flex-row gap-12 md:gap-24">
+                        <div className="lg:w-2/5">
+                            <h2 className="text-4xl font-bold mb-6 md:mb-8 text-black tracking-tight">
+                                THE VANTAGE{" "}
                                 <span className="text-[#FF8C00]">
                                     DIFFERENCE
                                 </span>
                             </h2>
-                            <p className="text-gray-600 font-inter leading-relaxed">
+                            <p className="text-gray-600 font-inter text-lg leading-relaxed mb-6 md:mb-10">
                                 Unlike typical labour providers, we are backed
                                 by practical health & safety experience and a
                                 deep understanding of the groundworks and
                                 surfacing trades.
                             </p>
+                            <div className="h-1 w-24 bg-[#FF8C00]"></div>
                         </div>
-                        <div className="lg:w-2/3 grid grid-cols-1 md:grid-cols-3 gap-10">
+                        <div className="lg:w-3/5 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
                             <div>
-                                <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center mb-6">
-                                    <ShieldCheck className="text-[#FF8C00]" />
+                                <div className="w-14 h-14 border-2 border-stone-100 flex items-center justify-center mb-6 md:mb-8 group-hover:border-[#FF8C00] transition-colors">
+                                    <ShieldCheck
+                                        className="text-[#FF8C00]"
+                                        size={28}
+                                    />
                                 </div>
-                                <h4 className="font-bold mb-4">Safety Led</h4>
-                                <p className="text-sm text-gray-600 font-inter leading-relaxed">
+                                <h4 className="font-bold mb-4 uppercase text-sm tracking-widest text-black">
+                                    Safety Led
+                                </h4>
+                                <p className="text-sm text-gray-500 font-inter leading-relaxed">
                                     Our operatives understand RAMS and safe
                                     systems of work, leading to higher standards
                                     of site behaviour and reduced risk.
                                 </p>
                             </div>
                             <div>
-                                <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center mb-6">
-                                    <Target className="text-[#FF8C00]" />
+                                <div className="w-14 h-14 border-2 border-stone-100 flex items-center justify-center mb-6 md:mb-8">
+                                    <Target
+                                        className="text-[#FF8C00]"
+                                        size={28}
+                                    />
                                 </div>
-                                <h4 className="font-bold mb-4">
-                                    Quality & Reliability
+                                <h4 className="font-bold mb-4 uppercase text-sm tracking-widest text-black">
+                                    Quality
                                 </h4>
-                                <p className="text-sm text-gray-600 font-inter leading-relaxed">
+                                <p className="text-sm text-gray-500 font-inter leading-relaxed">
                                     We prioritise people who turn up and
                                     perform, ensuring work is completed to the
                                     correct standard with a strong work ethic.
                                 </p>
                             </div>
                             <div>
-                                <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center mb-6">
-                                    <Construction className="text-[#FF8C00]" />
+                                <div className="w-14 h-14 border-2 border-stone-100 flex items-center justify-center mb-6 md:mb-8">
+                                    <Construction
+                                        className="text-[#FF8C00]"
+                                        size={28}
+                                    />
                                 </div>
-                                <h4 className="font-bold mb-4">
-                                    Industry Experience
+                                <h4 className="font-bold mb-4 uppercase text-sm tracking-widest text-black">
+                                    Expertise
                                 </h4>
-                                <p className="text-sm text-gray-600 font-inter leading-relaxed">
+                                <p className="text-sm text-gray-500 font-inter leading-relaxed">
                                     We understand site pressures, programme
                                     demands, and client expectations because we
                                     come from the trade.
@@ -347,15 +329,15 @@ const LabourHire = () => {
             <section
                 id="sectors"
                 ref={sectorsRef}
-                className="py-24 px-5 bg-gray-900 text-white"
+                className="py-16 md:py-32 px-5 bg-gray-950 text-white"
             >
                 <div className="max-w-7xl mx-auto">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-24 items-center">
                         <div>
-                            <h2 className="text-3xl font-bold mb-10">
+                            <h2 className="text-3xl font-bold mb-8 md:mb-12 tracking-tight">
                                 SECTORS WE SUPPORT
                             </h2>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-10">
+                            <div className="grid grid-cols-1 gap-y-6 md:gap-y-8">
                                 {[
                                     "Housebuilding Developments",
                                     "Groundworks & Civil Engineering",
@@ -365,26 +347,27 @@ const LabourHire = () => {
                                 ].map((sector, i) => (
                                     <div
                                         key={i}
-                                        className="flex items-center gap-3"
+                                        className="flex items-center gap-6 group"
                                     >
-                                        <div className="w-2 h-2 bg-[#FF8C00] rounded-full"></div>
-                                        <span className="font-bold text-sm tracking-wide">
+                                        <div className="w-8 h-px bg-[#FF8C00]"></div>
+                                        <span className="font-bold text-sm tracking-[0.2em] uppercase text-gray-300 group-hover:text-white transition-colors">
                                             {sector}
                                         </span>
                                     </div>
                                 ))}
                             </div>
                         </div>
-                        <div className="bg-white/5 p-12 rounded-3xl border border-white/10 text-center">
-                            <h3 className="text-[#FF8C00] text-sm font-bold tracking-widest mb-4">
+                        <div className="bg-white/5 p-8 md:p-16 border border-white/10 relative">
+                            <div className="absolute top-0 left-0 w-2 h-full bg-[#FF8C00]"></div>
+                            <h3 className="text-[#FF8C00] text-xs font-bold tracking-[0.3em] mb-6 md:mb-8 uppercase">
                                 OUR PROMISE
                             </h3>
-                            <p className="text-2xl font-bold leading-relaxed mb-8">
-                                We aim to deliver more than labour — we provide
-                                trusted, competent individuals who contribute to
-                                the success of your project.
+                            <p className="text-2xl md:text-3xl font-bold leading-tight mb-8 md:mb-12 tracking-tight">
+                                We deliver trusted, competent individuals who
+                                contribute directly to the success and safety of
+                                your project.
                             </p>
-                            <div className="justify-center gap-6 text-xs font-bold uppercase tracking-widest text-[#FF8C00] hidden md:flex">
+                            <div className="flex gap-4 md:gap-8 text-[10px] font-bold uppercase tracking-[0.4em] text-[#FF8C00]/60">
                                 <span>Competence</span>
                                 <span>•</span>
                                 <span>Safety</span>
@@ -396,115 +379,134 @@ const LabourHire = () => {
                 </div>
             </section>
 
-            {/* Contact Section */}
+            {/* Contact & Footer Section */}
             <section
                 id="contact-labour"
                 ref={contactRef}
-                className="py-24 px-5 bg-white"
+                className="min-h-screen flex flex-col bg-white"
             >
-                <div className="max-w-7xl mx-auto">
-                    <div className="bg-black text-white rounded-[40px] overflow-hidden flex flex-col lg:flex-row">
-                        <div className="lg:w-1/2 p-12 md:p-20">
-                            <h2 className="text-4xl font-bold mb-8">
-                                REQUEST WORKFORCE
-                            </h2>
-                            <p className="text-gray-400 font-inter text-lg mb-10">
-                                Need skilled, safety-conscious labour for your
-                                project? Get in touch with our team today to
-                                discuss your requirements.
-                            </p>
-                            <div className="space-y-6">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-10 h-10 bg-[#FF8C00]/20 rounded-full flex items-center justify-center">
-                                        <Zap
-                                            size={18}
-                                            className="text-[#FF8C00]"
-                                        />
+                <div className="flex-grow flex items-center py-8 md:py-20 px-5">
+                    <div className="max-w-7xl mx-auto w-full">
+                        <div className="bg-black text-white flex flex-col lg:flex-row border border-gray-800">
+                            <div className="lg:w-1/2 p-8 md:p-20 border-b lg:border-b-0 lg:border-r border-gray-800">
+                                <h2 className="text-3xl md:text-4xl font-bold mb-6 md:mb-8 tracking-tight">
+                                    REQUEST WORKFORCE
+                                </h2>
+                                <p className="text-gray-400 font-inter text-lg mb-8 md:mb-12 leading-relaxed">
+                                    Partner with Vantage for skilled,
+                                    safety-conscious labour. Our team is ready
+                                    to discuss your project requirements.
+                                </p>
+                                <div className="space-y-6 md:space-y-8">
+                                    <div className="flex items-center gap-6">
+                                        <div className="w-12 h-12 border border-gray-800 flex items-center justify-center">
+                                            <Zap
+                                                size={20}
+                                                className="text-[#FF8C00]"
+                                            />
+                                        </div>
+                                        <span className="font-bold text-sm uppercase tracking-widest">
+                                            Rapid Response Support
+                                        </span>
                                     </div>
-                                    <span className="font-bold">
-                                        Rapid Response Support
-                                    </span>
-                                </div>
-                                <div className="flex items-center gap-4">
-                                    <div className="w-10 h-10 bg-[#FF8C00]/20 rounded-full flex items-center justify-center">
-                                        <Users
-                                            size={18}
-                                            className="text-[#FF8C00]"
-                                        />
+                                    <div className="flex items-center gap-6">
+                                        <div className="w-12 h-12 border border-gray-800 flex items-center justify-center">
+                                            <Users
+                                                size={20}
+                                                className="text-[#FF8C00]"
+                                            />
+                                        </div>
+                                        <span className="font-bold text-sm uppercase tracking-widest">
+                                            Fully Vetted Workforce
+                                        </span>
                                     </div>
-                                    <span className="font-bold">
-                                        Fully Vetted Workforce
-                                    </span>
                                 </div>
                             </div>
-                        </div>
-                        <div className="lg:w-1/2 bg-gray-50 p-12 md:p-20 text-black">
-                            <form className="space-y-6">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <input
-                                        type="text"
-                                        placeholder="First Name"
-                                        className="w-full bg-white border border-gray-200 px-6 py-4 rounded-xl font-inter focus:outline-none focus:border-[#FF8C00]"
-                                    />
-                                    <input
-                                        type="text"
-                                        placeholder="Last Name"
-                                        className="w-full bg-white border border-gray-200 px-6 py-4 rounded-xl font-inter focus:outline-none focus:border-[#FF8C00]"
-                                    />
-                                </div>
-                                <input
-                                    type="email"
-                                    placeholder="Email Address"
-                                    className="w-full bg-white border border-gray-200 px-6 py-4 rounded-xl font-inter focus:outline-none focus:border-[#FF8C00]"
-                                />
-                                <textarea
-                                    placeholder="How can we help?"
-                                    className="w-full bg-white border border-gray-200 px-6 py-4 rounded-xl font-inter h-32 focus:outline-none focus:border-[#FF8C00]"
-                                ></textarea>
-                                <button className="w-full bg-black text-white font-bold py-5 rounded-xl hover:bg-[#FF8C00] transition duration-300">
-                                    SEND ENQUIRY
-                                </button>
-                            </form>
+                            <div className="lg:w-1/2 bg-[#0a0a0a] p-8 md:p-20 text-black">
+                                <form className="space-y-6 md:space-y-8">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                                                First Name
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="w-full bg-transparent border-b border-gray-800 px-0 py-3 text-white font-inter focus:outline-none focus:border-[#FF8C00] transition-colors"
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                                                Last Name
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="w-full bg-transparent border-b border-gray-800 px-0 py-3 text-white font-inter focus:outline-none focus:border-[#FF8C00] transition-colors"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                                            Email Address
+                                        </label>
+                                        <input
+                                            type="email"
+                                            className="w-full bg-transparent border-b border-gray-800 px-0 py-3 text-white font-inter focus:outline-none focus:border-[#FF8C00] transition-colors"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                                            Message
+                                        </label>
+                                        <textarea className="w-full bg-transparent border-b border-gray-800 px-0 py-3 text-white font-inter h-32 focus:outline-none focus:border-[#FF8C00] transition-colors resize-none"></textarea>
+                                    </div>
+                                    <button className="w-full bg-[#FF8C00] text-black font-bold py-5 md:py-6 hover:bg-white transition-colors duration-300 uppercase tracking-widest text-sm">
+                                        SEND ENQUIRY
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </section>
 
-            {/* Footer */}
-            <footer className="bg-black text-white py-16 px-5 border-t border-white/10">
-                <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
-                    <div className="flex flex-col items-center md:items-start gap-4">
-                        <img src={logoWhite} className="h-4" />
-                        <p className="text-gray-500 font-inter text-xs">
-                            VANTAGE WORKPLACE SOLUTIONS LTD
+                <footer className="py-12 px-5 border-t border-stone-100">
+                    <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
+                        <div className="flex flex-col items-center md:items-start gap-4">
+                            <img src={logoBlack} className="h-6" />
+                            <p className="text-gray-500 font-inter text-xs">
+                                VANTAGE WORKPLACE SOLUTIONS LTD
+                            </p>
+                        </div>
+                        <div className="flex gap-8 text-xs font-bold text-gray-400">
+                            <span
+                                className="hover:text-black cursor-pointer transition-colors"
+                                onClick={() =>
+                                    window.scrollTo({
+                                        top: 0,
+                                        behavior: "smooth",
+                                    })
+                                }
+                            >
+                                HOME
+                            </span>
+                            <span
+                                className="hover:text-black cursor-pointer transition-colors"
+                                onClick={() => navigate("/safety")}
+                            >
+                                SAFETY
+                            </span>
+                            <span className="hover:text-black cursor-pointer transition-colors">
+                                PRIVACY POLICY
+                            </span>
+                        </div>
+                        <p className="font-inter text-[10px] text-gray-600 uppercase tracking-widest">
+                            © 2026 Part of the Vantage Group.
                         </p>
                     </div>
-                    <div className="flex gap-8 text-xs font-bold text-gray-400">
-                        <span
-                            className="hover:text-white cursor-pointer"
-                            onClick={() =>
-                                window.scrollTo({ top: 0, behavior: "smooth" })
-                            }
-                        >
-                            HOME
-                        </span>
-                        <span
-                            className="hover:text-white cursor-pointer"
-                            onClick={() => navigate("/safety")}
-                        >
-                            SAFETY
-                        </span>
-                        <span className="hover:text-white cursor-pointer">
-                            PRIVACY POLICY
-                        </span>
-                    </div>
-                    <p className="font-inter text-[10px] text-gray-600 uppercase tracking-widest">
-                        © 2026 Part of the Vantage Group.
-                    </p>
-                </div>
-            </footer>
+                </footer>
+            </section>
         </div>
     );
 };
 
 export default LabourHire;
+LabourHire;
