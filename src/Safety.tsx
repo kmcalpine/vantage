@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import headerImage from "./assets/header.jpg";
-import logoBlack from "./assets/logo-black.png";
+import logoBlack from "./assets/logo-black-icon.png";
 import { Eye, Layers, ShieldCheck, UserCheck, Zap } from "lucide-react";
 import Hero from "./components/Hero";
 
@@ -147,7 +147,7 @@ function Safety() {
                                 <h3 className="text-lg font-bold mb-4 md:mb-6 text-black uppercase tracking-tight">
                                     {pkg.title}
                                 </h3>
-                                <p className="text-gray-600 font-inter text-sm mb-6 md:mb-10 flex-grow leading-relaxed">
+                                <p className="text-gray-600 font-inter text-sm mb-6 md:mb-10 leading-relaxed">
                                     {pkg.content.description}
                                 </p>
                                 <ul className="space-y-4 pt-6 md:pt-8 border-t border-stone-200">

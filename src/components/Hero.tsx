@@ -1,5 +1,6 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
+import Logo from "./Logo";
 
 interface HeroProps {
     backgroundImage: string;
@@ -23,13 +24,12 @@ const Hero: React.FC<HeroProps> = ({
     description,
     primaryButtonText,
     primaryButtonAction,
-    secondaryButtonText,
-    secondaryButtonAction,
     themeColor,
     isDarkText = false,
 }) => {
     return (
         <div className="relative h-screen overflow-hidden">
+            <Logo />
             <div
                 className="absolute inset-0 bg-cover bg-center transition-transform duration-1000"
                 style={{
@@ -60,19 +60,13 @@ const Hero: React.FC<HeroProps> = ({
                     <div className="mt-10 flex flex-col sm:flex-row gap-5 opacity-0 animate-fade-in-up animation-delay-600">
                         <button
                             onClick={primaryButtonAction}
-                            className="px-10 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-black transition flex items-center justify-center gap-2 cursor-pointer"
+                            className="px-10 py-4 font-bold text-lg hover:bg-white hover:text-black transition flex items-center justify-center gap-2 cursor-pointer"
                             style={{
                                 backgroundColor: themeColor,
                                 color: isDarkText ? "black" : "white",
                             }}
                         >
                             {primaryButtonText} <ArrowRight size={20} />
-                        </button>
-                        <button
-                            onClick={secondaryButtonAction}
-                            className="border-2 border-white text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-black transition cursor-pointer"
-                        >
-                            {secondaryButtonText}
                         </button>
                     </div>
                 </div>

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import logoIcon from "./assets/logo-icon.png";
 import safetyHero from "./assets/header.jpg";
+import Logo from "./components/Logo";
 
 const SelectionPage = () => {
     const navigate = useNavigate();
@@ -21,9 +21,7 @@ const SelectionPage = () => {
                 selected ? "is-selecting" : ""
             }`}
         >
-            <div className="absolute top-4 left-4 z-20">
-                <img src={logoIcon} className="w-12 h-12"></img>
-            </div>
+            <Logo />
             <style>
                 {`
                 .selection-container {
@@ -183,7 +181,7 @@ const SelectionPage = () => {
                             Specialist H&S consultancy, CDM advisory, and
                             professional accreditation management.
                         </p>
-                        <button className="flex items-center gap-3 px-8 py-4 bg-[#22C55E] text-white font-bold transition-all hover:shadow-[0_0_30px_rgba(34,197,94,0.3)]">
+                        <button className="flex items-center gap-3 px-8 py-4 bg-[#22C55E] text-white font-bold transition-all cursor-pointer">
                             EXPLORE DIVISION{" "}
                             <ArrowRight
                                 size={20}
@@ -223,7 +221,7 @@ const SelectionPage = () => {
                             Reliable labour supply and safe workforce solutions
                             for construction and civil engineering.
                         </p>
-                        <button className="flex items-center gap-3 px-8 py-4 bg-[#FF8C00] text-black font-bold transition-all hover:shadow-[0_0_30px_rgba(255,140,0,0.3)]">
+                        <button className="flex items-center gap-3 px-8 py-4 bg-[#FF8C00] text-black font-bold transition-all cursor-pointer">
                             HIRE WORKFORCE{" "}
                             <ArrowRight
                                 size={20}
@@ -232,15 +230,6 @@ const SelectionPage = () => {
                         </button>
                     </div>
                 </div>
-            </div>
-
-            {/* Branding Tagline */}
-            <div
-                className={`absolute bottom-10 left-1/2 -translate-x-1/2 z-20 text-white/30 text-[10px] tracking-[0.5em] font-bold uppercase hidden md:block transition-opacity duration-500 ${
-                    selected ? "opacity-0" : "opacity-100"
-                }`}
-            >
-                Safety Led • Quality Driven • Industry Proven
             </div>
         </div>
     );

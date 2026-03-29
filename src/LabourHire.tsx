@@ -1,5 +1,5 @@
 import { useEffect, useCallback, useRef } from "react";
-import logoBlack from "./assets/logo-black.png";
+import logoBlack from "./assets/logo-black-icon.png";
 import {
     ShieldCheck,
     Users,
