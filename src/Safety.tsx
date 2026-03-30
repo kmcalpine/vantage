@@ -4,6 +4,8 @@ import headerImage from "./assets/header.jpg";
 import logoBlack from "./assets/logo-black-icon.png";
 import { Eye, Layers, ShieldCheck, UserCheck, Zap } from "lucide-react";
 import Hero from "./components/Hero";
+import Header from "./components/Header";
+import { useScroll } from "./hooks/useScroll";
 
 const useScrollTo = () => {
     return useCallback((ref: React.RefObject<HTMLElement | null>) => {
@@ -27,9 +29,11 @@ function Safety() {
 
     const scrollTo = useScrollTo();
     const navigate = useNavigate();
+    const isScrolled = useScroll();
 
     return (
         <div className="font-sora bg-white text-black">
+            <Header scrolled={isScrolled} />
             <Hero
                 backgroundImage={headerImage}
                 tagIcon={ShieldCheck}
@@ -684,9 +688,9 @@ const Services = () => {
                     <div className="w-12 h-1 bg-[#22C55E] mb-6"></div>
                     <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight text-black uppercase">
                         OUR <br />
-                        <span className="text-gray-400">SERVICES</span>
+                        <span className="text-[#22C55E]">SERVICES</span>
                     </h2>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex-col gap-2 hidden md:flex">
                         {_services.map((s) => (
                             <button
                                 key={s.id}
@@ -724,7 +728,7 @@ const Services = () => {
                         </div>
 
                         <div className="flex items-start gap-6 mb-8">
-                            <div className="w-14 h-14 bg-black text-[#22C55E] flex items-center justify-center shrink-0">
+                            <div className="w-14 h-14 bg-[#22C55E]/15 text-[#22C55E] flex items-center justify-center shrink-0">
                                 <s.icon size={28} />
                             </div>
                             <div>
@@ -770,28 +774,6 @@ const Footer = () => {
                     <p className="text-gray-500 font-inter text-xs">
                         VANTAGE SAFETY SERVICES LTD
                     </p>
-                </div>
-                <div className="flex gap-8 text-xs font-bold text-gray-400">
-                    <span
-                        className="hover:text-black cursor-pointer transition-colors"
-                        onClick={() =>
-                            window.scrollTo({
-                                top: 0,
-                                behavior: "smooth",
-                            })
-                        }
-                    >
-                        HOME
-                    </span>
-                    <span
-                        className="hover:text-black cursor-pointer transition-colors"
-                        onClick={() => navigate("/labour-hire")}
-                    >
-                        LABOUR
-                    </span>
-                    <span className="hover:text-black cursor-pointer transition-colors">
-                        PRIVACY POLICY
-                    </span>
                 </div>
                 <p className="font-inter text-[10px] text-gray-600 uppercase tracking-widest">
                     © 2026 Part of the Vantage Group.

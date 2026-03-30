@@ -476,28 +476,6 @@ const LabourHire = () => {
                                 VANTAGE WORKPLACE SOLUTIONS LTD
                             </p>
                         </div>
-                        <div className="flex gap-8 text-xs font-bold text-gray-400">
-                            <span
-                                className="hover:text-black cursor-pointer transition-colors"
-                                onClick={() =>
-                                    window.scrollTo({
-                                        top: 0,
-                                        behavior: "smooth",
-                                    })
-                                }
-                            >
-                                HOME
-                            </span>
-                            <span
-                                className="hover:text-black cursor-pointer transition-colors"
-                                onClick={() => navigate("/safety")}
-                            >
-                                SAFETY
-                            </span>
-                            <span className="hover:text-black cursor-pointer transition-colors">
-                                PRIVACY POLICY
-                            </span>
-                        </div>
                         <p className="font-inter text-[10px] text-gray-600 uppercase tracking-widest">
                             © 2026 Part of the Vantage Group.
                         </p>

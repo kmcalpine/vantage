@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png";
-import labourLogo from "../assets/vantage-labour.png";
+import logo from "../assets/logo-black-icon.png";
 
 interface NavItemProps {
     label: string;
@@ -59,27 +58,16 @@ const Header = ({
 
     return (
         <div
-            className={`flex w-full items-center justify-between bg-white z-50 transition-shadow duration-300 ${
+            className={`flex absolute top-0 w-full px-4 items-center justify-between bg-white z-100 transition-shadow duration-300 ${
                 scrolled
-                    ? "shadow-lg fixed top-0 left-0 right-0 h-[80px] px-5 md:px-10 2xl:px-60"
-                    : "h-[80px] md:h-[120px]"
+                    ? "shadow-lg fixed top-0 left-0 right-0 h-[70px] px-5"
+                    : "hidden"
             }`}
         >
             <div className="flex items-center gap-4">
-                <button
-                    onClick={() => navigate("/")}
-                    className="p-2 hover:bg-gray-100 transition-colors cursor-pointer group"
-                    title="Back to selection"
-                >
-                    <ArrowLeft
-                        size={20}
-                        style={{ transition: "color 0.3s" }}
-                        className="group-hover:text-[var(--theme-color)]"
-                    />
-                </button>
                 <img
-                    src={isLabour ? labourLogo : logo}
-                    className="h-[25px] cursor-pointer"
+                    src={logo}
+                    className="h-6 cursor-pointer"
                     onClick={() => {
                         window.scrollTo({ top: 0, behavior: "smooth" });
                     }}
@@ -92,20 +80,8 @@ const Header = ({
                 }
             `}</style>
 
-            <div className="hidden lg:flex items-center gap-10">
+            <div className="hidden md:flex items-center gap-10">
                 <ul className="flex gap-10 items-center m-0 p-0">
-                    {navItems.map((item, index) => (
-                        <NavItem
-                            key={index}
-                            label={item.label}
-                            onClick={() => {
-                                item.action();
-                                setShowMenu(false);
-                            }}
-                            isInter={item.isInter}
-                            themeColor={themeColor}
-                        />
-                    ))}
                     <button
                         onClick={contactAction}
                         style={{ backgroundColor: "black" }}
@@ -120,15 +96,6 @@ const Header = ({
                         Enquire Now
                     </button>
                 </ul>
-            </div>
-
-            <div className="lg:hidden flex items-center">
-                <button
-                    className="w-[25px] h-[25px] flex items-center justify-center cursor-pointer"
-                    onClick={() => setShowMenu((prev) => !prev)}
-                >
-                    <Menu />
-                </button>
             </div>
 
             {showMenu && (
