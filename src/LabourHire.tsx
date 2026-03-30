@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Hero from "./components/Hero";
+import { useScroll } from "./hooks/useScroll";
+import Header from "./components/Header";
 
 const LabourHire = () => {
     const navigate = useNavigate();
@@ -36,6 +38,7 @@ const LabourHire = () => {
     };
 
     const scrollTo = useScrollTo();
+    const isScrolled = useScroll();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -48,6 +51,11 @@ const LabourHire = () => {
 
     return (
         <div className="font-sora bg-white text-black">
+            <Header
+                scrolled={isScrolled}
+                contactAction={() => scrollTo(contactRef)}
+                themeColor="#FF8C00"
+            />
             <Hero
                 backgroundImage="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop"
                 tagIcon={Users}

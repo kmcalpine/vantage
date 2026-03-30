@@ -33,7 +33,11 @@ function Safety() {
 
     return (
         <div className="font-sora bg-white text-black">
-            <Header scrolled={isScrolled} />
+            <Header
+                scrolled={isScrolled}
+                contactAction={() => scrollTo(contactRef)}
+                themeColor="#22C55E"
+            />
             <Hero
                 backgroundImage={headerImage}
                 tagIcon={ShieldCheck}
@@ -764,8 +768,6 @@ const Services = () => {
 };
 
 const Footer = () => {
-    const navigate = useNavigate();
-
     return (
         <footer className="py-12 px-5 border-t border-stone-100 bg-white text-black">
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
