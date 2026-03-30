@@ -191,7 +191,7 @@ function Safety() {
                 ref={pricingRef}
                 className="py-16 md:py-32 px-5 bg-gray-50 border-y border-stone-200"
             >
-                <div className="max-w-7xl mx-auto px-5">
+                <div className="max-w-7xl mx-auto">
                     <PriceTable />
                 </div>
             </section>
