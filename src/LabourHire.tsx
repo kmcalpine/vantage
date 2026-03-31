@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import Hero from "./components/Hero";
 import { useScroll } from "./hooks/useScroll";
 import Header from "./components/Header";
+import headerImage from "./assets/vantage-labour.jpg";
 
 const LabourHire = () => {
     const navigate = useNavigate();
@@ -57,9 +58,9 @@ const LabourHire = () => {
                 themeColor="#FF8C00"
             />
             <Hero
-                backgroundImage="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop"
-                tagIcon={Users}
+                backgroundImage={headerImage}
                 tagLabel="VANTAGE WORKPLACE SOLUTIONS"
+                tagIcon={Users}
                 title={
                     <>
                         SKILLED LABOUR.
@@ -481,12 +482,9 @@ const LabourHire = () => {
                         <div className="flex flex-col items-center md:items-start gap-4">
                             <img src={logoBlack} className="h-6" />
                             <p className="text-gray-500 font-inter text-xs">
-                                VANTAGE WORKPLACE SOLUTIONS LTD
+                                © 2026 VANTAGE SAFETY SERVICES
                             </p>
                         </div>
-                        <p className="font-inter text-[10px] text-gray-600 uppercase tracking-widest">
-                            © 2026 Part of the Vantage Group.
-                        </p>
                     </div>
                 </footer>
             </section>

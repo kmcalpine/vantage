@@ -774,12 +774,9 @@ const Footer = () => {
                 <div className="flex flex-col items-center md:items-start gap-4">
                     <img src={logoBlack} className="h-6" alt="Vantage Logo" />
                     <p className="text-gray-500 font-inter text-xs">
-                        VANTAGE SAFETY SERVICES LTD
+                        © 2026 VANTAGE SAFETY SERVICES
                     </p>
                 </div>
-                <p className="font-inter text-[10px] text-gray-600 uppercase tracking-widest">
-                    © 2026 Part of the Vantage Group.
-                </p>
             </div>
         </footer>
     );

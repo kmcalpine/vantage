@@ -11,7 +11,7 @@ const Header = ({ scrolled, contactAction, themeColor }: HeaderProps) => {
         <div
             className={`flex absolute top-0 w-full px-4 items-center justify-between bg-white z-100 transition-shadow duration-300 ${
                 scrolled
-                    ? "shadow-lg fixed top-0 left-0 right-0 h-[70px] px-5"
+                    ? "shadow-lg fixed top-0 left-0 right-0 h-[70px] px-4"
                     : "hidden"
             }`}
         >
