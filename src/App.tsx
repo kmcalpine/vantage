@@ -1,7 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import SelectionPage from "./SelectionPage";
 import Safety from "./Safety";
-import LabourHire from "./LabourHire";
 import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
