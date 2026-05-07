@@ -418,7 +418,8 @@ const Contact = () => {
         setLoading(true);
         setSuccess(false);
         try {
-            const res = await fetch("http://localhost:8085/contact", {
+            const apiUrl = "https://api.shouts.gg/vantage-contact";
+            const res = await fetch(`${apiUrl}/contact`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
