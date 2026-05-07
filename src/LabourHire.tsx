@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useRef } from "react";
+import { useEffect, useCallback, useRef, useState } from "react";
 import logoBlack from "./assets/logo-black-icon.png";
 import {
     ShieldCheck,
@@ -40,6 +40,47 @@ const LabourHire = () => {
 
     const scrollTo = useScrollTo();
     const isScrolled = useScroll();
+
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+
+    const sendEmail = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        setSuccess(false);
+        try {
+            const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8085";
+            const targetUrl = apiUrl.endsWith("/")
+                ? `${apiUrl}vantage-contact/`
+                : `${apiUrl}/vantage-contact/`;
+            const res = await fetch(targetUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    firstName,
+                    lastName,
+                    email,
+                    message,
+                }),
+            });
+            if (res.status === 200) {
+                setSuccess(true);
+                setFirstName("");
+                setLastName("");
+                setEmail("");
+                setMessage("");
+            }
+        } catch (error) {
+            console.error("Error sending email:", error);
+        }
+        setLoading(false);
+    };
 
     useEffect(() => {
         const handleScroll = () => {
@@ -432,46 +473,104 @@ const LabourHire = () => {
                                 </div>
                             </div>
                             <div className="lg:w-1/2 bg-[#0a0a0a] p-8 md:p-20 text-black">
-                                <form className="space-y-6 md:space-y-8">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                                {success ? (
+                                    <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
+                                        <div className="w-16 h-16 bg-[#FF8C00] rounded-full flex items-center justify-center mb-4">
+                                            <CheckCircle
+                                                size={32}
+                                                className="text-black"
+                                            />
+                                        </div>
+                                        <h3 className="text-2xl font-bold text-white uppercase tracking-tight">
+                                            MESSAGE SENT
+                                        </h3>
+                                        <p className="text-gray-400 font-inter">
+                                            Thank you for your enquiry. Our team
+                                            will get back to you shortly.
+                                        </p>
+                                        <button
+                                            onClick={() => setSuccess(false)}
+                                            className="text-[#FF8C00] font-bold text-sm uppercase tracking-widest pt-4"
+                                        >
+                                            Send another message
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <form
+                                        onSubmit={sendEmail}
+                                        className="space-y-6 md:space-y-8"
+                                    >
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                                            <div className="space-y-2">
+                                                <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                                                    First Name
+                                                </label>
+                                                <input
+                                                    required
+                                                    type="text"
+                                                    value={firstName}
+                                                    onChange={(e) =>
+                                                        setFirstName(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    className="w-full bg-transparent border-b border-gray-800 px-0 py-3 text-white font-inter focus:outline-none focus:border-[#FF8C00] transition-colors"
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                                                    Last Name
+                                                </label>
+                                                <input
+                                                    required
+                                                    type="text"
+                                                    value={lastName}
+                                                    onChange={(e) =>
+                                                        setLastName(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    className="w-full bg-transparent border-b border-gray-800 px-0 py-3 text-white font-inter focus:outline-none focus:border-[#FF8C00] transition-colors"
+                                                />
+                                            </div>
+                                        </div>
                                         <div className="space-y-2">
                                             <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-                                                First Name
+                                                Email Address
                                             </label>
                                             <input
-                                                type="text"
+                                                required
+                                                type="email"
+                                                value={email}
+                                                onChange={(e) =>
+                                                    setEmail(e.target.value)
+                                                }
                                                 className="w-full bg-transparent border-b border-gray-800 px-0 py-3 text-white font-inter focus:outline-none focus:border-[#FF8C00] transition-colors"
                                             />
                                         </div>
                                         <div className="space-y-2">
                                             <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-                                                Last Name
+                                                Message
                                             </label>
-                                            <input
-                                                type="text"
-                                                className="w-full bg-transparent border-b border-gray-800 px-0 py-3 text-white font-inter focus:outline-none focus:border-[#FF8C00] transition-colors"
-                                            />
+                                            <textarea
+                                                required
+                                                value={message}
+                                                onChange={(e) =>
+                                                    setMessage(e.target.value)
+                                                }
+                                                className="w-full bg-transparent border-b border-gray-800 px-0 py-3 text-white font-inter h-32 focus:outline-none focus:border-[#FF8C00] transition-colors resize-none"
+                                            ></textarea>
                                         </div>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-                                            Email Address
-                                        </label>
-                                        <input
-                                            type="email"
-                                            className="w-full bg-transparent border-b border-gray-800 px-0 py-3 text-white font-inter focus:outline-none focus:border-[#FF8C00] transition-colors"
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-                                            Message
-                                        </label>
-                                        <textarea className="w-full bg-transparent border-b border-gray-800 px-0 py-3 text-white font-inter h-32 focus:outline-none focus:border-[#FF8C00] transition-colors resize-none"></textarea>
-                                    </div>
-                                    <button className="w-full bg-[#FF8C00] text-black font-bold py-5 md:py-6 hover:bg-white transition-colors duration-300 uppercase tracking-widest text-sm">
-                                        SEND ENQUIRY
-                                    </button>
-                                </form>
+                                        <button
+                                            disabled={loading}
+                                            className="w-full bg-[#FF8C00] text-black font-bold py-5 md:py-6 hover:bg-white disabled:bg-gray-700 disabled:text-gray-500 transition-colors duration-300 uppercase tracking-widest text-sm"
+                                        >
+                                            {loading
+                                                ? "SENDING..."
+                                                : "SEND ENQUIRY"}
+                                        </button>
+                                    </form>
+                                )}
                             </div>
                         </div>
                     </div>

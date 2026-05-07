@@ -418,8 +418,8 @@ const Contact = () => {
         setLoading(true);
         setSuccess(false);
         try {
-            const apiUrl = "https://api.shouts.gg";
-            const res = await fetch(`${apiUrl}/vantage-contact`, {
+            // Ensure URL ends with a slash to avoid 301 redirect issues with CORS
+            const res = await fetch(`https://api.shouts.gg/vantage-contact/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
