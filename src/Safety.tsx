@@ -419,18 +419,21 @@ const Contact = () => {
         setSuccess(false);
         try {
             // Ensure URL ends with a slash to avoid 301 redirect issues with CORS
-            const res = await fetch(`https://api.shouts.gg/vantage-contact/`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
+            const res = await fetch(
+                `https://api.vantagesafetyservices.co.uk/`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        firstName,
+                        lastName,
+                        email,
+                        message,
+                    }),
                 },
-                body: JSON.stringify({
-                    firstName,
-                    lastName,
-                    email,
-                    message,
-                }),
-            });
+            );
             if (res.status === 200) {
                 setSuccess(true);
                 setFirstName("");
