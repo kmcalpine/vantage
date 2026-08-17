@@ -57,7 +57,7 @@ function Safety() {
                         <span className="text-[#22C55E]">CONSTRUCTION</span>
                     </>
                 }
-                description="Wiltshire-based health & safety consultancy and CDM advisory for construction, groundworks and surfacing contractors across the South West."
+                description="Wiltshire-based health & safety consultancy and CDM advisory for construction, groundworks and surfacing contractors."
                 primaryButtonText="ENQUIRE NOW"
                 primaryButtonAction={() => scrollTo(contactRef)}
                 secondaryButtonText="LABOUR SERVICES"
@@ -86,8 +86,8 @@ function Safety() {
                                 consultancy providing clear, practical, and
                                 reliable health &amp; safety support to
                                 construction, groundworks, and surfacing
-                                businesses in Swindon, Salisbury, Chippenham,
-                                Trowbridge and across the wider South West.
+                                businesses across Wiltshire — including Swindon,
+                                Salisbury, Chippenham, Trowbridge and Devizes.
                             </p>
                             <p className="text-lg text-gray-600 font-inter leading-relaxed italic border-l-4 border-[#22C55E] pl-8 py-2">
                                 "We specialise in delivering straightforward,
@@ -311,8 +311,7 @@ const PriceTable = () => {
                     <p className="text-gray-600 font-inter text-xl leading-relaxed">
                         Specialist ad-hoc support for contractors and
                         developers. Professional guidance provided on a
-                        project-by-project basis across Wiltshire and the South
-                        West.
+                        project-by-project basis across Wiltshire.
                     </p>
                 </div>
             </div>
@@ -825,8 +824,8 @@ const Footer = () => {
                     <p className="text-gray-500 font-inter text-xs">
                         Wiltshire-based health &amp; safety consultancy and CDM
                         advisory. Serving Swindon, Salisbury, Chippenham,
-                        Trowbridge, Devizes and across Gloucestershire,
-                        Somerset, Dorset, Bristol, Devon and Cornwall.
+                        Trowbridge, Devizes, Marlborough, Warminster and
+                        Melksham.
                     </p>
                 </div>
             </div>
