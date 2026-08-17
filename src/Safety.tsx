@@ -57,7 +57,7 @@ function Safety() {
                         <span className="text-[#22C55E]">CONSTRUCTION</span>
                     </>
                 }
-                description="Professional health & safety consultancy and CDM advisory for construction, groundworks and surfacing contractors across South West England."
+                description="Wiltshire-based health & safety consultancy and CDM advisory for construction, groundworks and surfacing contractors across the South West."
                 primaryButtonText="ENQUIRE NOW"
                 primaryButtonAction={() => scrollTo(contactRef)}
                 secondaryButtonText="LABOUR SERVICES"
@@ -78,16 +78,16 @@ function Safety() {
                             <h2 className="text-4xl md:text-5xl font-bold mb-6 md:mb-10 tracking-tight leading-tight text-black">
                                 HEALTH &amp; SAFETY SUPPORT FOR{" "}
                                 <span className="text-[#22C55E]">
-                                    SOUTH WEST CONTRACTORS
+                                    WILTSHIRE CONTRACTORS
                                 </span>
                             </h2>
                             <p className="text-xl text-gray-800 font-inter leading-relaxed mb-6 md:mb-8">
-                                Vantage Safety Services Ltd provides clear,
-                                practical, and reliable health &amp; safety
-                                support to construction, groundworks, and
-                                surfacing businesses across Devon, Somerset,
-                                Dorset, Cornwall, Bristol, Gloucestershire and
-                                Wiltshire.
+                                Vantage Safety Services Ltd is a Wiltshire-based
+                                consultancy providing clear, practical, and
+                                reliable health &amp; safety support to
+                                construction, groundworks, and surfacing
+                                businesses in Swindon, Salisbury, Chippenham,
+                                Trowbridge and across the wider South West.
                             </p>
                             <p className="text-lg text-gray-600 font-inter leading-relaxed italic border-l-4 border-[#22C55E] pl-8 py-2">
                                 "We specialise in delivering straightforward,
@@ -311,7 +311,8 @@ const PriceTable = () => {
                     <p className="text-gray-600 font-inter text-xl leading-relaxed">
                         Specialist ad-hoc support for contractors and
                         developers. Professional guidance provided on a
-                        project-by-project basis across South West England.
+                        project-by-project basis across Wiltshire and the South
+                        West.
                     </p>
                 </div>
             </div>
@@ -822,9 +823,10 @@ const Footer = () => {
                         © 2026 VANTAGE SAFETY SERVICES LTD
                     </p>
                     <p className="text-gray-500 font-inter text-xs">
-                        Health &amp; safety consultancy and CDM advisory across
-                        Devon, Somerset, Dorset, Cornwall, Bristol,
-                        Gloucestershire and Wiltshire.
+                        Wiltshire-based health &amp; safety consultancy and CDM
+                        advisory. Serving Swindon, Salisbury, Chippenham,
+                        Trowbridge, Devizes and across Gloucestershire,
+                        Somerset, Dorset, Bristol, Devon and Cornwall.
                     </p>
                 </div>
             </div>
