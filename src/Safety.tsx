@@ -47,15 +47,17 @@ function Safety() {
                 backgroundImageSrcSet={headerSrcSet}
                 backgroundImageAlt="Aerial view of a large UK construction site under active groundworks"
                 tagIcon={ShieldCheck}
-                tagLabel="VANTAGE SAFETY SERVICES"
+                tagLabel="PROTECTING PEOPLE. MANAGING RISK."
                 title={
                     <>
-                        PROTECTING PEOPLE.
+                        HEALTH &amp; SAFETY
                         <br />
-                        <span className="text-[#22C55E]">MANAGING RISK.</span>
+                        CONSULTANTS FOR
+                        <br />
+                        <span className="text-[#22C55E]">CONSTRUCTION</span>
                     </>
                 }
-                description="Professional health & safety consultancy and CDM advisory solutions designed to keep your projects compliant and your workforce safe."
+                description="Professional health & safety consultancy and CDM advisory for construction, groundworks and surfacing contractors across South West England."
                 primaryButtonText="ENQUIRE NOW"
                 primaryButtonAction={() => scrollTo(contactRef)}
                 secondaryButtonText="LABOUR SERVICES"
@@ -74,16 +76,18 @@ function Safety() {
                         <div>
                             <div className="w-20 h-1.5 bg-[#22C55E] mb-6 md:mb-10"></div>
                             <h2 className="text-4xl md:text-5xl font-bold mb-6 md:mb-10 tracking-tight leading-tight text-black">
-                                EXPERT GUIDANCE. <br />
+                                HEALTH &amp; SAFETY SUPPORT FOR{" "}
                                 <span className="text-[#22C55E]">
-                                    TOTAL COMPLIANCE.
+                                    SOUTH WEST CONTRACTORS
                                 </span>
                             </h2>
                             <p className="text-xl text-gray-800 font-inter leading-relaxed mb-6 md:mb-8">
-                                At Vantage Safety Services, we provide clear,
-                                practical, and reliable health & safety support
-                                to construction, groundworks, and surfacing
-                                businesses across the UK.
+                                Vantage Safety Services Ltd provides clear,
+                                practical, and reliable health &amp; safety
+                                support to construction, groundworks, and
+                                surfacing businesses across Devon, Somerset,
+                                Dorset, Cornwall, Bristol, Gloucestershire and
+                                Wiltshire.
                             </p>
                             <p className="text-lg text-gray-600 font-inter leading-relaxed italic border-l-4 border-[#22C55E] pl-8 py-2">
                                 "We specialise in delivering straightforward,
@@ -139,7 +143,7 @@ function Safety() {
                     <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-20 gap-8">
                         <div className="max-w-2xl">
                             <h2 className="text-4xl font-bold mb-4 md:mb-6 tracking-tight text-black">
-                                CONSULTANCY PACKAGES
+                                HEALTH &amp; SAFETY CONSULTANCY PACKAGES
                             </h2>
                             <p className="text-gray-600 font-inter text-lg">
                                 Comprehensive safety management solutions
@@ -301,13 +305,13 @@ const PriceTable = () => {
                 <div className="max-w-3xl">
                     <div className="w-16 h-1 bg-[#22C55E] mb-8"></div>
                     <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight text-black uppercase">
-                        INDIVIDUAL{" "}
+                        INDIVIDUAL H&amp;S{" "}
                         <span className="text-[#22C55E]">SERVICES</span>
                     </h2>
                     <p className="text-gray-600 font-inter text-xl leading-relaxed">
                         Specialist ad-hoc support for contractors and
                         developers. Professional guidance provided on a
-                        project-by-project basis nationwide.
+                        project-by-project basis across South West England.
                     </p>
                 </div>
             </div>
@@ -488,11 +492,17 @@ const Contact = () => {
                 <form onSubmit={sendEmail} className="space-y-6 md:space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                         <div className="space-y-2">
-                            <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                            <label
+                                htmlFor="firstName"
+                                className="text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+                            >
                                 First Name
                             </label>
                             <input
+                                id="firstName"
+                                name="firstName"
                                 type="text"
+                                autoComplete="given-name"
                                 value={firstName}
                                 onChange={(e) => setFirstName(e.target.value)}
                                 required
@@ -500,11 +510,17 @@ const Contact = () => {
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                            <label
+                                htmlFor="lastName"
+                                className="text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+                            >
                                 Last Name
                             </label>
                             <input
+                                id="lastName"
+                                name="lastName"
                                 type="text"
+                                autoComplete="family-name"
                                 value={lastName}
                                 onChange={(e) => setLastName(e.target.value)}
                                 required
@@ -513,11 +529,17 @@ const Contact = () => {
                         </div>
                     </div>
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                        <label
+                            htmlFor="email"
+                            className="text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+                        >
                             Email Address
                         </label>
                         <input
+                            id="email"
+                            name="email"
                             type="email"
+                            autoComplete="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
@@ -525,10 +547,15 @@ const Contact = () => {
                         />
                     </div>
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                        <label
+                            htmlFor="message"
+                            className="text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+                        >
                             Message
                         </label>
                         <textarea
+                            id="message"
+                            name="message"
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                             required
@@ -557,7 +584,7 @@ const Contact = () => {
 const _services = [
     {
         id: "accreditations",
-        title: "Accreditations",
+        title: "SSIP Accreditation Support",
         icon: ShieldCheck,
         legislation: "SSIP / PAS91",
         description:
@@ -582,7 +609,7 @@ const _services = [
     },
     {
         id: "rams",
-        title: "Risk & Method Statements",
+        title: "RAMS — Risk Assessments & Method Statements",
         icon: Zap,
         legislation: "MHSWR 1999",
         description:
@@ -607,7 +634,7 @@ const _services = [
     },
     {
         id: "policies",
-        title: "Policies & Systems",
+        title: "H&S Policies & Management Systems",
         icon: Layers,
         legislation: "HASWA 1974",
         description:
@@ -632,7 +659,7 @@ const _services = [
     },
     {
         id: "site-inspections",
-        title: "Site Inspections",
+        title: "Site Inspections & Safety Audits",
         icon: Eye,
         legislation: "CDM 2015",
         description:
@@ -701,7 +728,7 @@ const Services = () => {
                 <div className="lg:sticky lg:top-32">
                     <div className="w-12 h-1 bg-[#22C55E] mb-6"></div>
                     <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight text-black uppercase">
-                        OUR <br />
+                        OUR HEALTH &amp; SAFETY <br />
                         <span className="text-[#22C55E]">SERVICES</span>
                     </h2>
                     <nav className="flex-col gap-2 hidden md:flex">
@@ -792,7 +819,12 @@ const Footer = () => {
                         alt="Vantage Safety Services"
                     />
                     <p className="text-gray-500 font-inter text-xs">
-                        © 2026 VANTAGE SAFETY SERVICES
+                        © 2026 VANTAGE SAFETY SERVICES LTD
+                    </p>
+                    <p className="text-gray-500 font-inter text-xs">
+                        Health &amp; safety consultancy and CDM advisory across
+                        Devon, Somerset, Dorset, Cornwall, Bristol,
+                        Gloucestershire and Wiltshire.
                     </p>
                 </div>
             </div>
