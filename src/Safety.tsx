@@ -1,7 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import headerImage from "./assets/header.jpg";
+import header828 from "./assets/header-828.webp";
+import header1280 from "./assets/header-1280.webp";
+import header1920 from "./assets/header-1920.webp";
 import logoBlack from "./assets/logo-black-icon.png";
+
+const headerSrcSet = `${header828} 828w, ${header1280} 1280w, ${header1920} 1920w`;
 import { Eye, Layers, ShieldCheck, UserCheck, Zap } from "lucide-react";
 import Hero from "./components/Hero";
 import Header from "./components/Header";
@@ -39,7 +43,9 @@ function Safety() {
                 themeColor="#22C55E"
             />
             <Hero
-                backgroundImage={headerImage}
+                backgroundImage={header1280}
+                backgroundImageSrcSet={headerSrcSet}
+                backgroundImageAlt="Aerial view of a large UK construction site under active groundworks"
                 tagIcon={ShieldCheck}
                 tagLabel="VANTAGE SAFETY SERVICES"
                 title={
@@ -698,23 +704,27 @@ const Services = () => {
                         OUR <br />
                         <span className="text-[#22C55E]">SERVICES</span>
                     </h2>
-                    <div className="flex-col gap-2 hidden md:flex">
+                    <nav className="flex-col gap-2 hidden md:flex">
                         {_services.map((s) => (
-                            <button
+                            <a
                                 key={s.id}
+                                href={`#${s.id}`}
                                 className={`text-left py-3 px-4 border-l-2 transition-all duration-300 ${
                                     active === s.id
                                         ? "border-[#22C55E] bg-gray-50 text-black font-bold"
                                         : "border-transparent text-gray-400 hover:text-gray-600"
                                 }`}
-                                onClick={() => scrollToSection(s.id)}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    scrollToSection(s.id);
+                                }}
                             >
                                 <span className="text-xs uppercase tracking-widest">
                                     {s.title}
                                 </span>
-                            </button>
+                            </a>
                         ))}
-                    </div>
+                    </nav>
                 </div>
             </div>
 
@@ -776,7 +786,11 @@ const Footer = () => {
         <footer className="py-12 px-5 border-t border-stone-100 bg-white text-black">
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
                 <div className="flex flex-col items-center md:items-start gap-4">
-                    <img src={logoBlack} className="h-6" alt="Vantage Logo" />
+                    <img
+                        src={logoBlack}
+                        className="h-6"
+                        alt="Vantage Safety Services"
+                    />
                     <p className="text-gray-500 font-inter text-xs">
                         © 2026 VANTAGE SAFETY SERVICES
                     </p>

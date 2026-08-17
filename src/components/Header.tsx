@@ -18,6 +18,7 @@ const Header = ({ scrolled, contactAction, themeColor }: HeaderProps) => {
             <div className="flex items-center gap-4">
                 <img
                     src={logo}
+                    alt="Vantage Safety Services"
                     className="h-6 cursor-pointer"
                     onClick={() => {
                         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -31,23 +32,25 @@ const Header = ({ scrolled, contactAction, themeColor }: HeaderProps) => {
                 }
             `}</style>
 
-            <div className="hidden md:flex items-center gap-10">
-                <ul className="flex gap-10 items-center m-0 p-0">
-                    <button
-                        onClick={contactAction}
-                        style={{ backgroundColor: "black" }}
-                        onMouseEnter={(e) =>
-                            (e.currentTarget.style.backgroundColor = themeColor)
-                        }
-                        onMouseLeave={(e) =>
-                            (e.currentTarget.style.backgroundColor = "black")
-                        }
-                        className="text-white px-5 py-3 cursor-pointer transition font-sora text-md font-bold"
-                    >
-                        Enquire Now
-                    </button>
-                </ul>
-            </div>
+            <nav className="hidden md:flex items-center gap-10">
+                <a
+                    href="#contact"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        contactAction();
+                    }}
+                    style={{ backgroundColor: "black" }}
+                    onMouseEnter={(e) =>
+                        (e.currentTarget.style.backgroundColor = themeColor)
+                    }
+                    onMouseLeave={(e) =>
+                        (e.currentTarget.style.backgroundColor = "black")
+                    }
+                    className="text-white px-5 py-3 cursor-pointer transition font-sora text-md font-bold"
+                >
+                    Enquire Now
+                </a>
+            </nav>
         </div>
     );
 };

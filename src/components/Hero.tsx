@@ -4,12 +4,15 @@ import Logo from "./Logo";
 
 interface HeroProps {
     backgroundImage: string;
+    backgroundImageSrcSet?: string;
+    backgroundImageAlt?: string;
     tagIcon: React.ElementType;
     tagLabel: string;
     title: React.ReactNode;
     description: string;
     primaryButtonText: string;
     primaryButtonAction: () => void;
+    primaryButtonHref?: string;
     secondaryButtonText: string;
     secondaryButtonAction: () => void;
     themeColor: string;
@@ -18,24 +21,30 @@ interface HeroProps {
 
 const Hero: React.FC<HeroProps> = ({
     backgroundImage,
+    backgroundImageSrcSet,
+    backgroundImageAlt = "",
     tagIcon: TagIcon,
     tagLabel,
     title,
     description,
     primaryButtonText,
     primaryButtonAction,
+    primaryButtonHref,
     themeColor,
     isDarkText = false,
 }) => {
     return (
         <div className="relative h-screen overflow-hidden">
             <Logo />
-            <div
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-1000"
-                style={{
-                    backgroundImage: `url(${backgroundImage})`,
-                    transform: "scale(1.08)",
-                }}
+            <img
+                src={backgroundImage}
+                srcSet={backgroundImageSrcSet}
+                sizes="100vw"
+                alt={backgroundImageAlt}
+                fetchPriority="high"
+                decoding="async"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000"
+                style={{ transform: "scale(1.08)" }}
             />
             <div className="absolute inset-0 bg-black/60" />
 
@@ -58,8 +67,12 @@ const Hero: React.FC<HeroProps> = ({
                         {description}
                     </p>
                     <div className="mt-10 flex flex-col sm:flex-row gap-5 opacity-0 animate-fade-in-up animation-delay-600">
-                        <button
-                            onClick={primaryButtonAction}
+                        <a
+                            href={primaryButtonHref ?? "#contact"}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                primaryButtonAction();
+                            }}
                             className="px-10 py-4 font-bold text-lg hover:bg-white hover:text-black transition flex items-center justify-center gap-2 cursor-pointer"
                             style={{
                                 backgroundColor: themeColor,
@@ -67,7 +80,7 @@ const Hero: React.FC<HeroProps> = ({
                             }}
                         >
                             {primaryButtonText} <ArrowRight size={20} />
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
