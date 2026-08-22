@@ -228,18 +228,33 @@ In the external tenant: **External Identities → User flows → New user flow**
 
 Record the user flow id as `USER_FLOW_ID`.
 
-- [ ] **Step 6: Verify a real token can be obtained**
+- [ ] **Step 6: Add `email` as an optional claim — do not skip this**
 
-Sign in as a test user through the flow and capture an access token. Paste it into <https://jwt.ms> and confirm:
+In the portal, on the **`vantage-portal-api`** registration: **Token configuration
+→ Add optional claim → Access token → `email`**.
+
+External ID access tokens do **not** carry `email` by default. The API binds a
+provisioned client's identity on first sign-in by matching that claim, so without
+it every newly provisioned client authenticates successfully and then receives 403
+forever. The shipped middleware falls back to `preferred_username`, so this is
+defence in depth rather than a single point of failure — but configure it anyway,
+and verify it in the next step.
+
+- [ ] **Step 7: Verify a real token can be obtained**
+
+Sign in as a test user through the flow and capture an **access token** (not the id
+token — they carry different claims). Paste it into <https://jwt.ms> and confirm:
 
 - `iss` is `https://<EXTERNAL_TENANT_ID>.ciamlogin.com/<EXTERNAL_TENANT_ID>/v2.0`
 - `aud` equals `API_APP_ID`
 - `scp` contains `access_as_user`
 - `oid` is present
+- **`email` is present** (or, failing that, `preferred_username` — the middleware
+  accepts either, but if neither appears, stop: first sign-in cannot bind)
 
 Record the exact `iss` string in `docs/entra-setup.md` — Task 3 hardcodes it as the expected issuer.
 
-- [ ] **Step 7: Commit the setup documentation**
+- [ ] **Step 8: Commit the setup documentation**
 
 ```bash
 git add docs/entra-setup.md
@@ -1363,6 +1378,8 @@ git commit -m "feat: Graph user provisioning via federated managed identity; dis
 
 - [ ] `https://<apiFqdn>/health` returns `ok`
 - [ ] A real email-OTP token from the External ID tenant reaches `GET /api/organizations`
+- [ ] That token carries `email` (or `preferred_username`) — without one, no
+      provisioned client can ever complete first sign-in
 - [ ] An unknown `oid` with no `AppUser` row receives **403**
 - [ ] A provisioned-but-never-signed-in user has their `EntraObjectId` bound on first sign-in
 - [ ] An admin sees every client; a member sees only their own
