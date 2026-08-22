@@ -4,9 +4,9 @@
 
 **Goal:** Stand up the `vantage-portal` repository, Azure infrastructure, and Entra External ID tenant, and prove end to end that a real client token reaches a deployed API which returns that caller's organisations from SQL — and that the API can provision Entra accounts via Graph without holding a secret.
 
-**Architecture:** A .NET 9 minimal API runs on Azure Container Apps with a user-assigned managed identity. Entra External ID (a separate tenant) issues tokens via an email-OTP user flow with self-service sign-up disabled. The API validates those tokens, loads the caller's `AppUser` and `UserClient` memberships from Azure SQL, and resolves the `X-Client-Org-Id` header in an endpoint filter so handlers stay tenancy-agnostic. Account creation happens through Microsoft Graph against the External ID tenant, authorised by a federated identity credential that trusts the managed identity — so no client secret exists.
+**Architecture:** A .NET 10 minimal API runs on Azure Container Apps with a user-assigned managed identity. Entra External ID (a separate tenant) issues tokens via an email-OTP user flow with self-service sign-up disabled. The API validates those tokens, loads the caller's `AppUser` and `UserClient` memberships from Azure SQL, and resolves the `X-Client-Org-Id` header in an endpoint filter so handlers stay tenancy-agnostic. Account creation happens through Microsoft Graph against the External ID tenant, authorised by a federated identity credential that trusts the managed identity — so no client secret exists.
 
-**Tech Stack:** .NET 9 minimal API, EF Core 9, Azure SQL (Basic), Azure Container Apps, Bicep, Microsoft.Identity.Web, Microsoft.Graph SDK, xUnit, Testcontainers, GitHub Actions.
+**Tech Stack:** .NET 10 minimal API, EF Core 10, Azure SQL (Basic), Azure Container Apps, Bicep, Microsoft.Identity.Web, Microsoft.Graph SDK, xUnit, Testcontainers, GitHub Actions.
 
 **Spec:** `docs/superpowers/specs/2026-08-22-client-document-portal-design.md` (this repo; moves to `vantage-portal` in Task 1)
 
@@ -14,7 +14,7 @@
 
 Every task's requirements implicitly include these. Values are copied verbatim from the spec.
 
-- Target framework: **.NET 9**.
+- Target framework: **.NET 10**.
 - Azure SQL tier: **Basic (5 DTU, 2GB)**. Serverless is explicitly rejected — its unpaused floor exceeds $200/month.
 - Container Apps: **Consumption**, `minReplicas: 0`.
 - Storage account: **`allowBlobPublicAccess: false`** and **`allowSharedKeyAccess: false`**. No account keys anywhere.
@@ -32,7 +32,7 @@ Every task's requirements implicitly include these. Values are copied verbatim f
 ```
 vantage-portal/
 ├── Vantage.Portal.sln
-├── Directory.Build.props                  net9.0, nullable, warnings-as-errors
+├── Directory.Build.props                  net10.0, nullable, warnings-as-errors
 ├── src/Vantage.Portal.Api/
 │   ├── Program.cs                         pipeline composition only
 │   ├── Dockerfile
@@ -78,8 +78,8 @@ Files split by responsibility, not layer: `Auth/` owns everything that turns a r
 mkdir -p ~/projects/vantage-portal && cd ~/projects/vantage-portal && git init
 dotnet new gitignore
 dotnet new sln -n Vantage.Portal
-dotnet new web    -o src/Vantage.Portal.Api   -n Vantage.Portal.Api   -f net9.0
-dotnet new xunit  -o tests/Vantage.Portal.Api.Tests -n Vantage.Portal.Api.Tests -f net9.0
+dotnet new web    -o src/Vantage.Portal.Api   -n Vantage.Portal.Api   -f net10.0
+dotnet new xunit  -o tests/Vantage.Portal.Api.Tests -n Vantage.Portal.Api.Tests -f net10.0
 dotnet sln add src/Vantage.Portal.Api tests/Vantage.Portal.Api.Tests
 dotnet add tests/Vantage.Portal.Api.Tests reference src/Vantage.Portal.Api
 ```
@@ -89,7 +89,7 @@ dotnet add tests/Vantage.Portal.Api.Tests reference src/Vantage.Portal.Api
 ```xml
 <Project>
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -163,7 +163,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-dotnet@v4
-        with: { dotnet-version: '9.0.x' }
+        with: { dotnet-version: '10.0.x' }
       - run: dotnet restore
       - run: dotnet build --no-restore -c Release
       - run: dotnet test --no-build -c Release --verbosity normal
@@ -263,7 +263,7 @@ git commit -m "docs: record External ID tenant, app registrations, user flow ids
 - [ ] **Step 1: Create the integration test project**
 
 ```bash
-dotnet new xunit -o tests/Vantage.Portal.Api.IntegrationTests -n Vantage.Portal.Api.IntegrationTests -f net9.0
+dotnet new xunit -o tests/Vantage.Portal.Api.IntegrationTests -n Vantage.Portal.Api.IntegrationTests -f net10.0
 dotnet sln add tests/Vantage.Portal.Api.IntegrationTests
 dotnet add tests/Vantage.Portal.Api.IntegrationTests reference src/Vantage.Portal.Api
 dotnet add tests/Vantage.Portal.Api.IntegrationTests package Microsoft.AspNetCore.Mvc.Testing
@@ -678,7 +678,7 @@ git commit -m "feat: Bicep infrastructure — storage, SQL Basic, Container Apps
 - [ ] **Step 1: Write the Dockerfile**
 
 ```dockerfile
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 COPY Directory.Build.props ./
 COPY src/Vantage.Portal.Api/*.csproj src/Vantage.Portal.Api/
@@ -686,7 +686,7 @@ RUN dotnet restore src/Vantage.Portal.Api/Vantage.Portal.Api.csproj
 COPY . .
 RUN dotnet publish src/Vantage.Portal.Api/Vantage.Portal.Api.csproj -c Release -o /app
 
-FROM mcr.microsoft.com/dotnet/aspnet:9.0
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
 COPY --from=build /app .
 ENV ASPNETCORE_HTTP_PORTS=8080

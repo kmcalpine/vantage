@@ -30,7 +30,7 @@ revisiting it.
 | Component | Technology | Hosting |
 |---|---|---|
 | Portal SPA | React 19, Vite, Tailwind (matches marketing site) | Static Web Apps, Free tier |
-| API | .NET 9 minimal API | Container Apps, Consumption |
+| API | .NET 10 minimal API | Container Apps, Consumption |
 | Database | Azure SQL, Basic tier (5 DTU, 2GB) | — |
 | Documents | Blob Storage, private container `documents` | — |
 | Thumbnails | Blob Storage, private container `previews` | — |
