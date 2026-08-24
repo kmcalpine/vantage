@@ -80,14 +80,33 @@ rejects it, and the first real provisioning call would have failed.)
 
 Vantage tells the client to visit the portal; there is no invite email.
 
-**Graph access.** The Container App's user-assigned managed identity lives in
-the Azure subscription's tenant, which is *not* the External ID tenant, so it
-cannot be granted Graph permissions there directly. An app registration inside
-the External ID tenant holds `User.ReadWrite.All` (application) and trusts the
-managed identity through a **federated identity credential**, so no client
-secret exists. If federation proves unworkable cross-tenant, the fallback is a
-client secret in Key Vault read via managed identity — this would be the only
-secret in the system, and should be treated as a regression to be revisited.
+**Graph access — the federated-credential design does NOT work here.**
+
+The Container App's user-assigned managed identity lives in the Azure
+subscription's tenant (`cf50f445`), which is *not* the External ID tenant
+(`d5865b05`). The original design had an app registration in the External ID
+tenant trusting that identity through a federated identity credential, so no
+secret would exist.
+
+**Microsoft does not permit this.** Per *Configure an application to trust a
+managed identity*: "The managed identity must be in the same tenant as the app
+registration." A cross-tenant attempt fails with **AADSTS700236** — Entra-issued
+tokens may not be used for federated identity credential flows for applications
+registered in that tenant.
+
+Verified 2026-08-24, after the identity was deployed. The managed identity does
+successfully mint a token for `api://AzureADTokenExchange` (iss = home tenant,
+sub = principal id) — but obtaining the assertion was never the constrained
+step. Its acceptance across a tenant boundary is, and that is refused.
+
+Microsoft's documented cross-tenant path is a **multitenant** app registered in
+the home tenant and provisioned into the other tenant. Whether an external
+(CIAM) tenant will admit a foreign multitenant service principal and grant it
+`User.ReadWrite.All` is unverified — external tenants restrict API permissions
+and require single-tenant registrations of their own apps.
+
+The design must therefore choose between that unverified path and a credential
+held in Key Vault. See the Phase 1 plan for the decision.
 
 **Risk, to be settled in phase 1:** the exact Graph request shape for creating
 an external-tenant user that can sign in with email OTP only, and the
