@@ -211,22 +211,41 @@ This is a prerequisite for the option to appear in Step 5's user flow.
 
 - [ ] **Step 3: Register the API application**
 
+Supported account types must be **Single tenant only — VantageSafetyServices**
+(`AzureADMyOrg`). Your clients are local accounts inside the external tenant; the
+multi-tenant and personal-Microsoft-account options are wrong here.
+
 ```bash
 az login --tenant <EXTERNAL_TENANT_DOMAIN> --allow-no-subscriptions
-az ad app create --display-name "vantage-portal-api" --sign-in-audience AzureADandPersonalMicrosoftAccount
+az ad app create --display-name "vantage-portal-api" --sign-in-audience AzureADMyOrg
 ```
 
-Record `appId` as `API_APP_ID`. Then expose the scope in the portal under **Expose an API**: set the Application ID URI to `api://<API_APP_ID>` and add a scope named `access_as_user`, admin-consent-only, description "Access the Vantage client portal API".
+Record `appId` as `API_APP_ID`. Then in the portal:
+
+1. **API permissions → Grant admin consent for VantageSafetyServices.** Required
+   even for the default `User.Read`: in external tenants customers cannot consent
+   for themselves, so an unconsented permission blocks sign-in.
+2. **Expose an API** → set the Application ID URI to `api://<API_APP_ID>` → add a
+   scope named `access_as_user`, **Admins only**, description "Access the Vantage
+   client portal API".
 
 - [ ] **Step 4: Register the SPA application**
 
+Same account type: **Single tenant only — VantageSafetyServices**. The redirect
+URIs must be registered under the **Single-page application (SPA)** platform, not
+Web — a SPA using auth-code-with-PKCE is rejected under the Web platform.
+
 ```bash
 az ad app create --display-name "vantage-portal-spa" \
+  --sign-in-audience AzureADMyOrg \
   --is-fallback-public-client true \
   --spa-redirect-uris "http://localhost:5173" "https://portal.vantagesafetyservices.co.uk"
 ```
 
-Record `appId` as `SPA_APP_ID`. In the portal, under **API permissions**, add a delegated permission to `api://<API_APP_ID>/access_as_user` and grant admin consent.
+Record `appId` as `SPA_APP_ID`. In the portal, under **API permissions**, add a
+delegated permission to `api://<API_APP_ID>/access_as_user`, then **Grant admin
+consent for VantageSafetyServices** — again mandatory, not optional, in an
+external tenant.
 
 - [ ] **Step 5: Create the sign-up and sign-in user flow**
 
