@@ -65,9 +65,18 @@ Because sign-up is disabled, accounts are created by the API. `POST /api/admin/c
 takes `{ businessName, contactEmail }` and, in one operation:
 
 1. Creates the `Client` row
-2. Creates the Entra user via Graph with an `emailAddress` identity and no
-   password profile
+2. Creates the Entra user via Graph with an `emailAddress` identity
 3. Creates the `AppUser` row and a `UserClient` membership
+
+Graph requires a `passwordProfile` on a local-account identity, so one is
+generated and discarded — never returned, logged, or sent to the client. It is
+not a usable portal credential: the sign-in method is decided by the user flow,
+not the user object, so the account still signs in by one-time passcode.
+`passwordPolicies` must be `DisablePasswordExpiration`, or the account expires
+and locks the client out of a flow that never uses the password.
+
+(An earlier revision specified *no* password profile. That was wrong — Graph
+rejects it, and the first real provisioning call would have failed.)
 
 Vantage tells the client to visit the portal; there is no invite email.
 
