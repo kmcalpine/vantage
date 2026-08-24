@@ -198,10 +198,16 @@ Record the tenant id and the `<name>.onmicrosoft.com` domain in `docs/entra-setu
 
 - [ ] **Step 2: Enable email one-time passcode at tenant level**
 
-In the external tenant: **Entra ID → Authentication methods → Email OTP → Enable**.
+In the external tenant: **External Identities → All Identity Providers →
+Email One-time-passcode**.
 
-Verify: `az rest --method GET --url "https://graph.microsoft.com/v1.0/policies/authenticationMethodsPolicy/authenticationMethodConfigurations/Email"`
-Expected: `"state": "enabled"`.
+**Do not use Entra ID → Authentication methods → Email OTP.** That blade configures
+the B2B *guest* email-OTP feature for workforce tenants and will not give customers
+OTP sign-in. The docs page titled "Email one-time passcode authentication"
+(`entra/external-id/one-time-passcode`) describes that same guest feature — it is
+the wrong article for this tenant.
+
+This is a prerequisite for the option to appear in Step 5's user flow.
 
 - [ ] **Step 3: Register the API application**
 
@@ -224,7 +230,19 @@ Record `appId` as `SPA_APP_ID`. In the portal, under **API permissions**, add a 
 
 - [ ] **Step 5: Create the sign-up and sign-in user flow**
 
-In the external tenant: **External Identities → User flows → New user flow**. Name `portal-signin`. Identity provider: **Email accounts → Email one-time passcode**. Collect attributes: Email Address, Display Name. Associate the `vantage-portal-spa` application with the flow.
+In the external tenant: **External Identities → User flows → New user flow**. Path: **Entra ID → External Identities → User flows → New user flow**.
+
+Name it `portal-signin`. Under **Identity providers**, tick the **Email Accounts**
+check box, then select **Email one-time passcode** — *Email with password* is the
+default and must be changed. Under **User attributes**, collect **Email Address**
+and **Display Name**. Select **OK**, then **Create**.
+
+Then associate the `vantage-portal-spa` application with the flow.
+
+**On MFA:** choosing Email one-time passcode still permits multifactor
+authentication, with **SMS text codes** as the second factor. What is impossible is
+email OTP acting as both factors. Phase 1 does not enable MFA; the option remains
+open without changing the sign-in method.
 
 Record the user flow id as `USER_FLOW_ID`.
 

@@ -50,10 +50,14 @@ Entra External ID external tenant, sign-up-and-sign-in user flow configured for
 **email one-time passcode**. Self-service sign-up is disabled by setting
 `isSignUpAllowed = false` on the user flow via Microsoft Graph.
 
-**Known consequence:** MFA is unavailable with email OTP, because the passcode
-is already the first factor. Accepted deliberately. Switching to email+password
-later would enable MFA and requires no changes to this design beyond the user
-flow configuration.
+**On MFA:** email OTP does not rule out multifactor authentication — **SMS text
+codes** may be added as a second factor. What is impossible is email OTP serving
+as both factors. Phase 1 ships single-factor email OTP; enabling SMS later is a
+user-flow configuration change requiring no change to this design.
+
+(An earlier revision of this spec stated MFA was unavailable entirely. That was
+wrong, and the decision to accept single-factor sign-in should be re-taken on the
+correct facts rather than inherited.)
 
 ### Provisioning
 
