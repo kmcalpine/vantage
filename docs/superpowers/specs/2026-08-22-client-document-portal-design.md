@@ -175,20 +175,53 @@ AppUser       Id, Email UNIQUE, EntraObjectId UNIQUE NULL, DisplayName,
 
 UserClient    AppUserId + ClientId (composite PK), GrantedUtc
 
-Document      Id PK (= blob name), ClientId FK,
-              Title, OriginalFileName, SizeBytes, PageCount,
+Site          Id PK, ClientId FK, Name, Location,
+              Status {Active|Complete}, StartedUtc
+
+Document      Id PK, ClientId FK, SiteId FK NULL,
+              Title, Category, DocumentDate, ExpiresUtc NULL,
               PreviewBlobId NULL, PreviewStatus {Pending|Ready|Failed},
-              Category {RAMS|Inspection|Certificate|Policy|Other},
-              DocumentDate, ExpiresUtc NULL,
               UploadedByUserId FK, UploadedUtc, IsArchived
 
-DownloadAudit Id, DocumentId FK, AppUserId FK, ClientId FK,
-              Action {View|Download}, OccurredUtc, IpAddress, UserAgent
+DocumentFile  Id PK (= blob name), DocumentId FK,
+              FileName, ContentType, SizeBytes, PageCount NULL,
+              IsPrimary, UploadedUtc
+
+DownloadAudit Id, DocumentId FK, DocumentFileId FK NULL, AppUserId FK,
+              ClientId FK, Action {View|Download}, OccurredUtc,
+              IpAddress, UserAgent
 ```
 
-Indexes: `Document(ClientId, IsArchived)`, `Document(ExpiresUtc)` filtered on
-non-null, unique on `AppUser.Email` and `AppUser.EntraObjectId`,
-`DownloadAudit(DocumentId, OccurredUtc)`.
+### A document is a record, not a file
+
+The same document exists in several formats: a PDF the client reads in the
+browser, a DOCX they can edit, sometimes a signed scan. These are renditions of
+one thing, not separate documents — they share a title, a category, a site, an
+expiry date and an audit trail. Separate `Document` rows would duplicate all of
+that and show the client the same RAMS three times.
+
+- **One file per document carries `IsPrimary`** — the one the reader opens. In
+  practice the PDF, because that is what browsers render natively.
+- **The thumbnail comes from the primary rendition**, so `PreviewBlobId` stays on
+  `Document` rather than on each file.
+- **A document with no PDF is download-only**, not an error. The reader shows the
+  file list in place of a viewer.
+- **Unique on `(DocumentId, ContentType)`** — two DOCX renditions of one document
+  is a mistake, not a feature.
+- `DownloadAudit` gains `DocumentFileId`: "who took the editable copy" is a
+  different question from "who read it".
+
+### Category is a lookup, not an enum
+
+Originally a fixed enum of RAMS, Inspection, Certificate, Policy. CEMPs were
+wanted almost immediately, and COSHH assessments and waste transfer notes will
+follow. The portal derives its filter cards from the categories actually present
+on documents, so adding one must not require a deployment.
+
+Indexes: `Document(ClientId, IsArchived)`, `Document(SiteId)`,
+`Document(ExpiresUtc)` filtered on non-null, `DocumentFile(DocumentId)`,
+unique on `DocumentFile(DocumentId, ContentType)`, unique on `AppUser.Email`
+and `AppUser.EntraObjectId`, `DownloadAudit(DocumentId, OccurredUtc)`.
 
 `EntraObjectId` is nullable because the row is created at provisioning time,
 before the person has ever signed in. On first sign-in the API matches the
@@ -200,8 +233,9 @@ the user proved control of that address to obtain a token. This must carry a
 code comment: if federated sign-in is ever added, email claims stop being
 self-verifying and this match must be re-examined.
 
-`Category` is a fixed single value driving icon and colour. Free-form tags were
-considered and deliberately deferred until real usage shows what would be tagged.
+`Category` drives the card colour and the filter tiles, and is a lookup rather
+than an enum (see above). Free-form tags remain deferred — the category axis has
+so far been sufficient.
 
 ## API
 
