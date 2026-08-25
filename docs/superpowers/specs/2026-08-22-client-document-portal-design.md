@@ -175,7 +175,7 @@ AppUser       Id, Email UNIQUE, EntraObjectId UNIQUE NULL, DisplayName,
 
 UserClient    AppUserId + ClientId (composite PK), GrantedUtc
 
-Site          Id PK, ClientId FK, Name, Location,
+Site          Id PK, ClientId FK, Name,
               Status {Active|Complete}, StartedUtc
 
 Document      Id PK, ClientId FK, SiteId FK NULL,
