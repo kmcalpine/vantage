@@ -274,28 +274,60 @@ All endpoints require a valid token. Client endpoints are scoped by
 
 ## Preview pipeline
 
-PDF only. On upload the API validates, stores, then renders synchronously:
+Rendering runs in a **Container Apps job**, not in the API.
 
-1. Verify leading `%PDF-` magic bytes; reject anything else regardless of
-   extension or declared `Content-Type`
-2. Enforce a maximum upload size (25 MB)
-3. Store the original blob under the document GUID
-4. Render page 1 via PDFium (`PDFtoImage`), resize and encode WebP at ~400px
-   wide with `SixLabors.ImageSharp`, store in `previews`, record `PageCount`
-5. Set `PreviewStatus`
+On upload the API validates the file, stores the blob, writes the rows and
+enqueues the document id. It returns immediately with `PreviewStatus = Pending`.
+A job triggered by that queue renders the preview, writes it to the `previews`
+container and sets the status.
 
-Synchronous rendering avoids queues and background workers, which sit badly with
-scale-to-zero, and the admin uploads one file at a time. A render failure sets
-`PreviewStatus = Failed` and the upload still succeeds — the UI falls back to a
-category icon.
+### Why a job rather than inline
 
-The container image needs PDFium's native dependencies. This works locally and
-must be verified in the built image, not assumed.
+A synchronous render is simpler and, for PDFs alone, cheap — PDFium is a small
+native library rendering a page in milliseconds. The decision is driven by what
+comes next:
 
-In-browser reading needs no library: the download endpoint with
-`disposition=inline` sets `rscd` on the SAS and the browser's native PDF viewer
-renders it. The `rscd` header also restores the real filename, so a blob named
-`8f3a…e21b` saves as `RAMS - Confined Space Entry v3.pdf`.
+- **Office renditions need LibreOffice**, which is ~500MB, takes seconds, and
+  wants hundreds of megabytes of memory. Inside an API that scales to zero on
+  0.25 vCPU it would dominate the image, slow every cold start, and risk being
+  killed mid-request.
+- **One mechanism, not two.** Rendering PDFs inline and spreadsheets out of band
+  would mean two code paths, two failure modes and two places to look when a
+  thumbnail is missing.
+- **Failures become retryable.** A queue message can be redelivered; a
+  half-finished synchronous render cannot.
+- **Upload stops depending on rendering.** The admin gets an answer as soon as
+  the file is stored, rather than waiting on a converter.
+
+`PreviewStatus` already modelled this: `Pending` stops being vestigial and
+becomes the state a document genuinely occupies for a few seconds after upload.
+
+### Sequence
+
+1. API validates the upload — magic bytes, size, permitted type
+2. API writes the blob under the `DocumentFile` id
+3. API writes `Document` and `DocumentFile` rows, `PreviewStatus = Pending`
+4. API enqueues the document id on an Azure Storage queue
+5. API responds — the admin screen shows the document as generating
+6. The job scales from zero on the queue, renders the primary rendition, writes
+   the preview blob and sets `PreviewStatus = Ready` or `Failed`
+
+### Rendering rules
+
+- The preview is generated from the **primary** rendition only.
+- PDF renders directly through PDFium.
+- Office formats convert to PDF first, then render by the same path — one
+  renderer, one output.
+- A document whose primary rendition cannot be rendered ends as `Failed` and
+  shows its category mark instead. It remains downloadable: a missing thumbnail
+  must never hide a document.
+
+### Failure and retry
+
+Queue delivery is at-least-once, so rendering must be idempotent — writing the
+same preview twice is harmless. A message that fails repeatedly lands on the
+poison queue rather than blocking the queue; the document stays `Failed` and can
+be re-enqueued by hand.
 
 ## Security requirements
 
