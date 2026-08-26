@@ -181,7 +181,8 @@ Site          Id PK, ClientId FK, Name,
 Document      Id PK, ClientId FK, SiteId FK NULL,
               Title, Category, DocumentDate, ExpiresUtc NULL,
               PreviewBlobId NULL, PreviewStatus {Pending|Ready|Failed},
-              UploadedByUserId FK, UploadedUtc, IsArchived
+              UploadedByUserId FK, UploadedUtc,
+              PublishedUtc NULL, IsArchived
 
 DocumentFile  Id PK (= blob name), DocumentId FK,
               FileName, ContentType, SizeBytes, PageCount NULL,
@@ -304,13 +305,33 @@ becomes the state a document genuinely occupies for a few seconds after upload.
 
 ### Sequence
 
-1. API validates the upload — magic bytes, size, permitted type
-2. API writes the blob under the `DocumentFile` id
-3. API writes `Document` and `DocumentFile` rows, `PreviewStatus = Pending`
-4. API enqueues the document id on an Azure Storage queue
-5. API responds — the admin screen shows the document as generating
-6. The job scales from zero on the queue, renders the primary rendition, writes
-   the preview blob and sets `PreviewStatus = Ready` or `Failed`
+Rendering starts when a **file arrives**, not when the form is submitted. The
+admin picks a file, then spends thirty seconds typing a title and choosing a
+category — and the render happens during that time instead of after it. By the
+time they submit, the preview is usually ready.
+
+1. Admin opens the new-document form. The API creates a **draft** document —
+   `PublishedUtc` null — and returns its id
+2. Admin adds a file. The API validates it (magic bytes, size, permitted type),
+   writes the blob under the `DocumentFile` id, creates the row, and enqueues the
+   document id
+3. The job scales from zero, renders the primary rendition, writes the preview
+   blob and sets `PreviewStatus`
+4. Admin submits title, category, site and dates. The API sets `PublishedUtc`
+
+### Drafts
+
+A document with `PublishedUtc` null exists but is not published. Clients never
+see one: their queries require `PublishedUtc` to be set.
+
+This is deliberately a real state rather than a staging area. Once a file has
+been uploaded the document genuinely exists in an incomplete form, and modelling
+that honestly means the file, its preview and its eventual metadata all hang off
+one row from the start — no second identifier to reconcile, and no orphaned blobs
+if the admin closes the tab.
+
+An abandoned draft leaves a row and a blob. Both are cheap, both are visible to
+an administrator, and neither is reachable by a client.
 
 ### Rendering rules
 
