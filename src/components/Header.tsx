@@ -1,4 +1,5 @@
 import logo from "../assets/logo-black-icon.png";
+import PortalLink from "./PortalLink";
 
 interface HeaderProps {
     scrolled: boolean;
@@ -32,7 +33,8 @@ const Header = ({ scrolled, contactAction, themeColor }: HeaderProps) => {
                 }
             `}</style>
 
-            <nav className="hidden md:flex items-center gap-10">
+            <nav className="flex items-center gap-6 md:gap-10">
+                <PortalLink />
                 <a
                     href="#contact"
                     onClick={(e) => {
@@ -46,7 +48,7 @@ const Header = ({ scrolled, contactAction, themeColor }: HeaderProps) => {
                     onMouseLeave={(e) =>
                         (e.currentTarget.style.backgroundColor = "black")
                     }
-                    className="text-white px-5 py-3 cursor-pointer transition font-sora text-md font-bold"
+                    className="hidden md:inline-flex text-white px-5 py-3 cursor-pointer transition font-sora text-md font-bold"
                 >
                     Enquire Now
                 </a>

@@ -10,6 +10,7 @@ import { Eye, Layers, ShieldCheck, UserCheck, Zap } from "lucide-react";
 import Hero from "./components/Hero";
 import Header from "./components/Header";
 import { useScroll } from "./hooks/useScroll";
+import PortalLink from "./components/PortalLink";
 
 const useScrollTo = () => {
     return useCallback((ref: React.RefObject<HTMLElement | null>) => {
@@ -826,6 +827,16 @@ const Footer = () => {
                         advisory. Serving Swindon, Salisbury, Chippenham,
                         Trowbridge, Devizes, Marlborough, Warminster and
                         Melksham.
+                    </p>
+                </div>
+
+                {/* The footer already laid out two columns and only ever had
+                    one. This is where a returning client looks once they have
+                    scrolled past everything meant for a new one. */}
+                <div className="flex flex-col items-center md:items-end gap-2">
+                    <PortalLink />
+                    <p className="text-gray-500 font-inter text-xs">
+                        Existing clients — sign in to read your documents.
                     </p>
                 </div>
             </div>

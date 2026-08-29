@@ -1,6 +1,7 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
 import Logo from "./Logo";
+import PortalLink from "./PortalLink";
 
 interface HeroProps {
     backgroundImage: string;
@@ -36,6 +37,11 @@ const Hero: React.FC<HeroProps> = ({
     return (
         <div className="relative h-screen overflow-hidden">
             <Logo />
+            {/* Mirrors the logo's placement so the two read as one bar across
+                the top of the photograph. */}
+            <div className="absolute right-4 h-[70px] z-[200] flex items-center">
+                <PortalLink tone="light" />
+            </div>
             <img
                 src={backgroundImage}
                 srcSet={backgroundImageSrcSet}
