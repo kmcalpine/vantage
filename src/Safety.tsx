@@ -4,6 +4,10 @@ import header828 from "./assets/header-828.webp";
 import header1280 from "./assets/header-1280.webp";
 import header1920 from "./assets/header-1920.webp";
 import logoBlack from "./assets/logo-black-icon.png";
+import pillarExpertise from "./assets/pillar-expertise.webp";
+import pillarOversight from "./assets/pillar-oversight.webp";
+import pillarScalable from "./assets/pillar-scalable.webp";
+import pillarResponse from "./assets/pillar-response.webp";
 
 const headerSrcSet = `${header828} 828w, ${header1280} 1280w, ${header1920} 1920w`;
 import { Check, Eye, Layers, ShieldCheck, UserCheck, Zap } from "lucide-react";
@@ -48,7 +52,7 @@ function Safety() {
                 backgroundImageSrcSet={headerSrcSet}
                 backgroundImageAlt="Aerial view of a large UK construction site under active groundworks"
                 tagIcon={ShieldCheck}
-                tagLabel="PROTECTING PEOPLE. MANAGING RISK."
+                tagLabel="YOUR OUTSOURCED HEALTH & SAFETY TEAM"
                 title={
                     <>
                         HEALTH &amp; SAFETY
@@ -70,7 +74,7 @@ function Safety() {
             <section
                 id="about"
                 ref={aboutRef}
-                className="py-16 md:py-32 px-5 bg-white"
+                className="px-5 bg-white overflow-x-hidden"
             >
                 <div className="max-w-7xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-24 items-center">
@@ -90,46 +94,8 @@ function Safety() {
                                 businesses across Wiltshire — including Swindon,
                                 Salisbury, Chippenham, Trowbridge and Devizes.
                             </p>
-                            <p className="text-lg text-gray-600 font-inter leading-relaxed italic border-l-4 border-[#22C55E] pl-8 py-2">
-                                "We specialise in delivering straightforward,
-                                usable solutions designed to support busy sites
-                                and fast-moving projects, without unnecessary
-                                complexity."
-                            </p>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-stone-200 border border-stone-200">
-                            {[
-                                {
-                                    title: "Senior Expertise",
-                                    icon: UserCheck,
-                                },
-                                {
-                                    title: "Independent Oversight",
-                                    icon: Eye,
-                                },
-                                {
-                                    title: "Scalable Support",
-                                    icon: Layers,
-                                },
-                                {
-                                    title: "Rapid Response",
-                                    icon: Zap,
-                                },
-                            ].map((item, i) => (
-                                <div
-                                    key={i}
-                                    className="p-8 md:p-10 bg-white flex flex-col items-center text-center hover:bg-stone-50 transition-colors group"
-                                >
-                                    <item.icon
-                                        size={32}
-                                        className="text-[#22C55E] mb-4 md:mb-6"
-                                    />
-                                    <span className="font-bold text-xs uppercase tracking-[0.2em] text-black leading-relaxed">
-                                        {item.title}
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
+                        <SupportPillars />
                     </div>
                 </div>
             </section>
@@ -399,6 +365,81 @@ const packageFeatures: { label: string; cells: PackageCell[] }[] = [
     },
     { label: "Priority Support", cells: [false, false, true] },
 ];
+
+/*
+ * The Vantage mark leans its bars 16.8 degrees off vertical, parallel to the
+ * leading stroke of the V. The tiles run a little steeper than the mark at
+ * roughly 19.8 degrees (46px across a 128px tile), which reads as deliberate
+ * at this scale where matching the logo exactly looked almost-but-not-quite.
+ * Clipping rather than skewing keeps the photo and the label upright inside
+ * the slanted frame.
+ *
+ * Stepping each tile right by exactly one --shear chains the bottom-left
+ * corner of one onto the top-left corner of the next, so the four left edges
+ * read as a single unbroken diagonal rather than a staircase.
+ */
+const PILLAR_CLIP =
+    "polygon(0 0, calc(100% - var(--shear)) 0, 100% 100%, var(--shear) 100%)";
+
+/*
+ * Escapes the centred max-w-7xl column and its px-5 padding so the photos run
+ * off the right of the viewport. The extra --shear pushes the tiles' diagonal
+ * right edge past the screen, leaving a flush cut; the section clips the
+ * overshoot so it never opens a horizontal scrollbar. Below sm --shear is 0,
+ * so this reduces to the px-5 padding and the tiles sit flush to both edges.
+ */
+const PILLAR_BLEED =
+    "calc((min(100vw, 80rem) - 100vw) / 2 - 1.25rem - var(--shear))";
+
+const supportPillars = [
+    { title: "Senior Expertise", icon: UserCheck, image: pillarExpertise },
+    { title: "Independent Oversight", icon: Eye, image: pillarOversight },
+    { title: "Scalable Support", icon: Layers, image: pillarScalable },
+    { title: "Rapid Response", icon: Zap, image: pillarResponse },
+];
+
+const SupportPillars = () => {
+    return (
+        <ul
+            // Below sm the tiles are plain full-bleed rectangles: --shear of 0
+            // flattens the clip path to a rectangle and zeroes every step.
+            className="flex flex-col -ml-5 sm:ml-0 [--shear:0px] sm:[--shear:clamp(22px,6vw,46px)]"
+            style={{ marginRight: PILLAR_BLEED }}
+        >
+            {supportPillars.map((pillar, i) => (
+                <li
+                    key={pillar.title}
+                    className="group relative h-28 md:h-48"
+                    style={
+                        {
+                            clipPath: PILLAR_CLIP,
+                            marginLeft: `calc(${i} * var(--shear))`,
+                        } as React.CSSProperties
+                    }
+                >
+                    <img
+                        src={pillar.image}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                        className="absolute inset-0 w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/65 to-black/35 transition-colors duration-300 group-hover:from-black/70 group-hover:via-black/50 group-hover:to-black/20 motion-reduce:transition-none" />
+                    <div className="relative h-full flex items-center gap-4 pl-[calc(var(--shear)+1.25rem)] sm:pl-[calc(var(--shear)+1.5rem)] pr-8">
+                        <pillar.icon
+                            size={26}
+                            className="text-[#22C55E] shrink-0"
+                            aria-hidden="true"
+                        />
+                        <span className="font-bold text-xs md:text-sm uppercase tracking-[0.2em] text-white leading-relaxed">
+                            {pillar.title}
+                        </span>
+                    </div>
+                </li>
+            ))}
+        </ul>
+    );
+};
 
 const PackageCellValue = ({ cell }: { cell: PackageCell }) => {
     if (typeof cell === "boolean") {
