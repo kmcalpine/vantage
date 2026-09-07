@@ -332,9 +332,9 @@ type PackageCell =
     | { text: string; note?: string; emphasis?: boolean };
 
 const packageTiers = [
-    { name: "Essential", price: "£295", dark: true },
-    { name: "Compliance", price: "£595", dark: false },
-    { name: "Partner", price: "£995", dark: true },
+    { name: "Essential", price: "£295", highlight: false },
+    { name: "Compliance", price: "£595", highlight: true },
+    { name: "Partner", price: "£995", highlight: false },
 ];
 
 const packageFeatures: { label: string; cells: PackageCell[] }[] = [
@@ -432,6 +432,8 @@ const PackageCellValue = ({ cell }: { cell: PackageCell }) => {
 };
 
 const PackageTable = () => {
+    const lastRow = packageFeatures.length - 1;
+
     return (
         <>
             {/* Comparison table — desktop */}
@@ -452,10 +454,10 @@ const PackageTable = () => {
                             <th
                                 key={tier.name}
                                 scope="col"
-                                className={`px-6 py-6 text-center border-l text-white ${
-                                    tier.dark
-                                        ? "bg-black border-gray-800"
-                                        : "bg-[#22C55E] border-white/25"
+                                className={`px-6 py-6 text-center text-white ${
+                                    tier.highlight
+                                        ? "bg-[#22C55E] border-t-2 border-x-2 border-[#22C55E]"
+                                        : "bg-black border-l border-gray-800"
                                 }`}
                             >
                                 <span className="block text-lg font-bold uppercase tracking-tight">
@@ -480,14 +482,25 @@ const PackageTable = () => {
                             >
                                 {feature.label}
                             </th>
-                            {feature.cells.map((cell, j) => (
-                                <td
-                                    key={packageTiers[j].name}
-                                    className="px-6 py-4 text-center border-t border-l border-stone-200"
-                                >
-                                    <PackageCellValue cell={cell} />
-                                </td>
-                            ))}
+                            {feature.cells.map((cell, j) => {
+                                const tier = packageTiers[j];
+                                return (
+                                    <td
+                                        key={tier.name}
+                                        className={`px-6 py-4 text-center border-t border-t-stone-200 ${
+                                            tier.highlight
+                                                ? `border-x-2 border-x-[#22C55E] ${
+                                                      i === lastRow
+                                                          ? "border-b-2 border-b-[#22C55E]"
+                                                          : ""
+                                                  }`
+                                                : "border-l border-l-stone-200"
+                                        }`}
+                                    >
+                                        <PackageCellValue cell={cell} />
+                                    </td>
+                                );
+                            })}
                         </tr>
                     ))}
                 </tbody>
@@ -498,10 +511,14 @@ const PackageTable = () => {
                 {packageTiers.map((tier, j) => (
                     <div
                         key={tier.name}
-                        className="border border-stone-200 bg-white"
+                        className={`bg-white ${
+                            tier.highlight
+                                ? "border-2 border-[#22C55E]"
+                                : "border border-stone-200"
+                        }`}
                     >
                         <div
-                            className={`px-6 py-5 text-white ${tier.dark ? "bg-black" : "bg-[#22C55E]"}`}
+                            className={`px-6 py-5 text-white ${tier.highlight ? "bg-[#22C55E]" : "bg-black"}`}
                         >
                             <h3 className="text-lg font-bold uppercase tracking-tight">
                                 {tier.name}
