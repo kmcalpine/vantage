@@ -6,7 +6,7 @@ import header1920 from "./assets/header-1920.webp";
 import logoBlack from "./assets/logo-black-icon.png";
 
 const headerSrcSet = `${header828} 828w, ${header1280} 1280w, ${header1920} 1920w`;
-import { Eye, Layers, ShieldCheck, UserCheck, Zap } from "lucide-react";
+import { Check, Eye, Layers, ShieldCheck, UserCheck, Zap } from "lucide-react";
 import Hero from "./components/Hero";
 import Header from "./components/Header";
 import { useScroll } from "./hooks/useScroll";
@@ -152,37 +152,9 @@ function Safety() {
                                 profiles.
                             </p>
                         </div>
-                        <div className="text-[#22C55E] font-bold text-sm tracking-widest border-b-2 border-[#22C55E] pb-2 uppercase">
-                            Strategic Safety Partner
-                        </div>
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-stone-200 border border-stone-200">
-                        {PackageData.map((pkg, i) => (
-                            <div
-                                key={i}
-                                className="bg-white p-8 md:p-10 flex flex-col group transition-colors"
-                            >
-                                <h3 className="text-lg font-bold mb-4 md:mb-6 text-black uppercase tracking-tight">
-                                    {pkg.title}
-                                </h3>
-                                <p className="text-gray-600 font-inter text-sm mb-6 md:mb-10 leading-relaxed">
-                                    {pkg.content.description}
-                                </p>
-                                <ul className="space-y-4 pt-6 md:pt-8 border-t border-stone-200">
-                                    {pkg.content.items.map((item, j) => (
-                                        <li
-                                            key={j}
-                                            className="flex items-start gap-3 text-[11px] font-bold uppercase tracking-widest text-black"
-                                        >
-                                            <div className="w-1.5 h-1.5 bg-[#22C55E] mt-0.5 shrink-0"></div>
-                                            {item}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        ))}
-                    </div>
+                    <PackageTable />
                 </div>
             </section>
 
@@ -355,66 +327,218 @@ const PriceTable = () => {
     );
 };
 
-const PackageData = [
-    {
-        id: "starter",
-        title: "COMPLIANCE ASSURANCE",
-        content: {
-            description:
-                "For contractors needing reliable, professional H&S cover",
-            items: [
-                "Appointed Competent Person",
-                "Senior consultant advice (phone & email)",
-                "Annual H&S policy & legal register review",
-                "Up to 6 RAMS reviews per month",
-                "1 formal site inspection per quarter",
-                "Inspection reports with prioritised actions",
-                "Incident advice & corrective actions",
-                "SSIP maintenance (CHAS, SMAS, Constructionline)",
-            ],
-        },
-    },
-    {
-        id: "core",
-        title: "OPERATIONAL RISK MANAGEMENT",
-        content: {
-            description: "For contractors delivering higher risk works",
-            items: [
-                "Competent Person + Operational H&S Partner",
-                "Priority consultant access",
-                "2 structured site inspections per month",
-                "Management level reports & trend analysis",
-                "Up to 8 RAMS reviews per month",
-                "CPP creation or review (up to 2 per year)",
-                "Accident & RIDDOR investigation support",
-                "Client audit & pre-start meeting attendance",
-                "Monthly management compliance summary",
-                "Full SSIP management & renewals",
-            ],
-        },
-    },
-    {
-        id: "complete",
-        title: "STRATEGIC H&S PARTNERSHIP",
-        content: {
-            description: "Full outsourced safety support for busy contractors",
-            items: [
-                "Named Senior / Principal H&S Consultant",
-                "Full Competent Person & strategic advisory role",
-                "Weekly or fortnightly site inspections",
-                "Unlimited RAMS review",
-                "All CPPs included",
-                "Full accident investigation & HSE liaison",
-                "Director & senior leadership briefings",
-                "Annual H&S strategy & improvement roadmap",
-                "KPI dashboards & performance reporting",
-                "Toolbox talks (up to 8 per year)",
-                "Client facing meetings & audit attendance",
-                "Same day incident response support",
-            ],
-        },
-    },
+type PackageCell =
+    | boolean
+    | { text: string; note?: string; emphasis?: boolean };
+
+const packageTiers = [
+    { name: "Essential", price: "£295", dark: true },
+    { name: "Compliance", price: "£595", dark: false },
+    { name: "Partner", price: "£995", dark: true },
 ];
+
+const packageFeatures: { label: string; cells: PackageCell[] }[] = [
+    { label: "Named Competent Person", cells: [true, true, true] },
+    {
+        label: "Vantage Competent Person Certificate",
+        cells: [true, true, true],
+    },
+    { label: "Client Portal Access", cells: [true, true, true] },
+    { label: "H&S Policy Annual Review", cells: [true, true, true] },
+    { label: "Monthly Safety Bulletin", cells: [true, true, true] },
+    { label: "Monthly Environmental Bulletin", cells: [true, true, true] },
+    {
+        label: "Resource Library (Templates & Guidance)",
+        cells: [true, true, true],
+    },
+    {
+        label: "General Advice (Phone / Email)",
+        cells: [
+            { text: "30 minutes" },
+            { text: "1.5 hours" },
+            { text: "3 hours" },
+        ],
+    },
+    {
+        label: "RAMS / Document Review",
+        cells: [
+            false,
+            { text: "1 per month", note: "existing documents" },
+            { text: "2 per month", note: "existing documents" },
+        ],
+    },
+    {
+        label: "Management Compliance Review",
+        cells: [
+            { text: "Annual" },
+            { text: "6-monthly" },
+            { text: "Quarterly" },
+        ],
+    },
+    {
+        label: "Training Matrix Review",
+        cells: [false, { text: "6-monthly" }, { text: "Quarterly" }],
+    },
+    {
+        label: "Site Inspection (including report)",
+        cells: [false, false, { text: "1 every 2 months" }],
+    },
+    {
+        label: "Discount on Additional Services",
+        cells: [
+            false,
+            { text: "5%", emphasis: true },
+            { text: "10%", emphasis: true },
+        ],
+    },
+    { label: "Priority Support", cells: [false, false, true] },
+];
+
+const PackageCellValue = ({ cell }: { cell: PackageCell }) => {
+    if (typeof cell === "boolean") {
+        return cell ? (
+            <>
+                <Check
+                    className="w-5 h-5 text-[#22C55E] mx-auto"
+                    strokeWidth={3}
+                    aria-hidden="true"
+                />
+                <span className="sr-only">Included</span>
+            </>
+        ) : (
+            <>
+                <span aria-hidden="true" className="text-stone-400">
+                    –
+                </span>
+                <span className="sr-only">Not included</span>
+            </>
+        );
+    }
+
+    return (
+        <>
+            <span
+                className={`font-inter text-black ${cell.emphasis ? "font-bold" : ""}`}
+            >
+                {cell.text}
+            </span>
+            {cell.note && (
+                <span className="block font-inter text-xs text-gray-500 mt-0.5">
+                    ({cell.note})
+                </span>
+            )}
+        </>
+    );
+};
+
+const PackageTable = () => {
+    return (
+        <>
+            {/* Comparison table — desktop */}
+            <table className="hidden lg:table w-full border-collapse border border-stone-200 text-sm">
+                <caption className="sr-only">
+                    Monthly health and safety consultancy packages compared by
+                    feature
+                </caption>
+                <thead>
+                    <tr>
+                        <th
+                            scope="col"
+                            className="w-[34%] bg-black text-white text-left align-bottom px-6 py-6 font-bold uppercase tracking-tight text-lg"
+                        >
+                            Features
+                        </th>
+                        {packageTiers.map((tier) => (
+                            <th
+                                key={tier.name}
+                                scope="col"
+                                className={`px-6 py-6 text-center border-l text-white ${
+                                    tier.dark
+                                        ? "bg-black border-gray-800"
+                                        : "bg-[#22C55E] border-white/25"
+                                }`}
+                            >
+                                <span className="block text-lg font-bold uppercase tracking-tight">
+                                    {tier.name}
+                                </span>
+                                <span className="block font-inter text-base mt-1">
+                                    {tier.price} / month
+                                </span>
+                            </th>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>
+                    {packageFeatures.map((feature, i) => (
+                        <tr
+                            key={feature.label}
+                            className={i % 2 === 1 ? "bg-gray-50" : "bg-white"}
+                        >
+                            <th
+                                scope="row"
+                                className="px-6 py-4 text-left font-inter font-normal text-gray-700 border-t border-stone-200"
+                            >
+                                {feature.label}
+                            </th>
+                            {feature.cells.map((cell, j) => (
+                                <td
+                                    key={packageTiers[j].name}
+                                    className="px-6 py-4 text-center border-t border-l border-stone-200"
+                                >
+                                    <PackageCellValue cell={cell} />
+                                </td>
+                            ))}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+
+            {/* Comparison table — stacked by tier on mobile */}
+            <div className="lg:hidden flex flex-col gap-8">
+                {packageTiers.map((tier, j) => (
+                    <div
+                        key={tier.name}
+                        className="border border-stone-200 bg-white"
+                    >
+                        <div
+                            className={`px-6 py-5 text-white ${tier.dark ? "bg-black" : "bg-[#22C55E]"}`}
+                        >
+                            <h3 className="text-lg font-bold uppercase tracking-tight">
+                                {tier.name}
+                            </h3>
+                            <p className="font-inter text-base mt-1">
+                                {tier.price} / month
+                            </p>
+                        </div>
+                        <dl className="px-6 py-2">
+                            {packageFeatures.map((feature) => {
+                                const cell = feature.cells[j];
+                                const excluded = cell === false;
+                                return (
+                                    <div
+                                        key={feature.label}
+                                        className={`flex items-baseline justify-between gap-6 py-3 border-t border-stone-200 first:border-t-0 text-sm ${
+                                            excluded ? "text-stone-400" : ""
+                                        }`}
+                                    >
+                                        <dt
+                                            className={`font-inter ${excluded ? "" : "text-gray-700"}`}
+                                        >
+                                            {feature.label}
+                                        </dt>
+                                        <dd className="shrink-0 text-right">
+                                            <PackageCellValue cell={cell} />
+                                        </dd>
+                                    </div>
+                                );
+                            })}
+                        </dl>
+                    </div>
+                ))}
+            </div>
+        </>
+    );
+};
 
 const Contact = () => {
     const [firstName, setFirstName] = useState("");
