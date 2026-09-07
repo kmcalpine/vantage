@@ -4,17 +4,14 @@ import header828 from "./assets/header-828.webp";
 import header1280 from "./assets/header-1280.webp";
 import header1920 from "./assets/header-1920.webp";
 import logoBlack from "./assets/logo-black-icon.png";
-import pillarExpertise from "./assets/pillar-expertise.webp";
-import pillarOversight from "./assets/pillar-oversight.webp";
-import pillarScalable from "./assets/pillar-scalable.webp";
-import pillarResponse from "./assets/pillar-response.webp";
 
 const headerSrcSet = `${header828} 828w, ${header1280} 1280w, ${header1920} 1920w`;
-import { Check, Eye, Layers, ShieldCheck, UserCheck, Zap } from "lucide-react";
+import { Check, Eye, Layers, ShieldCheck, Zap } from "lucide-react";
 import Hero from "./components/Hero";
 import Header from "./components/Header";
 import { useScroll } from "./hooks/useScroll";
 import PortalLink from "./components/PortalLink";
+import SupportPillars from "./components/SupportPillars";
 
 const useScrollTo = () => {
     return useCallback((ref: React.RefObject<HTMLElement | null>) => {
@@ -74,30 +71,13 @@ function Safety() {
             <section
                 id="about"
                 ref={aboutRef}
-                className="px-5 bg-white overflow-x-hidden"
+                // overflow-x-clip, not -hidden: `hidden` would make this element
+                // the scroll container for the pinned pillars inside it and stop
+                // them sticking. `clip` contains the tiles' right-edge bleed
+                // without creating a scroll container.
+                className="bg-white overflow-x-clip"
             >
-                <div className="max-w-7xl mx-auto">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-24 items-center">
-                        <div>
-                            <div className="w-20 h-1.5 bg-[#22C55E] mb-6 md:mb-10"></div>
-                            <h2 className="text-4xl md:text-5xl font-bold mb-6 md:mb-10 tracking-tight leading-tight text-black">
-                                HEALTH &amp; SAFETY SUPPORT FOR{" "}
-                                <span className="text-[#22C55E]">
-                                    WILTSHIRE CONTRACTORS
-                                </span>
-                            </h2>
-                            <p className="text-xl text-gray-800 font-inter leading-relaxed mb-6 md:mb-8">
-                                Vantage Safety Services Ltd is a Wiltshire-based
-                                consultancy providing clear, practical, and
-                                reliable health &amp; safety support to
-                                construction, groundworks, and surfacing
-                                businesses across Wiltshire — including Swindon,
-                                Salisbury, Chippenham, Trowbridge and Devizes.
-                            </p>
-                        </div>
-                        <SupportPillars />
-                    </div>
-                </div>
+                <SupportPillars />
             </section>
 
             {/* Consultancy Packages */}
@@ -365,81 +345,6 @@ const packageFeatures: { label: string; cells: PackageCell[] }[] = [
     },
     { label: "Priority Support", cells: [false, false, true] },
 ];
-
-/*
- * The Vantage mark leans its bars 16.8 degrees off vertical, parallel to the
- * leading stroke of the V. The tiles run a little steeper than the mark at
- * roughly 19.8 degrees (46px across a 128px tile), which reads as deliberate
- * at this scale where matching the logo exactly looked almost-but-not-quite.
- * Clipping rather than skewing keeps the photo and the label upright inside
- * the slanted frame.
- *
- * Stepping each tile right by exactly one --shear chains the bottom-left
- * corner of one onto the top-left corner of the next, so the four left edges
- * read as a single unbroken diagonal rather than a staircase.
- */
-const PILLAR_CLIP =
-    "polygon(0 0, calc(100% - var(--shear)) 0, 100% 100%, var(--shear) 100%)";
-
-/*
- * Escapes the centred max-w-7xl column and its px-5 padding so the photos run
- * off the right of the viewport. The extra --shear pushes the tiles' diagonal
- * right edge past the screen, leaving a flush cut; the section clips the
- * overshoot so it never opens a horizontal scrollbar. Below sm --shear is 0,
- * so this reduces to the px-5 padding and the tiles sit flush to both edges.
- */
-const PILLAR_BLEED =
-    "calc((min(100vw, 80rem) - 100vw) / 2 - 1.25rem - var(--shear))";
-
-const supportPillars = [
-    { title: "Senior Expertise", icon: UserCheck, image: pillarExpertise },
-    { title: "Independent Oversight", icon: Eye, image: pillarOversight },
-    { title: "Scalable Support", icon: Layers, image: pillarScalable },
-    { title: "Rapid Response", icon: Zap, image: pillarResponse },
-];
-
-const SupportPillars = () => {
-    return (
-        <ul
-            // Below sm the tiles are plain full-bleed rectangles: --shear of 0
-            // flattens the clip path to a rectangle and zeroes every step.
-            className="flex flex-col -ml-5 sm:ml-0 [--shear:0px] sm:[--shear:clamp(22px,6vw,46px)]"
-            style={{ marginRight: PILLAR_BLEED }}
-        >
-            {supportPillars.map((pillar, i) => (
-                <li
-                    key={pillar.title}
-                    className="group relative h-28 md:h-48"
-                    style={
-                        {
-                            clipPath: PILLAR_CLIP,
-                            marginLeft: `calc(${i} * var(--shear))`,
-                        } as React.CSSProperties
-                    }
-                >
-                    <img
-                        src={pillar.image}
-                        alt=""
-                        loading="lazy"
-                        decoding="async"
-                        className="absolute inset-0 w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/65 to-black/35 transition-colors duration-300 group-hover:from-black/70 group-hover:via-black/50 group-hover:to-black/20 motion-reduce:transition-none" />
-                    <div className="relative h-full flex items-center gap-4 pl-[calc(var(--shear)+1.25rem)] sm:pl-[calc(var(--shear)+1.5rem)] pr-8">
-                        <pillar.icon
-                            size={26}
-                            className="text-[#22C55E] shrink-0"
-                            aria-hidden="true"
-                        />
-                        <span className="font-bold text-xs md:text-sm uppercase tracking-[0.2em] text-white leading-relaxed">
-                            {pillar.title}
-                        </span>
-                    </div>
-                </li>
-            ))}
-        </ul>
-    );
-};
 
 const PackageCellValue = ({ cell }: { cell: PackageCell }) => {
     if (typeof cell === "boolean") {
