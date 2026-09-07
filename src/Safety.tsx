@@ -144,12 +144,18 @@ function Safety() {
                     <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-20 gap-8">
                         <div className="max-w-2xl">
                             <h2 className="text-4xl font-bold mb-4 md:mb-6 tracking-tight text-black">
-                                HEALTH &amp; SAFETY CONSULTANCY PACKAGES
+                                ON GOING HEALTH &amp; SAFETY SUPPORT
                             </h2>
                             <p className="text-gray-600 font-inter text-lg">
-                                Comprehensive safety management solutions
-                                tailored to your business needs and risk
-                                profiles.
+                                Choose the level of support that suits your
+                                business.
+                            </p>
+                            <p className="text-gray-600 font-inter text-lg pt-5">
+                                Our retained packages give construction
+                                businesses access to professional H&S support
+                                for a predictable monthly cost, with additional
+                                project-specific services available when
+                                required.
                             </p>
                         </div>
                     </div>
