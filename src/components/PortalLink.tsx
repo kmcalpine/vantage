@@ -1,13 +1,5 @@
 export const PORTAL_URL = "https://portal.vantagesafetyservices.co.uk";
 
-/**
- * The way an existing client gets to their documents.
- *
- * Deliberately not styled as a call to action: "Enquire Now" is the one thing
- * this site is asking a visitor to do, and a second button beside it would
- * compete with it. Someone who already has an account is not being persuaded of
- * anything — they just need the door to be findable.
- */
 const PortalLink = ({
     tone = "dark",
     className = "",

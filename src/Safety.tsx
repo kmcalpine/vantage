@@ -6,12 +6,24 @@ import header1920 from "./assets/header-1920.webp";
 import logoBlack from "./assets/logo-black-icon.png";
 
 const headerSrcSet = `${header828} 828w, ${header1280} 1280w, ${header1920} 1920w`;
-import { Check, Eye, Layers, ShieldCheck, Zap } from "lucide-react";
+import {
+    Check,
+    ChevronDown,
+    ClipboardList,
+    Eye,
+    FileText,
+    Layers,
+    Leaf,
+    Search,
+    ShieldCheck,
+    Zap,
+} from "lucide-react";
 import Hero from "./components/Hero";
 import Header from "./components/Header";
 import { useScroll } from "./hooks/useScroll";
 import PortalLink from "./components/PortalLink";
 import SupportPillars from "./components/SupportPillars";
+import PortalSection from "./components/PortalSection";
 
 const useScrollTo = () => {
     return useCallback((ref: React.RefObject<HTMLElement | null>) => {
@@ -80,11 +92,13 @@ function Safety() {
                 <SupportPillars />
             </section>
 
+            <PortalSection />
+
             {/* Consultancy Packages */}
             <section
                 id="packages"
                 ref={packagesRef}
-                className="py-16 md:py-32 px-5 bg-gray-50 border-y border-stone-200"
+                className="py-16 md:py-32 px-5 border-y border-stone-200"
             >
                 <div className="max-w-7xl mx-auto">
                     <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-20 gap-8">
@@ -92,10 +106,10 @@ function Safety() {
                             <h2 className="text-4xl font-bold mb-4 md:mb-6 tracking-tight text-black">
                                 ON GOING HEALTH &amp; SAFETY SUPPORT
                             </h2>
-                            <p className="text-gray-600 font-inter text-lg">
+                            {/*                  <p className="text-gray-600 font-inter text-lg">
                                 Choose the level of support that suits your
                                 business.
-                            </p>
+                            </p> */}
                             <p className="text-gray-600 font-inter text-lg pt-5">
                                 Our retained packages give construction
                                 businesses access to professional H&S support
@@ -111,17 +125,15 @@ function Safety() {
             </section>
 
             {/* Detailed Services */}
-            <div className="max-w-7xl mx-auto px-5">
-                <section
-                    id="services"
-                    ref={servicesRef}
-                    className="py-16 md:py-32"
-                >
-                    <Services />
-                </section>
-            </div>
-
             <section
+                id="services"
+                ref={servicesRef}
+                className="py-16 md:py-32 px-5 bg-stone-100"
+            >
+                <Services />
+            </section>
+
+            {/*             <section
                 id="pricing"
                 ref={pricingRef}
                 className="py-16 md:py-32 px-5 bg-gray-50 border-y border-stone-200"
@@ -129,12 +141,12 @@ function Safety() {
                 <div className="max-w-7xl mx-auto">
                     <PriceTable />
                 </div>
-            </section>
+            </section> */}
 
             <section
                 id="contact"
                 ref={contactRef}
-                className="min-h-screen flex flex-col bg-white"
+                className="min-h-screen flex flex-col bg-[#22C55E]"
             >
                 <div className="flex-grow flex items-center py-8 md:py-20 px-5">
                     <div className="max-w-7xl mx-auto w-full">
@@ -509,6 +521,16 @@ const PackageTable = () => {
     );
 };
 
+/*
+ * The copy sits on the brand green, where white text measures 2.3:1 and fails
+ * outright, so everything there is black (9.2:1) or black/70 (5.6:1). The form
+ * sits on a white card instead, which is why the field borders are stone-500
+ * rather than the lighter greys used elsewhere: on white, stone-300 is 1.5:1
+ * and stone-400 is 2.5:1, both under the 3:1 a form control's edge needs.
+ */
+const FIELD =
+    "w-full bg-white border border-stone-200 px-4 py-3 text-black font-inter placeholder-black/40 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-stone-700 transition-shadow";
+
 const Contact = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -552,120 +574,105 @@ const Contact = () => {
     };
 
     return (
-        <div className="bg-black text-white flex flex-col lg:flex-row border border-gray-800">
-            <div className="lg:w-1/2 p-8 md:p-20 border-b lg:border-b-0 lg:border-r border-gray-800">
+        <div className="text-black grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 lg:items-center">
+            <div className="lg:pr-8">
+                <div className="w-20 h-1.5 bg-black mb-6 md:mb-10" />
                 <h2 className="text-3xl md:text-4xl font-bold mb-6 md:mb-8 tracking-tight uppercase">
-                    REQUEST <span className="text-[#22C55E]">SUPPORT</span>
+                    Request support
                 </h2>
-                <p className="text-gray-400 font-inter text-lg mb-8 md:mb-12 leading-relaxed">
-                    If you have any questions, need support, or just want to get
-                    in touch, we’re here to help. Simply fill out the contact
-                    form and a member of our team will get back to you as soon
-                    as possible.
+                <p className="text-black/70 font-inter text-lg mb-8 md:mb-12 leading-relaxed max-w-md">
+                    Questions, a job coming up, or a problem on site today —
+                    fill this in and a consultant will come back to you.
                 </p>
-                <div className="space-y-6 md:space-y-8">
-                    <div className="flex items-center gap-6">
-                        <div className="w-12 h-12 border border-gray-800 flex items-center justify-center">
-                            <Zap size={20} className="text-[#22C55E]" />
+                <div className="space-y-4">
+                    {[
+                        { icon: Zap, label: "Fast response time" },
+                        {
+                            icon: ShieldCheck,
+                            label: "Expert professional advice",
+                        },
+                    ].map(({ icon: Icon, label }) => (
+                        <div key={label} className="flex items-center gap-5">
+                            <div className="w-12 h-12 bg-black flex items-center justify-center shrink-0">
+                                <Icon size={20} className="text-[#22C55E]" />
+                            </div>
+                            <span className="font-bold text-sm uppercase tracking-widest">
+                                {label}
+                            </span>
                         </div>
-                        <span className="font-bold text-sm uppercase tracking-widest">
-                            Fast Response Time
-                        </span>
-                    </div>
-                    <div className="flex items-center gap-6">
-                        <div className="w-12 h-12 border border-gray-800 flex items-center justify-center">
-                            <ShieldCheck size={20} className="text-[#22C55E]" />
-                        </div>
-                        <span className="font-bold text-sm uppercase tracking-widest">
-                            Expert Professional Advice
-                        </span>
-                    </div>
+                    ))}
                 </div>
             </div>
-            <div className="lg:w-1/2 bg-[#0a0a0a] p-8 md:p-20 text-black">
-                <form onSubmit={sendEmail} className="space-y-6 md:space-y-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+
+            <div className="bg-white p-8 md:p-12 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.45)]">
+                <form onSubmit={sendEmail} className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                            <label
-                                htmlFor="firstName"
-                                className="text-[10px] font-bold text-gray-500 uppercase tracking-widest"
-                            >
-                                First Name
-                            </label>
                             <input
                                 id="firstName"
                                 name="firstName"
                                 type="text"
+                                placeholder="First name"
                                 autoComplete="given-name"
                                 value={firstName}
                                 onChange={(e) => setFirstName(e.target.value)}
                                 required
-                                className="w-full bg-transparent border-b border-gray-800 px-0 py-3 text-white font-inter focus:outline-none focus:border-[#22C55E] transition-colors"
+                                className={FIELD}
                             />
                         </div>
                         <div className="space-y-2">
-                            <label
-                                htmlFor="lastName"
-                                className="text-[10px] font-bold text-gray-500 uppercase tracking-widest"
-                            >
-                                Last Name
-                            </label>
                             <input
                                 id="lastName"
                                 name="lastName"
                                 type="text"
+                                placeholder="Last name"
                                 autoComplete="family-name"
                                 value={lastName}
                                 onChange={(e) => setLastName(e.target.value)}
                                 required
-                                className="w-full bg-transparent border-b border-gray-800 px-0 py-3 text-white font-inter focus:outline-none focus:border-[#22C55E] transition-colors"
+                                className={FIELD}
                             />
                         </div>
                     </div>
                     <div className="space-y-2">
-                        <label
-                            htmlFor="email"
-                            className="text-[10px] font-bold text-gray-500 uppercase tracking-widest"
-                        >
-                            Email Address
-                        </label>
                         <input
                             id="email"
                             name="email"
                             type="email"
+                            placeholder="Email address"
                             autoComplete="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="w-full bg-transparent border-b border-gray-800 px-0 py-3 text-white font-inter focus:outline-none focus:border-[#22C55E] transition-colors"
+                            className={FIELD}
                         />
                     </div>
                     <div className="space-y-2">
-                        <label
-                            htmlFor="message"
-                            className="text-[10px] font-bold text-gray-500 uppercase tracking-widest"
-                        >
-                            Message
-                        </label>
                         <textarea
                             id="message"
                             name="message"
+                            placeholder="Your message"
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                             required
-                            className="w-full bg-transparent border-b border-gray-800 px-0 py-3 text-white font-inter h-32 focus:outline-none focus:border-[#22C55E] transition-colors resize-none"
+                            className={`${FIELD} h-32 resize-none`}
                         ></textarea>
                     </div>
 
                     {success && (
-                        <p className="text-[#22C55E] font-bold text-center">
-                            Thank you! We'll get back to you soon.
+                        <p
+                            role="status"
+                            className="bg-black text-[#22C55E] font-bold text-sm uppercase tracking-widest px-4 py-3 text-center"
+                        >
+                            Thank you — we'll come back to you shortly.
                         </p>
                     )}
 
                     <button
                         disabled={loading}
-                        className={`w-full bg-[#22C55E] text-black font-bold py-5 md:py-6 hover:bg-white transition-colors duration-300 uppercase tracking-widest text-sm ${loading ? "opacity-50" : ""}`}
+                        className={`w-full bg-black text-white font-bold py-5 md:py-6 uppercase tracking-widest text-sm transition-colors duration-300 hover:bg-stone-700 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black ${
+                            loading ? "opacity-50" : ""
+                        }`}
                     >
                         {loading ? "SENDING..." : "SEND ENQUIRY"}
                     </button>
@@ -677,103 +684,107 @@ const Contact = () => {
 
 const _services = [
     {
-        id: "accreditations",
-        title: "SSIP Accreditation Support",
-        icon: ShieldCheck,
-        legislation: "SSIP / PAS91",
-        description:
-            "Our Accreditation Support service helps your business achieve recognised standards such as CHAS, SMAS, SafeContractor, and Constructionline.",
-        sections: [
-            {
-                title: "Selection & Review",
-                content:
-                    "We assess your current health & safety setup and identify the accreditation level most suitable for your business, including a full gap analysis.",
-            },
-            {
-                title: "Evidence Preparation",
-                content:
-                    "Preparation of all essential documents: H&S Policy, RAMS, training matrices, and competence records aligned with current standards.",
-            },
-            {
-                title: "Assessor Liaison",
-                content:
-                    "We handle the full submission process and communicate directly with scheme assessors to manage requests for additional information.",
-            },
-        ],
-    },
-    {
         id: "rams",
         title: "RAMS — Risk Assessments & Method Statements",
+        navLabel: "RAMS",
         icon: Zap,
-        legislation: "MHSWR 1999",
-        description:
-            "Professionally written, task-specific RAMS tailored to your actual methodology—not generic templates.",
-        sections: [
-            {
-                title: "Bespoke Compilation",
-                content:
-                    "Detailed assessments covering hazards, control measures, plant requirements, and site-specific sequencing.",
-            },
-            {
-                title: "Review & Refinement",
-                content:
-                    "Independent review of existing RAMS for compliance with HASWA, MHSWR, and CDM expectations.",
-            },
-            {
-                title: "High-Risk Specialist",
-                content:
-                    "Expert documentation for excavations, confined spaces, hot works, lifting operations, and work at height.",
-            },
+        lede: "Task-specific risk assessments and method statements, written around your actual methodology rather than a template.",
+        items: [
+            "Hazards, control measures and plant requirements set out task by task",
+            "Site-specific sequencing that matches how the work is really staged",
+            "Independent review of existing RAMS against HASWA, MHSWR and CDM",
+            "High-risk works: excavations, confined spaces, hot works, lifting and work at height",
         ],
     },
     {
-        id: "policies",
-        title: "H&S Policies & Management Systems",
-        icon: Layers,
-        legislation: "HASWA 1974",
-        description:
-            "Clear, compliant, and practical H&S, Environmental, and Quality policies designed to reflect how your company actually operates.",
-        sections: [
-            {
-                title: "System Creation",
-                content:
-                    "Development of professional policies specific to your organisation, including Lone Working, PPE, and Driving policies.",
-            },
-            {
-                title: "ISO Alignment",
-                content:
-                    "Integrated management content aligned with ISO 9001, 14001, and 45001 frameworks.",
-            },
-            {
-                title: "Maintenance",
-                content:
-                    "Annual policy updates and revisions for audits, client requests, or accreditation renewals.",
-            },
+        id: "cpp",
+        title: "CPP — Construction Phase Plans",
+        navLabel: "CPP",
+        icon: ClipboardList,
+        lede: "The plan that must be in place before a site opens.",
+        items: [
+            "Pre-construction information gathered, with the gaps identified early",
+            "Site rules, welfare, traffic management and emergency arrangements",
+            "The significant risks for the works actually in hand",
+            "Revised as the phases change, so it still describes today's site",
+        ],
+    },
+    {
+        id: "cemp",
+        title: "CEMP — Construction Environmental Management Plans",
+        navLabel: "CEMP",
+        icon: FileText,
+        lede: "The environmental plan that commonly has to be approved before work can begin.",
+        items: [
+            "Written to the planning conditions and consents as actually worded",
+            "Controls for dust, noise, vibration, water, waste and ecology",
+            "Responsibilities named, so it is clear who does what on site",
+            "The monitoring records that show the plan was followed",
         ],
     },
     {
         id: "site-inspections",
         title: "Site Inspections & Safety Audits",
+        navLabel: "Inspections",
         icon: Eye,
-        legislation: "CDM 2015",
-        description:
-            "Independent, detailed site inspections and audits to identify risks and demonstrate compliance to Principal Contractors.",
-        sections: [
-            {
-                title: "Physical Audits",
-                content:
-                    "Comprehensive assessment of site setup, welfare, plant, and workforce behaviour with photographic evidence.",
-            },
-            {
-                title: "Technical Reporting",
-                content:
-                    "Professional reports detailing identified hazards, positive observations, and prioritised corrective actions.",
-            },
-            {
-                title: "Monitoring Programmes",
-                content:
-                    "Planned monthly or quarterly inspection schedules to continuously monitor performance across multiple sites.",
-            },
+        lede: "Independent inspections that find the problems while they are still cheap to fix.",
+        items: [
+            "Site setup, welfare, plant and workforce behaviour assessed on the ground",
+            "Photographic evidence of both the hazards and what is being done well",
+            "Written reports with corrective actions ranked by risk",
+            "Monthly or quarterly programmes across multiple sites",
+        ],
+    },
+    {
+        id: "accreditations",
+        title: "SSIP Accreditation Support",
+        navLabel: "Accreditations",
+        icon: ShieldCheck,
+        lede: "CHAS, SMAS, SafeContractor and Constructionline, taken from gap analysis to approval.",
+        items: [
+            "Gap analysis against the scheme and level that suits your business",
+            "Evidence prepared: policy, RAMS, training matrices and competence records",
+            "Full submission handled, including requests for further information",
+            "Renewals tracked so approval does not lapse between jobs",
+        ],
+    },
+    {
+        id: "investigations",
+        title: "Accident & Incident Investigation",
+        navLabel: "Investigations",
+        icon: Search,
+        lede: "Independent investigation, started quickly enough to be useful and recorded well enough to stand up later.",
+        items: [
+            "Same-day advice on securing the area and preserving evidence",
+            "What must be reported, and by when",
+            "Root cause established from interviews and the sequence of events",
+            "Written findings, corrective actions and liaison with the HSE or your insurer",
+        ],
+    },
+    {
+        id: "policies",
+        title: "H&S Policies & Management Systems",
+        navLabel: "Policies",
+        icon: Layers,
+        lede: "Policies that describe how your company actually operates, not how a template says it should.",
+        items: [
+            "Health & safety, environmental and quality policies written for your organisation",
+            "The specifics too: lone working, PPE, driving and site-specific arrangements",
+            "Integrated management content aligned to ISO 9001, 14001 and 45001",
+            "Annual review, and updates for audits, client requests or renewals",
+        ],
+    },
+    {
+        id: "environmental",
+        title: "Environmental Management",
+        navLabel: "Environmental",
+        icon: Leaf,
+        lede: "Waste, permits and duty of care handled inside your safety system rather than alongside it.",
+        items: [
+            "Waste transfer notes, carrier checks and consignment records kept in order",
+            "Permits, exemptions and consents identified before the work starts",
+            "Practical controls for spills, storage and watercourse protection",
+            "Environmental arrangements built into the same system as your H&S",
         ],
     },
 ];
@@ -781,6 +792,26 @@ const _services = [
 const Services = () => {
     const [active, setActive] = useState<string | null>(null);
     const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
+
+    /*
+     * Below lg each service collapses behind its own title: eight expanded
+     * blocks is a very long scroll on a phone. The breakpoint is restated here
+     * rather than read from the CSS because this decides which *element* is
+     * rendered — a heading at lg, a disclosure button below it — and a button
+     * that does nothing would still be focusable and announced as a button.
+     * Initialised synchronously so desktop never paints a collapsed frame.
+     */
+    const [isDesktop, setIsDesktop] = useState(
+        () => window.matchMedia("(min-width: 64rem)").matches,
+    );
+    const [openId, setOpenId] = useState<string>(_services[0].id);
+
+    useEffect(() => {
+        const mq = window.matchMedia("(min-width: 64rem)");
+        const update = () => setIsDesktop(mq.matches);
+        mq.addEventListener("change", update);
+        return () => mq.removeEventListener("change", update);
+    }, []);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -817,7 +848,7 @@ const Services = () => {
     };
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-20">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-20">
             <div className="lg:col-span-4">
                 <div className="lg:sticky lg:top-32">
                     <div className="w-12 h-1 bg-[#22C55E] mb-6"></div>
@@ -825,14 +856,14 @@ const Services = () => {
                         OUR HEALTH &amp; SAFETY <br />
                         <span className="text-[#22C55E]">SERVICES</span>
                     </h2>
-                    <nav className="flex-col gap-2 hidden md:flex">
+                    <nav className="flex-col gap-px hidden lg:flex">
                         {_services.map((s) => (
                             <a
                                 key={s.id}
                                 href={`#${s.id}`}
-                                className={`text-left py-3 px-4 border-l-2 transition-all duration-300 ${
+                                className={`flex gap-5 text-left py-5 px-5 border-l-5 transition-all duration-300 ${
                                     active === s.id
-                                        ? "border-[#22C55E] bg-gray-50 text-black font-bold"
+                                        ? "border-[#22C55E] bg-white text-black font-bold"
                                         : "border-transparent text-gray-400 hover:text-gray-600"
                                 }`}
                                 onClick={(e) => {
@@ -840,8 +871,11 @@ const Services = () => {
                                     scrollToSection(s.id);
                                 }}
                             >
+                                <span>
+                                    <s.icon size={18} />
+                                </span>
                                 <span className="text-xs uppercase tracking-widest">
-                                    {s.title}
+                                    {s.navLabel}
                                 </span>
                             </a>
                         ))}
@@ -849,73 +883,115 @@ const Services = () => {
                 </div>
             </div>
 
-            <div className="lg:col-span-8 flex flex-col gap-24 md:gap-32">
-                {_services.map((s) => (
-                    <div
-                        key={s.id}
-                        id={s.id}
-                        ref={(el) => {
-                            sectionRefs.current[s.id] = el;
-                        }}
-                        className="scroll-mt-32"
-                    >
-                        <div className="flex items-center gap-4 mb-6">
-                            <div className="px-3 py-1 bg-gray-100 text-[10px] font-bold tracking-widest text-gray-500 uppercase border border-gray-200">
-                                LEG: {s.legislation}
-                            </div>
-                            <div className="h-px flex-grow bg-stone-200"></div>
-                        </div>
-
-                        <div className="flex items-start gap-6 mb-8">
-                            <div className="w-14 h-14 bg-[#22C55E]/15 text-[#22C55E] flex items-center justify-center shrink-0">
-                                <s.icon size={28} />
-                            </div>
-                            <div>
-                                <h3 className="text-2xl md:text-3xl font-bold mb-4 tracking-tight uppercase">
-                                    {s.title}
-                                </h3>
-                                <p className="text-lg text-gray-600 font-inter leading-relaxed max-w-2xl">
-                                    {s.description}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-stone-200 border border-stone-200">
-                            {s.sections.map((section, idx) => (
-                                <div
-                                    key={idx}
-                                    className="bg-white p-8 hover:bg-gray-50 transition-colors group"
-                                >
-                                    <h4 className="text-xs font-bold uppercase tracking-widest mb-4 text-[#22C55E]">
-                                        {section.title}
-                                    </h4>
-                                    <p className="text-sm text-gray-500 font-inter leading-relaxed">
-                                        {section.content}
-                                    </p>
+            <div className="lg:col-span-8 flex flex-col lg:gap-32">
+                {_services.map((s) => {
+                    const expanded = isDesktop || openId === s.id;
+                    return (
+                        <div
+                            key={s.id}
+                            id={s.id}
+                            ref={(el) => {
+                                sectionRefs.current[s.id] = el;
+                            }}
+                            className="scroll-mt-32 border-b border-stone-200 lg:border-b-0"
+                        >
+                            {isDesktop ? (
+                                <div className="flex items-start gap-6 mb-8 border-l-5 border-[#22C55E] pl-6">
+                                    <div>
+                                        <h3 className="text-2xl md:text-3xl font-bold mb-4 tracking-tight uppercase">
+                                            {s.title}
+                                        </h3>
+                                        <p className="text-lg text-gray-600 font-inter leading-relaxed max-w-2xl">
+                                            {s.lede}
+                                        </p>
+                                    </div>
                                 </div>
-                            ))}
+                            ) : (
+                                <h3>
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            setOpenId(
+                                                openId === s.id ? "" : s.id,
+                                            )
+                                        }
+                                        aria-expanded={expanded}
+                                        aria-controls={`${s.id}-panel`}
+                                        className="w-full flex items-center justify-between gap-5 py-6 text-left cursor-pointer group"
+                                    >
+                                        <span className="text-lg font-bold tracking-tight uppercase group-hover:text-[#22C55E] transition-colors">
+                                            {s.title}
+                                        </span>
+                                        <ChevronDown
+                                            size={20}
+                                            aria-hidden="true"
+                                            className={`shrink-0 text-[#22C55E] transition-transform duration-300 motion-reduce:transition-none ${
+                                                expanded ? "rotate-180" : ""
+                                            }`}
+                                        />
+                                    </button>
+                                </h3>
+                            )}
+
+                            <div
+                                id={`${s.id}-panel`}
+                                hidden={!expanded}
+                                className="pb-8 lg:pb-0"
+                            >
+                                {!isDesktop && (
+                                    <p className="text-base text-gray-600 font-inter leading-relaxed mb-6">
+                                        {s.lede}
+                                    </p>
+                                )}
+                                <ul className="border-t border-stone-200">
+                                    {s.items.map((item, idx) => (
+                                        <li
+                                            key={idx}
+                                            className="flex items-start gap-5 py-5 border-b border-stone-200 last:border-b-0 lg:last:border-b"
+                                        >
+                                            <span
+                                                aria-hidden="true"
+                                                className="w-1.5 h-1.5 mt-2.5 shrink-0 bg-[#22C55E]"
+                                            />
+                                            <span className="text-base md:text-md text-gray-700 font-inter leading-relaxed">
+                                                {item}
+                                            </span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
         </div>
     );
 };
 
+/*
+ * Anchors for the in-page links. #pricing is deliberately absent: that section
+ * is commented out, and a footer link to an id that is not in the document
+ * silently does nothing.
+ */
+const footerLinks = [
+    { href: "#about", label: "Why Vantage" },
+    { href: "#packages", label: "Packages" },
+    { href: "#services", label: "Services" },
+    { href: "#portal", label: "Client Portal" },
+    { href: "#contact", label: "Contact" },
+];
+
 const Footer = () => {
     return (
-        <footer className="py-12 px-5 border-t border-stone-100 bg-white text-black">
-            <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
-                <div className="flex flex-col items-center md:items-start gap-4">
+        <footer className="border-t border-stone-200 bg-white text-black">
+            <div className="max-w-7xl mx-auto px-5 py-14 md:py-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1.2fr] gap-12 md:gap-16">
+                <div className="flex flex-col gap-5">
                     <img
                         src={logoBlack}
-                        className="h-6"
+                        className="h-6 self-start"
                         alt="Vantage Safety Services"
                     />
-                    <p className="text-gray-500 font-inter text-xs">
-                        © 2026 VANTAGE SAFETY SERVICES LTD
-                    </p>
-                    <p className="text-gray-500 font-inter text-xs">
+                    <p className="text-gray-600 font-inter text-sm leading-relaxed max-w-sm">
                         Wiltshire-based health &amp; safety consultancy and CDM
                         advisory. Serving Swindon, Salisbury, Chippenham,
                         Trowbridge, Devizes, Marlborough, Warminster and
@@ -923,13 +999,57 @@ const Footer = () => {
                     </p>
                 </div>
 
-                {/* The footer already laid out two columns and only ever had
-                    one. This is where a returning client looks once they have
-                    scrolled past everything meant for a new one. */}
-                <div className="flex flex-col items-center md:items-end gap-2">
+                <nav aria-label="Footer">
+                    <h2 className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-5">
+                        Explore
+                    </h2>
+                    <ul className="flex flex-col gap-3">
+                        {footerLinks.map((link) => (
+                            <li key={link.href}>
+                                <a
+                                    href={link.href}
+                                    className="font-inter text-sm text-gray-700 hover:text-black transition-colors"
+                                >
+                                    {link.label}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
+
+                <div>
+                    <h2 className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-5">
+                        Registered
+                    </h2>
+                    <dl className="flex flex-col gap-3 font-inter text-sm">
+                        <div className="flex flex-col">
+                            <dt className="text-gray-500">Companies House</dt>
+                            <dd className="text-gray-800">16923133</dd>
+                        </div>
+                        <div className="flex flex-col">
+                            <dt className="text-gray-500">ICO registration</dt>
+                            <dd className="text-gray-800">ZC235091</dd>
+                        </div>
+                    </dl>
+                </div>
+
+                {/* Where a returning client looks, once they have scrolled
+                    past everything meant for a new one. */}
+                <div>
+                    <h2 className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-5">
+                        Existing clients
+                    </h2>
                     <PortalLink />
+                    <p className="text-gray-600 font-inter text-sm leading-relaxed mt-3 max-w-xs">
+                        Sign in to read your documents.
+                    </p>
+                </div>
+            </div>
+
+            <div className="border-t border-stone-200">
+                <div className="max-w-7xl mx-auto px-5 py-6">
                     <p className="text-gray-500 font-inter text-xs">
-                        Existing clients — sign in to read your documents.
+                        © 2026 Vantage Safety Services Ltd
                     </p>
                 </div>
             </div>

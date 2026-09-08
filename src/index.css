@@ -37,3 +37,51 @@ ion-icon {
         animation-delay: 600ms;
     }
 }
+
+/*
+ * Support pillars: one diagonal, drawn twice.
+ *
+ * The copy layer is clipped so its right edge falls on the diagonal; the band
+ * layer is clipped so its left edge falls on the same diagonal shifted right by
+ * --bar. Both are opaque and both sit above the progress bar, so the only part
+ * of that bar left showing is the constant-width wedge between them. The bar
+ * itself is a plain rectangle whose height is the scroll progress — it needs no
+ * clip of its own, because its neighbours are what shape it.
+ *
+ * --split is expressed as a length rather than a percentage on purpose: the two
+ * layers have different widths (the band bleeds off the right of the screen),
+ * so a percentage would resolve against different boxes and the two halves of
+ * the diagonal would not meet.
+ */
+@media (min-width: 64rem) {
+    .pillar-stage {
+        --cw: min(100vw - 2.5rem, 80rem);
+        --split: calc(var(--cw) * 0.4);
+        --drop: calc((100vh - var(--nav)) * 0.28);
+        --bar: 20px;
+        --copy-clip: polygon(
+            0 0,
+            var(--split) 0,
+            calc(var(--split) + var(--drop)) 100%,
+            0 100%
+        );
+        --band-clip: polygon(
+            calc(var(--split) + var(--bar)) 0,
+            100% 0,
+            100% 100%,
+            calc(var(--split) + var(--drop) + var(--bar)) 100%
+        );
+    }
+}
+
+/*
+ * The header is fixed at 70px once scrolled, so an in-page anchor would drop
+ * its target underneath it. Footer links rely on this.
+ */
+#about,
+#packages,
+#services,
+#portal,
+#contact {
+    scroll-margin-top: 70px;
+}
