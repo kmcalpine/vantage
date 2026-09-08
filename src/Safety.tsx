@@ -42,7 +42,7 @@ function Safety() {
     const servicesRef = useRef<HTMLDivElement>(null);
     const packagesRef = useRef<HTMLDivElement>(null);
     const aboutRef = useRef<HTMLDivElement>(null);
-    const pricingRef = useRef<HTMLDivElement>(null);
+    //const pricingRef = useRef<HTMLDivElement>(null);
     const contactRef = useRef<HTMLDivElement>(null);
 
     const scrollTo = useScrollTo();
@@ -160,6 +160,7 @@ function Safety() {
     );
 }
 
+/* Commented out alongside PriceTable and the #pricing section.
 const individualPricings = [
     {
         title: "Site Inspections & Audits",
@@ -234,8 +235,9 @@ const individualPricings = [
         ],
     },
 ];
+*/
 
-const PriceTable = () => {
+/* const PriceTable = () => {
     return (
         <div className="flex flex-col gap-16 md:gap-24">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
@@ -290,7 +292,7 @@ const PriceTable = () => {
         </div>
     );
 };
-
+ */
 type PackageCell =
     | boolean
     | { text: string; note?: string; emphasis?: boolean };
