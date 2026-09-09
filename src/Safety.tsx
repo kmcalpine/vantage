@@ -989,7 +989,7 @@ const footerLinks = [
 const Footer = () => {
     return (
         <footer className="border-t border-stone-200 bg-white text-black">
-            <div className="max-w-7xl mx-auto px-5 py-14 md:py-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1.2fr] gap-12 md:gap-16">
+            <div className="max-w-7xl mx-auto md:px-0 px-5 py-14 md:py-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1.2fr] gap-12 md:gap-16">
                 <div className="flex flex-col gap-5">
                     <img
                         src={logoBlack}
