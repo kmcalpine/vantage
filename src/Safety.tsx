@@ -24,6 +24,7 @@ import { useScroll } from "./hooks/useScroll";
 import PortalLink from "./components/PortalLink";
 import SupportPillars from "./components/SupportPillars";
 import PortalSection from "./components/PortalSection";
+import ClientLogos from "./components/ClientLogos";
 
 const useScrollTo = () => {
     return useCallback((ref: React.RefObject<HTMLElement | null>) => {
@@ -142,6 +143,8 @@ function Safety() {
                     <PriceTable />
                 </div>
             </section> */}
+
+            <ClientLogos />
 
             <section
                 id="contact"
