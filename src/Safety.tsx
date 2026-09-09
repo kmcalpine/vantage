@@ -1052,7 +1052,7 @@ const Footer = () => {
             </div>
 
             <div className="border-t border-stone-200">
-                <div className="max-w-7xl mx-auto px-5 py-6">
+                <div className="max-w-7xl mx-auto px-5 md:px-0 py-6">
                     <p className="text-gray-500 font-inter text-xs">
                         © 2026 Vantage Safety Services Ltd
                     </p>
