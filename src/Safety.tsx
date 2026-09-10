@@ -24,6 +24,7 @@ import { useScroll } from "./hooks/useScroll";
 import PortalLink from "./components/PortalLink";
 import SupportPillars from "./components/SupportPillars";
 import PortalSection from "./components/PortalSection";
+import ClientLogos from "./components/ClientLogos";
 
 const useScrollTo = () => {
     return useCallback((ref: React.RefObject<HTMLElement | null>) => {
@@ -142,6 +143,8 @@ function Safety() {
                     <PriceTable />
                 </div>
             </section> */}
+
+            <ClientLogos />
 
             <section
                 id="contact"
@@ -986,7 +989,7 @@ const footerLinks = [
 const Footer = () => {
     return (
         <footer className="border-t border-stone-200 bg-white text-black">
-            <div className="max-w-7xl mx-auto px-5 py-14 md:py-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1.2fr] gap-12 md:gap-16">
+            <div className="max-w-7xl mx-auto md:px-0 px-5 py-14 md:py-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1.2fr] gap-12 md:gap-16">
                 <div className="flex flex-col gap-5">
                     <img
                         src={logoBlack}
@@ -1049,7 +1052,7 @@ const Footer = () => {
             </div>
 
             <div className="border-t border-stone-200">
-                <div className="max-w-7xl mx-auto px-5 py-6">
+                <div className="max-w-7xl mx-auto px-5 md:px-0 py-6">
                     <p className="text-gray-500 font-inter text-xs">
                         © 2026 Vantage Safety Services Ltd
                     </p>
